@@ -27,12 +27,6 @@ const Tuner = () => {
                 {strings.map((s) =>
                     <div className='tuner-peg'>{s.name}</div>)
                 }
-                {/* <div className="tuner-peg tuner-peg-activated tuner-peg-tuned" onClick={toggleThing}>E</div>
-                <div className="tuner-peg tuner-peg-tuned" onClick={toggleThing}>A</div>
-                <div className="tuner-peg" onClick={toggleThing}>D</div>
-                <div className="tuner-peg" onClick={toggleThing}>G</div>
-                <div className="tuner-peg" onClick={toggleThing}>B</div>
-                <div className="tuner-peg" onClick={toggleThing}>e</div> */}
             </div>
         </>
     )
