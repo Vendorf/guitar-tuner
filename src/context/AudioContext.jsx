@@ -3,7 +3,8 @@ import { createContext, use, useEffect, useRef, useState } from "react"
 
 const MIN_DECIBALS = -20
 const MIN_CLARITY = 0.9
-const MIN_FREQ = 24.5 // G0
+// const MIN_FREQ = 24.5 // G0
+const MIN_FREQ = 36.71 // D0
 
 const AudioContext = createContext(undefined)
 

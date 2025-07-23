@@ -1,0 +1,24 @@
+.pitch-wrapper {
+    display: flex;
+    color: darkslategray;
+    align-items: baseline; /* Aligns text on baseline */
+    justify-content: space-evenly;
+    padding: 0 2em 0 2em;
+}
+
+/* .pitch-label-wrapper {
+    display: flex;
+    flex-direction: column;
+} */
+
+.pitch-label {
+    font-size: 3em;
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+.pitch-value {
+    font-size: 2em;
+    font-weight: bold;
+    margin-left: auto;
+}
