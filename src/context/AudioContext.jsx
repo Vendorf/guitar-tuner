@@ -71,7 +71,7 @@ const AudioProvider = ({ children }) => {
         if((detClarity >= MIN_CLARITY) && (detPitch >= MIN_FREQ)) {
             setPitch(detPitch)
             setClarity(detClarity)
-            console.log(detPitch, detClarity)
+            // console.log(detPitch, detClarity)
         }
 
         // Keep updating

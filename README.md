@@ -1,5 +1,24 @@
 # TODO
 
+Okay so note detection and all that shit works
+
+Need to refactor properly so the globalish tuner data and all is somehow passed properly... ig a context honestly but idk feels icky but maybe start there and refactor later
+
+And still the issue of trying to only center the desired pitches, see these:
+
+https://hajim.rochester.edu/ece/sites/zduan/teaching/ece472/projects/2015/Vasilik_Stillings_Cortazar_paper.pdf
+https://dsp.stackexchange.com/questions/64339/pitch-detection-which-is-the-most-robust-way-to-distinguish-voiced-from-unvoice
+https://dsp.stackexchange.com/questions/29962/how-to-deal-with-low-fundamental-when-using-amdf-for-pitch-extraction/29968#29968
+https://dsp.stackexchange.com/questions/22067/what-is-an-amdf/22070#22070
+https://github.com/kylebgorman/swipe
+https://www.audiolabs-erlangen.de/content/05_fau/professor/00_mueller/02_teaching/2024s_sarntal/01_group_F0/2008_CamachoH_SWIPE_JASA.pdf
+
+prolly start w the paper in the first link, then try the stack exchanges and then the swipe paper maybe
+
+
+--
+
+
 NOTE: so I set min at 24.5 (G0) which cuts off most of the issues which were around 22Hz, but still wanna do the windowing for better consistency or random little sounds etc cuz they still happen (and sometimes get like 27Hz random etc)
 
 Need some notion of 'stickiness' for pitch

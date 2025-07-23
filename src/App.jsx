@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { AudioProvider } from './context/AudioContext'
 import PitchDisplay from './components/PitchDisplay'
-import Tuner from './components/Tuner/Tuner'
+import TunerDisplay from './components/Tuner/TunerDisplay'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -40,7 +40,7 @@ function App() {
    return (
     <>
       <AudioProvider>
-        <Tuner></Tuner>
+        <TunerDisplay></TunerDisplay>
         <PitchDisplay></PitchDisplay>
       </AudioProvider>
     </>
