@@ -27,8 +27,9 @@
 }
 
 .tuner-peg:hover {
-    border-color: #535bf2;
-    transform: scale(1.2);
+    /* border-color: #535bf2;
+    transform: scale(1.2); */
+    background-color: #cccfff;
 }
 
 .tuner-peg-activated {

@@ -1,5 +1,77 @@
 # TODO
 
+July 24 2025
+
+Need to organize these notes somehow lmao
+
+Okay fuck making pitch detection work well actually that shit seems really hard and the resources for it suck I need to find some audio processing textbook or some shit and just read that
+
+Some resources tho:
+- https://dsp.stackexchange.com/questions/411/tips-for-improving-pitch-detection: some ideas about limiting to harmonics know about
+    - ideally they could start playing, if we get some detection to a note they need to tune still and it's consistent enough, get 'sticky' to it
+      - Stickiness should prolly involve ignoring frequencies that aren't in the immediate range of that note + limiting min/max frequency to certain harmonics of it
+      - Also maybe biasing to selecting the expected base frequency over any detected harmonics?
+    - https://gist.github.com/endolith/255291#L38
+    - Should also do some filtering on the signal initially maybe, like the suggested windowing thing, and maybe high/lowpass
+      - Can adjust the filters to the 'sticky' note as well maybe
+
+- Okay fell down fat rabbit hole again lmao don't even remember what was gonna write here honestly
+
+
+
+I think the next step is just shoving things into a context and getting it working even with the shitty pitch detection
+
+Then we can migrate it to Zustland to learn that a bit it seems fun and cleaner
+- Not sure how well it works w the fast updates/need some 'subscribe' thing to the store instead of usual access? idk
+
+Then we can introduce Tailwind and migrate to that
+
+And then we'll be done `:)` unless we wanna rewrite the audio processing to not use the pitchy lib and instead roll our own
+- Or just add the stickiness shit etc which could be cool
+
+But yeah maybe don't overfocus on it and then we can move on to some other proj/refresh some other language and shit
+- C++ and OpenGL would be good honestly, maybe write that basic renderer + fog finally or some microsoft paint type shit in Qt? or Swift.... idk [or ImGUI!]
+
+
+
+okay next for note selection:
+to get candidate:
+
+compute distance from detected note to all strings
+   idk if should just use the midi distance honestly, or can try doing cents and shit (later)
+
+choose the minimum distance as the target
+    if it's within some threshold X, actually select it as a valid target
+
+
+if detect that target for a few iterations, then make it sticky and actually select?
+
+
+wait.... what if only draw when we are sticky.... that might resolve all the issues w noise and all lmao
+    maybe that's literally what guitartuna does honestly...?
+    and then the other ideas of ignoring shit that's not close to the sticky note then
+    i think there's something there
+
+
+
+for getting target/cents/etc:
+we wanna do this frequently and based on history, but not prolly every animation frame? or maybe yeah idk
+    ig start by just having it use the audio context and recompute every change
+    then later we can try having it only rerender ever X frames
+    ideally maybe have some sort of 'main loop' that can subscribe methods to that run every X frames
+    that main loop does requestAnimationFrame, then goes thru all subscribers, increments their counts, sees if it's been X frames,
+    and if so fires their callback and resets the counter
+    that way can make the pitch detector go every frame (or every 2 or whatever), but have the tuner go less frequently
+    prob is w contexts still gonna rerender every single state change
+    but w zustand can put it into a store together and just doing the pitch update every time but the target update less frequently
+        ig then the tuner data is the thing that will cause rerenders and nothing will use the audio context directly then
+        so tuning data will store a second copy of the detected pitch, etc so that it only updates every X frames less frequently,
+        so only get rerenders once tuner has new info, not whenever pitch changes, even for showing the history
+    idk maybe need to think a bit more here
+
+--
+
+
 Okay so note detection and all that shit works
 
 Need to refactor properly so the globalish tuner data and all is somehow passed properly... ig a context honestly but idk feels icky but maybe start there and refactor later

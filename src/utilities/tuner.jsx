@@ -15,14 +15,15 @@ const SCALE = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', '
 
 const TUNINGS = {
     'standard': {
-        strings: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
+        strings: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'],
+        strings_ids: [40, 45, 50, 55, 59, 64]
     },
     'drop-d': {
         //TODO
     }
 }
 
-const TEMP_STORAGE = {}
+// const TEMP_STORAGE = {}
 
 //TODO: group all above into some sort of global single store object so can edit the values and shit
 // and also store notes inside of it etc
@@ -92,11 +93,11 @@ const recomputeFrequencies = (notes) => {
 }
 
 //TODO this kidna sucks have to run explicitly, maybe can construct better idk
-initTunings()
-TEMP_STORAGE.notes = generateNotes()
-recomputeFrequencies(TEMP_STORAGE.notes)
+// initTunings()
+// TEMP_STORAGE.notes = generateNotes()
+// recomputeFrequencies(TEMP_STORAGE.notes)
 
 export {
     generateNotes, computeNoteFrequency, recomputeFrequencies, getNearestNoteFromFrequency,
-    TUNINGS, A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, TEMP_STORAGE
+    TUNINGS, A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE//, TEMP_STORAGE
 }

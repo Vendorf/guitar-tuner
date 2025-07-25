@@ -1,32 +1,27 @@
 
+import { useTuning } from '../../context/TuningContext'
 import { TUNINGS } from '../../utilities/tuner'
 import './TunerDisplay.css'
 
 const TunerDisplay = () => {
 
-    // Here compute all shit for tuning?
-    // Alternatively can make a TuningContext that uses the AudioContext.... idk
-    // that would do all the logic for figuring out nearest string, etc, then can use that
-    // in Tuner and pass down or whatever to render
+    const { tuningMode, targetNote } = useTuning()
+    const strings = TUNINGS[tuningMode].strings
 
-    // const strings = [
-    //     { freq: 110, name: "E" },
-    //     { freq: 110, name: "A" },
-    //     { freq: 110, name: "D" },
-    //     { freq: 110, name: "G" },
-    //     { freq: 110, name: "B" },
-    //     { freq: 110, name: "e" },
-    // ]
-    //TODO replace and use key='' in mapping
-
-    const strings = TUNINGS['standard'].strings
+    const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetNote)
 
     return (
         <>
             <div className='tuner-wrapper card'>
-                {strings.map((s) =>
-                    <div className='tuner-peg'>{s}</div>)
-                }
+                {/* {strings.map((s, i) => {
+                    i == targetIdx
+                    ? <div className='tuner-peg tuner-peg-activated'>{s}</div>
+                    : <div className='tuner-peg'>{s}</div>
+                })} */}
+                {strings.map((s, i) => (
+                    <div key={i} className={`tuner-peg ${i == targetIdx ? 'tuner-peg-activated' : ''}`}>{s}</div>
+                    // <div className={`tuner-peg`}>{s}</div>
+                ))}
             </div>
         </>
     )

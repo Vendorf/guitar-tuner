@@ -5,6 +5,7 @@ import './App.css'
 import { AudioProvider } from './context/AudioContext'
 import PitchDisplay from './components/PitchDisplay'
 import TunerDisplay from './components/Tuner/TunerDisplay'
+import { TuningProvider } from './context/TuningContext'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -37,11 +38,13 @@ function App() {
   //   </>
   // )
 
-   return (
+  return (
     <>
       <AudioProvider>
-        <TunerDisplay></TunerDisplay>
-        <PitchDisplay></PitchDisplay>
+        <TuningProvider>
+          <TunerDisplay></TunerDisplay>
+          <PitchDisplay></PitchDisplay>
+        </TuningProvider>
       </AudioProvider>
     </>
   )
