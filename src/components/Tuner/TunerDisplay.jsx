@@ -1,6 +1,6 @@
 
 import { useTuning } from '../../context/TuningContext'
-import { TUNINGS } from '../../utilities/tuner'
+import { TUNINGS } from '../../constants/tuningConstants'
 import './TunerDisplay.css'
 
 const TunerDisplay = () => {

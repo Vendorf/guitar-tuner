@@ -3,9 +3,9 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { AudioProvider } from './context/AudioContext'
+import { TuningProvider } from './context/TuningContext'
 import PitchDisplay from './components/PitchDisplay'
 import TunerDisplay from './components/Tuner/TunerDisplay'
-import { TuningProvider } from './context/TuningContext'
 
 function App() {
   const [count, setCount] = useState(0)

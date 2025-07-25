@@ -3,8 +3,8 @@
 
 import { createContext, use, useEffect, useState } from "react";
 import { useAudio } from "./AudioContext";
-import { generateNotes, recomputeFrequencies, getNearestNoteFromFrequency, TUNINGS } from "../utilities/tuner";
-
+import { generateNotes, recomputeFrequencies, getNearestNoteFromFrequency } from "../utilities/tuningUtils";
+import { TUNINGS } from "../constants/tuningConstants";
 
 const TuningContext = createContext(undefined)
 
@@ -31,7 +31,7 @@ const TuningProvider = ({ children }) => {
     let nearestNote = -1
     if (pitch > 0) {
         nearestNote = getNearestNoteFromFrequency(pitch)
-        
+
         const tuning = TUNINGS[tuningMode].strings_ids
         const targetDistances = tuning.map(n => Math.abs(n - nearestNote))
         const targetIdx = targetDistances.indexOf(Math.min(...targetDistances))

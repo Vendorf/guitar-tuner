@@ -1,6 +1,5 @@
 import { useAudio } from "../context/AudioContext"
 import { useTuning } from "../context/TuningContext"
-// import { getNearestNoteFromFrequency } from "../utilities/tuner"
 import './PitchDisplay.css'
 
 const PitchDisplay = () => {
