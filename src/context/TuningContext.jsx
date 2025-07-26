@@ -3,8 +3,8 @@
 
 import { createContext, use, useEffect, useState } from "react";
 import { useAudio } from "./AudioContext";
-import { generateNotes, recomputeFrequencies, getNearestNoteFromFrequency } from "../utilities/tuningUtils";
-import { TUNINGS } from "../constants/tuningConstants";
+import { generateNotes, recomputeFrequencies, getNearestNoteFromFrequency, getExactNoteFromFrequency, toNearestNote } from "../utilities/tuningUtils";
+import { CENTS_DIST_MAX, TUNINGS } from "../constants/tuningConstants";
 
 const TuningContext = createContext(undefined)
 
@@ -27,21 +27,39 @@ const TuningProvider = ({ children }) => {
 
 
     // On pitch change, recompute the closest and target
-    let targetNote = -1
-    let nearestNote = -1
+
+    //TODO: something to reset after X seconds or smthng else when haven't played for a while, etc?
+    const noteInfo = {
+        note: -1,
+        nearestNote: -1,
+        targetNote: -1,
+        centsDist: 0
+    }
+
     if (pitch > 0) {
-        nearestNote = getNearestNoteFromFrequency(pitch)
+        const note = getExactNoteFromFrequency(pitch)
+        const nearestNote = toNearestNote(note)
+
+        noteInfo.note = note
+        noteInfo.nearestNote = nearestNote
 
         const tuning = TUNINGS[tuningMode].strings_ids
         const targetDistances = tuning.map(n => Math.abs(n - nearestNote))
         const targetIdx = targetDistances.indexOf(Math.min(...targetDistances))
 
-        targetNote = tuning[targetIdx]
+        const targetNote = tuning[targetIdx]
+
+        // Distance from target in cents
+        const centsDist = note - targetNote
+        if(Math.abs(centsDist) < CENTS_DIST_MAX) {
+            // Within distance to target to be valid
+            noteInfo.targetNote = targetNote
+            noteInfo.centsDist = centsDist
+        }
     }
 
-
     return (
-        <TuningContext value={{ notes, tuningMode, setTuningMode, nearestNote, targetNote }}>
+        <TuningContext value={{ notes, tuningMode, setTuningMode, noteInfo }}>
             {children}
         </TuningContext>
     )

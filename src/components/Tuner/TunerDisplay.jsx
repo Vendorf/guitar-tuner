@@ -5,7 +5,7 @@ import './TunerDisplay.css'
 
 const TunerDisplay = () => {
 
-    const { tuningMode, targetNote } = useTuning()
+    const { tuningMode, noteInfo: {targetNote: targetNote} } = useTuning()
     const strings = TUNINGS[tuningMode].strings
 
     const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetNote)

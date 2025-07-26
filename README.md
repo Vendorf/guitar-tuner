@@ -1,5 +1,28 @@
 # TODO
 
+July 26 2025
+
+Ig the tuning needs to be a bit more complex with the 'stickiness'
+
+Cuz we don't wanna be mid tune on A2 and then we turn the tuner too much and end up closer to E2 instead, and then swap the string to E2; so even tho E2 is now closer, the stickiness should also account for what note you were trying to tune before before swapping
+
+At the same time, if we suddenly transition tuning should also get that
+
+I think need to generally make a list of requirements for the stickiness to have a solid idea of what need and then design some algo ig
+
+
+July 25 2025
+
+Okay the autocorrelation doesn't actually seem that hard after reading lmao so kinda excited at maybe trying to write it myself later
+
+But also tried out larger fftsize and seems way better need to look more at that and the resolution/etc
+
+Also for octave problem: for history, can check if we ever detected a lower octave in the last X frames/current whatever, and we jump up some octaves, then just interperet at the lower octave instead
+- That way get the fundamental frequency more likely
+- Subharmonics could be an issue tho.... but don't really think that's relevant at least in the guitar case, idk about other instruments
+  - Realistically tho like who cares lmao imma tune the guitar w this shit
+
+
 July 24 2025
 
 Need to organize these notes somehow lmao

@@ -5,15 +5,11 @@ import './PitchDisplay.css'
 const PitchDisplay = () => {
 
     const { pitch, clarity, started, startAudio, stopAudio, killAudio } = useAudio()
-    const { notes, tuningMode, setTuningMode, nearestNote, targetNote } = useTuning()
+    const { notes, tuningMode, setTuningMode, noteInfo: {nearestNote, targetNote, note, centsDist} } = useTuning()
 
     const nearestNoteName = notes[nearestNote]?.fullName ?? ""
     const targetNoteName = notes[targetNote]?.fullName ?? ""
-
     const targetFreq = notes[targetNote]?.frequency ?? 0
-    // const note_id = pitch > 0 ? getNearestNoteFromFrequency(pitch) : "-"
-    // const note = TEMP_STORAGE.notes[note_id]?.fullName ?? ""
-
 
     return (
         <>
@@ -43,6 +39,14 @@ const PitchDisplay = () => {
                 </div>
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Freq:</div> <div className="pitch-value">{Math.round(targetFreq * 100) / 100}</div>
+                </div>
+            </div>
+            <div className="card">
+                <div className="pitch-wrapper">
+                    <div className="pitch-label">Exact:</div> <div className="pitch-value">{Math.round(note * 100) / 100}</div>
+                </div>
+                <div className="pitch-wrapper">
+                    <div className="pitch-label">Cents:</div> <div className="pitch-value">{Math.round(centsDist * 100) / 100}</div>
                 </div>
             </div>
         </>

@@ -1,6 +1,14 @@
 import { PitchDetector } from "pitchy"
 import { createContext, use, useEffect, useRef, useState } from "react"
 
+// TODO: this controls the ultimate precision in FFT
+// I think beyond compute time there's some other tradeoffs here? but smaller seems better
+// initial test this seems waaay better with E2 than the default 2048 size; wonder if can go even higher?
+// but wonder what the negative tradeoff is gonna be
+// see https://hackernoon.com/guitar-tuner-pitch-detection-for-dummies-ok8e35o9#:~:text=To%20determine%20which%20frequencies%20are%20in%20which%20bin%2C%20we%20can%20use%20the%20following%20formula%3A
+// for a bit of explanation, but should find a better one for more details
+const FFT_SIZE = 8192
+
 const MIN_DECIBALS = -20
 const MIN_CLARITY = 0.9
 // const MIN_FREQ = 24.5 // G0
@@ -24,6 +32,7 @@ const AudioProvider = ({ children }) => {
     const initAudio = () => {
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
         const analyserNode = audioContextRef.current.createAnalyser()
+        analyserNode.fftSize = FFT_SIZE
         return navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
             console.log(audioContextRef, analyserNode)
             audioContextRef.current.createMediaStreamSource(stream).connect(analyserNode)
@@ -60,6 +69,7 @@ const AudioProvider = ({ children }) => {
 
     const updatePitch = (analyserNode, detector, input, sampleRate) => {
         analyserNode.getFloatTimeDomainData(input)
+        // console.log(input)
         const [detPitch, detClarity] = detector.findPitch(input, sampleRate)
 
         // Update react state

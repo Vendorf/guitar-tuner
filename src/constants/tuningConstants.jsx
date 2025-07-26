@@ -23,8 +23,10 @@ const TUNINGS = {
     }
 }
 
+const CENTS_DIST_MAX = Infinity
+
 //TODO: group all above into some sort of global single store object so can edit the values and shit
 // and also store notes inside of it etc
 // but then really move into a context ig so we get proper state updates too.....
 
-export { TUNINGS, A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE }
+export { TUNINGS, A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, CENTS_DIST_MAX }
