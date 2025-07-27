@@ -1,5 +1,36 @@
 # TODO
 
+July 27 2025
+
+For now just use the shitty targetting system to just get the display and everything working, and then once the rest of the app is made we can try the sticky algo (and then maybe also rolling our own pitch detection)
+
+Having a generic tuner that just goes by nearest note would also be nice if wanna tune w/out sticking to strings like GuitarTuna and instead more like a traditional generic instrument tuner
+ - Option to swap to generic which will hide the guitar tuners and then make the pitch display just go by nearest note instead
+
+STICKY ALGO
+- Whenever add item to history, reset empty period counter
+- Every X ticks, pop end off of history
+  - And/or if some empty period elapses with no additions, then clear full history
+- Could slide a window over all the history pitches and try to find one which has at least M entries inside it
+  - M will represent the min number of points to consider that pitch to be sticky
+  - Start from the end (most recent history) and slide backwards; therefore get the latest pitch
+  - O(N) time idk if could somehow get better (log N?) but maybe not honestly
+  - Idk if this would have issues then if we are between 2 notes; ig just do getNearest on all of them in the set and just choose the one that's larger; would maybe get oscillating back and forth but that honestly makes sense if we are right between two pitches
+  - Wait actually ig we wanna take the distance of each pitch to all the possible target notes
+    - Set its target as the closest string? or only if within X cents? idk
+- Alternatively can do smthng where just count up the 'nearest note' that it detects and see when get X entries
+  - Problem is if on a boundary between 2 of them and end up never counting up; so should prolly include notes within a half-step into the count as well maybe? idk
+- Both of these seem okay honestly
+- Once choose note, store it as the 'sticky' target
+  - Sticky target will include {targetNote: number, centsDist: number[] (history of pitch distances)} (???)
+  - This will be target note that gets highlighted in tuners display and on the pitch chart
+- For pitches going forward, if sticky exists we find distance to it and that gets stored as some dist info with sticky
+  - Keep sliding the window tho, but maybe with a larger threshold M? and if detect new note, swap to that as the sticky instead
+    - Need some way to prevent quick oscillation of two strings to each other
+- Once we stop detecting pitches, drop the larger window threshold so can detect a new pitch more quickly
+  - Once we fully clear history after X empty ticks this is even lower (?) idk play with it if necessary if it feels slow to pick up
+
+
 July 26 2025
 
 Ig the tuning needs to be a bit more complex with the 'stickiness'

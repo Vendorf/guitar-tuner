@@ -22,3 +22,10 @@
     font-weight: bold;
     margin-left: auto;
 }
+
+/* SVG */
+svg {
+    width: 100%;
+    height: auto;
+    /* background-color: red; */
+}
