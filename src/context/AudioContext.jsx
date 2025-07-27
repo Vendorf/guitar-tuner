@@ -14,13 +14,30 @@ const MIN_CLARITY = 0.9
 // const MIN_FREQ = 24.5 // G0
 const MIN_FREQ = 36.71 // D0
 
+const HISTORY_SIZE = 50
+
 const AudioContext = createContext(undefined)
 
 const AudioProvider = ({ children }) => {
     const audioContextRef = useRef(undefined)
-    const audioDataRef = useRef(undefined)
+    const audioDataRef = useRef(undefined) // [AnalyzerNode, PitchDetector, Float32Array (getFloatTimeDomainData)]
+
+    const [audioTimeData, setAudioTimeData] = useState(new Float32Array(0))
+
+    const [updates, setUpdates] = useState(0) // number of updates
     const [pitch, setPitch] = useState(0)
     const [clarity, setClarity] = useState(0)
+    /**
+     * Structure:
+     * [
+     *   {
+     *      pitch: number,
+     *      clarity: number,
+     *      time: Date()
+     *   }, 
+     * ]
+     */
+    const [history, setHistory] = useState([])
     const [started, setStarted] = useState(false)
     const animationFrameRef = useRef(undefined)
 
@@ -51,7 +68,7 @@ const AudioProvider = ({ children }) => {
     }
 
     const startAudio = () => {
-        if(!audioContextRef.current) {
+        if (!audioContextRef.current) {
             initAudio().then(() => updatePitch(...audioDataRef.current, audioContextRef.current.sampleRate))
         } else {
             audioContextRef.current?.resume()
@@ -73,23 +90,33 @@ const AudioProvider = ({ children }) => {
         const [detPitch, detClarity] = detector.findPitch(input, sampleRate)
 
         // Update react state
-        // if((detPitch !== 0 || detClarity !== 0)) {
-        //     setPitch(detPitch)
-        //     setClarity(detClarity)
-        // }
-
-        if((detClarity >= MIN_CLARITY) && (detPitch >= MIN_FREQ)) {
+        if ((detClarity >= MIN_CLARITY) && (detPitch >= MIN_FREQ)) {
+            setAudioTimeData(input) // NOTE: this will on it's own not trigger updates bc same object!
             setPitch(detPitch)
             setClarity(detClarity)
+            setHistory((oldHist) => {
+                const newHistory = [...oldHist, {pitch: detPitch, clarity: detClarity, time: (new Date())}]
+                if(newHistory.length > HISTORY_SIZE) {
+                    newHistory.shift()
+                }
+                return newHistory
+            })
+            setUpdates((oldUpd) => oldUpd+1)
             // console.log(detPitch, detClarity)
         }
+        // TODO: set 'updating' true/false thing; if we are updating, set true, once no longer, set to false
+        // that way will set 'updating' to false as final thing of a pitch detection sequence, so then can
+        // clear things like waveforms, defocus after X seconds, etc
+        // alternatively could set timer since last update in each component, reset on an update, and then if it goes thru
+        // run the cleanup
 
         // Keep updating
+        //TODO: can bind this somehow to get updated state? idk
         animationFrameRef.current = requestAnimationFrame(() => updatePitch(analyserNode, detector, input, sampleRate))
     }
 
     return (
-        <AudioContext value={{ pitch, clarity, started, startAudio, stopAudio, killAudio }}>
+        <AudioContext value={{ pitch, clarity, started, history, updates, startAudio, stopAudio, killAudio, audioTimeData }}>
             {children}
         </AudioContext>
     )

@@ -1,15 +1,18 @@
 import { useAudio } from "../context/AudioContext"
 import { useTuning } from "../context/TuningContext"
 import './PitchDisplay.css'
+import WaveformCanvas from "./WaveformCanvas/WaveformCanvas"
 
 const PitchDisplay = () => {
 
-    const { pitch, clarity, started, startAudio, stopAudio, killAudio } = useAudio()
+    const { pitch, clarity, started, startAudio, stopAudio, killAudio, history, updates } = useAudio()
     const { notes, tuningMode, setTuningMode, noteInfo: {nearestNote, targetNote, note, centsDist} } = useTuning()
 
     const nearestNoteName = notes[nearestNote]?.fullName ?? ""
     const targetNoteName = notes[targetNote]?.fullName ?? ""
     const targetFreq = notes[targetNote]?.frequency ?? 0
+
+    // console.log(updates, history)
 
     return (
         <>
@@ -49,6 +52,16 @@ const PitchDisplay = () => {
                     <div className="pitch-label">Cents:</div> <div className="pitch-value">{Math.round(centsDist * 100) / 100}</div>
                 </div>
             </div>
+            <div className="card">
+                <WaveformCanvas></WaveformCanvas>
+            </div>
+            <div className="card">
+                <div className="pitch-wrapper">
+                    <div className="pitch-label">Update:</div> <div className="pitch-value">{updates}</div>
+                </div>
+                <pre style={{color: 'black', textAlign: 'left'}}>{JSON.stringify(history, null, 2)}</pre>
+            </div>
+
         </>
 
     )
