@@ -1,5 +1,6 @@
 import { PitchDetector } from "pitchy"
 import { createContext, use, useEffect, useRef, useState } from "react"
+import { getExactNoteFromFrequency } from "../utilities/tuningUtils"
 
 // TODO: this controls the ultimate precision in FFT
 // I think beyond compute time there's some other tradeoffs here? but smaller seems better
@@ -14,7 +15,7 @@ const MIN_CLARITY = 0.9
 // const MIN_FREQ = 24.5 // G0
 const MIN_FREQ = 36.71 // D0
 
-const HISTORY_SIZE = 50
+const HISTORY_SIZE = 1000 //50
 
 const AudioContext = createContext(undefined)
 
@@ -95,15 +96,18 @@ const AudioProvider = ({ children }) => {
             setPitch(detPitch)
             setClarity(detClarity)
             setHistory((oldHist) => {
-                const newHistory = [...oldHist, {pitch: detPitch, clarity: detClarity, time: (new Date())}]
-                if(newHistory.length > HISTORY_SIZE) {
+                const newHistory = [...oldHist, { pitch: detPitch, clarity: detClarity, exactNote:getExactNoteFromFrequency(detPitch), time: (new Date()) }]
+                if (newHistory.length > HISTORY_SIZE) {
                     newHistory.shift()
                 }
                 return newHistory
             })
-            setUpdates((oldUpd) => oldUpd+1)
-            // console.log(detPitch, detClarity)
+
+            setUpdates((oldUpd) => oldUpd + 1)
         }
+
+        // Always increment updates
+        // setUpdates((oldUpd) => oldUpd + 1)
         // TODO: set 'updating' true/false thing; if we are updating, set true, once no longer, set to false
         // that way will set 'updating' to false as final thing of a pitch detection sequence, so then can
         // clear things like waveforms, defocus after X seconds, etc

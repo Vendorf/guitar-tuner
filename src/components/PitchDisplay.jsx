@@ -13,8 +13,6 @@ const PitchDisplay = () => {
     const targetNoteName = notes[targetNote]?.fullName ?? ""
     const targetFreq = notes[targetNote]?.frequency ?? 0
 
-    // console.log(updates, history)
-
     //TODO maybe convert to canvas for performance idk
     // or D3 lmao
 
@@ -23,41 +21,13 @@ const PitchDisplay = () => {
     // + get it intergrated with actual history
 
     // TEMP: cents diff from center + update
-    const timeLength = 50
-    const centsSide = 10
-    // const boxes = [
-    //     {
-    //         cents: -2.5,
-    //         time: 7
-    //     },
-    //     {
-    //         cents: -3.5,
-    //         time: 8
-    //     },
-    //     {
-    //         cents: -4.5,
-    //         time: 9
-    //     },
-    //     {
-    //         cents: -4.5,
-    //         time: 10
-    //     },
-    // ]
-
-    // const boxes = []
-    // for(let i = 0; i < 100; i++) {
-    //     boxes.push({
-    //         cents: (Math.random() - 0.5) * (centsSide + 1),
-    //         time: i
-    //     })
-    // }
+    const timeLength = 100 //50
+    const centsSide = 3 // guitartuna shows +1 for 0.10 (10 cents); goes up to +3 on furthest edge (30 cents)
 
     const [boxes, setBoxes] = useState([])
 
     const updateFunc = () => {
         setBoxes(bs => {
-            // console.log('wa')
-            // requestAnimationFrame(updateFunc)
             return [...bs,
             {
                 cents: (Math.random() - 0.5) * (centsSide + 1),
@@ -66,17 +36,27 @@ const PitchDisplay = () => {
         })
     }
 
-    // useEffect(()=> {
-    //     setInterval(updateFunc, 10)
-    // }, [])
+    // const lastTime = boxes[boxes.length - 1]?.time ?? 0
+    // const drawBoxes = boxes.filter(box => lastTime - box.time <= timeLength)
 
-    const lastTime = boxes[boxes.length - 1]?.time ?? 0
-    const drawBoxes = boxes.filter(box => lastTime - box.time <= timeLength)
+
+    const drawBoxes = history
+        .map(entry => {
+            const cents = entry.exactNote - targetNote
+            return { cents, time: entry.time }
+        })
+        // .filter(box => Math.abs(box.cents) < centsSide) // filter out extreme outliers
+        .slice(-timeLength) // only show most recent ones
+        .map((box, i) => ({
+            ...box,
+            time: i // normalize time to index so we can compute Y
+        }))
 
     const boxHeight = 89.0 / (timeLength + 1)
     const boxWidthPerCent = 50.0 / centsSide
 
     const lastBox = drawBoxes[drawBoxes.length - 1]
+    const lastTime = drawBoxes[drawBoxes.length - 1]?.time
 
     const computeBoxProps = (box) => {
         const width = boxWidthPerCent * Math.abs(box.cents)
@@ -90,7 +70,6 @@ const PitchDisplay = () => {
     return (
         <>
             <div className="card">
-                {/* <button onClick={startAudio}>Resume audio</button> */}
                 <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button>
 
                 <div className="pitch-wrapper">
@@ -169,7 +148,7 @@ const PitchDisplay = () => {
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Update:</div> <div className="pitch-value">{updates}</div>
                 </div>
-                <pre style={{ color: 'black', textAlign: 'left' }}>{JSON.stringify(history, null, 2)}</pre>
+                <pre style={{ color: 'black', textAlign: 'left' }}>{history.length} {JSON.stringify(history, null, 2)}</pre>
             </div>
 
         </>
