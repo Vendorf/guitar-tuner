@@ -4,6 +4,13 @@ import { useTuning } from "../context/TuningContext"
 import './PitchDisplay.css'
 import WaveformCanvas from "./WaveformCanvas/WaveformCanvas"
 import { interpolateHsl } from "../utilities/colorUtils"
+import TuningSelector from "./TuningSelector/TuningSelector"
+
+//TODO: move constants up here
+
+// TODO
+// Make some nice background with dots/grid to show cents
+//      maybe have it move along w the bars
 
 const PitchDisplay = () => {
 
@@ -20,7 +27,7 @@ const PitchDisplay = () => {
     // TODO
     // + organize properly code
 
-    // TEMP: cents diff from center + update
+    //TODO: is this too much lol
     const [now, setNow] = useState(Date.now())
     useEffect(() => {
         let frame
@@ -54,17 +61,6 @@ const PitchDisplay = () => {
     const lowCents = 0 // when fully low color
 
     const boxWidthPerCent = (VIEW_WIDTH / 2) / centsSide
-
-    const pitchMin = 40
-    const pitchMax = 1000
-    const logMin = Math.log10(pitchMin)
-    const logMax = Math.log10(pitchMax)
-
-    const mapPitchToY = (p) => {
-        const logP = Math.log10(p)
-        const norm = (logP - logMin) / (logMax - logMin)
-        return VIEW_HEIGHT - (norm * VIEW_HEIGHT)
-    }
 
     const drawBoxes = history
         .map(entry => {
@@ -114,6 +110,8 @@ const PitchDisplay = () => {
         <>
             <div className="card">
                 <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button>
+
+                <TuningSelector></TuningSelector>
 
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Pitch:</div> <div className="pitch-value">{Math.round(pitch * 100) / 100}</div>

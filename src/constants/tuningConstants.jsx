@@ -15,11 +15,54 @@ const SCALE = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', '
 
 const TUNINGS = {
     'standard': {
+        name: 'Standard',
         strings: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'],
         strings_ids: [40, 45, 50, 55, 59, 64]
     },
     'drop-d': {
-        //TODO
+        name: 'Drop D',
+        strings: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4'],
+        strings_ids: [38, 45, 50, 55, 59, 64]
+    },
+    'goofy': {
+        name: 'Goofy',
+        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
+        strings_ids: [64, 59, 55, 50, 45, 40]
+    },
+    'goofy1': {
+        name: 'Goofy',
+        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
+        strings_ids: [64, 59, 55, 50, 45, 40]
+    },
+    'goofy2': {
+        name: 'Goofy',
+        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
+        strings_ids: [64, 59, 55, 50, 45, 40]
+    },
+    'goofy3': {
+        name: 'Goofy',
+        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
+        strings_ids: [64, 59, 55, 50, 45, 40]
+    },
+    'goofy4': {
+        name: 'Goofy',
+        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
+        strings_ids: [64, 59, 55, 50, 45, 40]
+    },
+    'goofy5': {
+        name: 'Goofy',
+        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
+        strings_ids: [64, 59, 55, 50, 45, 40]
+    },
+    'goofy6': {
+        name: 'Goofy',
+        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
+        strings_ids: [64, 59, 55, 50, 45, 40]
+    },
+    'goofy7': {
+        name: 'Goofy',
+        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
+        strings_ids: [64, 59, 55, 50, 45, 40]
     }
 }
 

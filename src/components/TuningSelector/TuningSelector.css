@@ -1,0 +1,154 @@
+.tuning-container-wrapper {
+    /* for shadows */
+    position: relative;
+}
+
+.tuning-container {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+.tuning-chip {
+    display: inline-block;
+    padding: 0 15px;
+    margin-right: 5px;
+    /* height: 50px; */
+    font-size: 16px;
+    /* line-height: 50px; */
+    border-radius: 25px;
+    background-color: #f1f1f1;
+
+}
+
+.tuning-chip-selected {
+    background-color: gray;
+}
+
+.tuning-chip-icon {
+    display: inline-block;
+    /* This will render the 'X' */
+}
+
+.tuning-chip-icon:hover {
+    background-color: orange;
+    color: red;
+}
+
+
+/* from https://codepen.io/bhv/pen/vRmRZR */
+/* $md-chip-height: 32px; */
+/* $md-chip-color: #e0e0e0; */
+
+.md-chip {
+    display: inline-block;
+    background: #888;
+    padding: 0 12px;
+    border-radius: 32px;
+    font-size: 13px;
+}
+
+.md-chip-hover:hover {
+    background: #444;
+}
+
+.md-chip-clickable {
+    cursor: pointer;
+}
+
+.md-chip-selected {
+    background: #666;
+}
+
+.md-chip,
+.md-chip-icon {
+    height: 32px;
+    line-height: 32px;
+}
+
+.md-chip-icon {
+    display: block;
+    float: left;
+    background: #009587;
+    width: 32px;
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    margin: 0 8px 0 -12px;
+}
+
+.md-chip-remove {
+    display: inline-block;
+    background: #aaa;
+    border: 0;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0 -4px 0 4px;
+    cursor: pointer;
+    font: inherit;
+    line-height: 20px;
+}
+
+.md-chip-remove:after {
+    color: #e0e0e0;
+    content: 'x';
+}
+
+.md-chip-remove:hover {
+    background: #999;
+}
+
+.md-chip-remove:active {
+    background: #777;
+}
+
+.md-chips {
+    padding: 6px 0;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.md-chips .md-chip {
+    margin: 0 5px 3px 0;
+}
+
+.md-chip-raised {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+
+/* from https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ (https://codepen.io/shadeed/pen/jWBjVd)*/
+/* Requires position: relative on NON-SCROLLING WRAPPER of container */
+.shadow {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  width: 50px;
+  height: 100%;
+  background: red;
+  /* allow scrolling/clicking thru this div */
+  pointer-events: none;
+}
+
+.shadow--left {
+  left: 0;
+  /* background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent); */
+  background: -webkit-linear-gradient(90deg, #e8e8e8, transparent);
+  background: linear-gradient(90deg, #e8e8e8, transparent);
+  opacity: 0;
+}
+
+.shadow--right {
+  right: 0;
+  /* background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent);
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent); */
+  background: -webkit-linear-gradient(270deg, #e8e8e8, transparent);
+  background: linear-gradient(270deg, #e8e8e8, transparent);
+}

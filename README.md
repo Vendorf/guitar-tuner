@@ -1,5 +1,17 @@
 # TODO
 
+July 28 2025
+
+Dude you got to work faster like come on lock in
+
+This whole thing should be a 1 day project how has it been like a week
+
+Just get the whole bitch done today fuck getting the drawing and shit perfect just get the core features all working then get it styled properly then can work on all the rest yeah
+
+But today goal is to get all done!
+
+(ofc if text or whatever then that takes priority but when working on this - lock in seriously dude lol wtf are you doing working so slow)
+
 July 27 2025
 
 For now just use the shitty targetting system to just get the display and everything working, and then once the rest of the app is made we can try the sticky algo (and then maybe also rolling our own pitch detection)

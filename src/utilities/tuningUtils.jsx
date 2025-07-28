@@ -7,17 +7,17 @@ const initTunings = () => {
     })
 }
 
-const stringFullNameToId = (fullname) => {
-    // Grab octave off end
+// const stringFullNameToId = (fullname) => {
+//     // Grab octave off end
 
-    // Replace # with ♯
+//     // Replace # with ♯
 
-    // Find index in scale
+//     // Find index in scale
 
-    // Compute index in all octaves
+//     // Compute index in all octaves
 
-    return 0
-}
+//     return 0
+// }
 
 const generateNotes = () => {
     const notes = [];
