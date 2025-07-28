@@ -1,18 +1,13 @@
-import { useRef } from "react"
+import { memo, useRef } from "react"
 import { useAudio } from "../../context/AudioContext"
 
-const WaveformCanvas = () => {
+const WaveformCanvas = memo(() => {
 
     const { audioTimeData } = useAudio()
-
-    // console.count('waveform')
-    // console.log(audioTimeData.length, audioTimeData)
-
     const canvasRef = useRef(undefined)
 
     const canvas = canvasRef.current
     if (canvas) {
-        // console.count("wv")
         const context = canvas.getContext('2d')
 
         context.clearRect(0, 0, canvas.width, canvas.height)
@@ -22,7 +17,6 @@ const WaveformCanvas = () => {
         context.moveTo(0, canvas.height / 2)
         const bufferLength = audioTimeData.length / 10
         const deltaX = canvas.width / bufferLength
-        // console.log(deltaX)
         let x = 0
         for (let i = 0; i < bufferLength; i++) {
             const amplitude = audioTimeData[i] * 100 // TODO: figure out good scaling
@@ -43,7 +37,7 @@ const WaveformCanvas = () => {
             // left: '0'
         }}>
         </canvas>)
-}
+})
 
 
 export default WaveformCanvas

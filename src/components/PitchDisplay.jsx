@@ -3,6 +3,7 @@ import { useAudio } from "../context/AudioContext"
 import { useTuning } from "../context/TuningContext"
 import './PitchDisplay.css'
 import WaveformCanvas from "./WaveformCanvas/WaveformCanvas"
+import { interpolateHsl } from "../utilities/colorUtils"
 
 const PitchDisplay = () => {
 
@@ -16,44 +17,68 @@ const PitchDisplay = () => {
     //TODO maybe convert to canvas for performance idk
     // or D3 lmao
 
-    //TODO interpolate red --> green based on dist from center
+    // TODO
     // + organize properly code
-    // + get it intergrated with actual history
 
     // TEMP: cents diff from center + update
-    const timeLength = 100 //50
-    const centsSide = 3 // guitartuna shows +1 for 0.10 (10 cents); goes up to +3 on furthest edge (30 cents)
+    const [now, setNow] = useState(Date.now())
+    useEffect(() => {
+        let frame
+        const tick = () => {
+            setNow(Date.now())
+            frame = requestAnimationFrame(tick)
+        }
+        tick()
+        return () => cancelAnimationFrame(frame)
+    }, [])
 
-    const [boxes, setBoxes] = useState([])
+    const VIEW_HEIGHT = 75
+    const VIEW_WIDTH = 100
+    const timeWindow = 5000 //5000 //ms
 
-    const updateFunc = () => {
-        setBoxes(bs => {
-            return [...bs,
-            {
-                cents: (Math.random() - 0.5) * (centsSide + 1),
-                time: bs.length + 1
-            }]
-        })
+    const pixelsPerMs = VIEW_HEIGHT / timeWindow
+    const boxDuration = 50 // assuming each history entry lasts 100ms ig
+    const boxHeight = pixelsPerMs * boxDuration
+    const fadeDelay = 2000 // ms
+
+    // const timeLength = 100 //50
+    const centsSide = 3 // guitartuna shows +1 for 0.10 (10 cents); goes up to +30 on furthest edge (300 cents, 3 notes away)
+    // here not actually cents but 100s of cents (so this is 300 cents either side)
+
+    //COLOR INTERPOLATION
+    const highColor = { h: 0, s: 100, l: 50 }
+    const midColor = { h: 39, s: 100, l: 50 }
+    const lowColor = { h: 147, s: 100, l: 50 }
+    const midCents = 0.1 // when we are within 10 cents of the target become orange
+    const highCents = 1 // when fully highColor
+    const lowCents = 0 // when fully low color
+
+    const boxWidthPerCent = (VIEW_WIDTH / 2) / centsSide
+
+    const pitchMin = 40
+    const pitchMax = 1000
+    const logMin = Math.log10(pitchMin)
+    const logMax = Math.log10(pitchMax)
+
+    const mapPitchToY = (p) => {
+        const logP = Math.log10(p)
+        const norm = (logP - logMin) / (logMax - logMin)
+        return VIEW_HEIGHT - (norm * VIEW_HEIGHT)
     }
-
-    // const lastTime = boxes[boxes.length - 1]?.time ?? 0
-    // const drawBoxes = boxes.filter(box => lastTime - box.time <= timeLength)
-
 
     const drawBoxes = history
         .map(entry => {
             const cents = entry.exactNote - targetNote
-            return { cents, time: entry.time }
+            const ageMs = now - entry.time.getTime()
+
+            return { cents, ageMs }
         })
-        // .filter(box => Math.abs(box.cents) < centsSide) // filter out extreme outliers
-        .slice(-timeLength) // only show most recent ones
+        // .filter(box => Math.abs(box.cents) < centsSide) // filter out extreme outlierss
+        .filter(entry => entry.ageMs < timeWindow) // only show most recent ones
         .map((box, i) => ({
             ...box,
             time: i // normalize time to index so we can compute Y
         }))
-
-    const boxHeight = 89.0 / (timeLength + 1)
-    const boxWidthPerCent = 50.0 / centsSide
 
     const lastBox = drawBoxes[drawBoxes.length - 1]
     const lastTime = drawBoxes[drawBoxes.length - 1]?.time
@@ -61,9 +86,27 @@ const PitchDisplay = () => {
     const computeBoxProps = (box) => {
         const width = boxWidthPerCent * Math.abs(box.cents)
         const offsetX = box.cents < 0 ? width : 0
-        const y = 89 - boxHeight - (lastTime - box.time) * boxHeight
+        const y = VIEW_HEIGHT - boxHeight - (lastTime - box.time) * boxHeight
+        // const y = VIEW_HEIGHT - (box.ageMs * pixelsPerMs)
 
-        return { width, offsetX, y }
+        const alpha = Math.max(0, 1 - Math.max(0, box.ageMs - fadeDelay) / timeWindow) // fades to 0 over window
+
+        // Compute color
+        let color = undefined
+        if (Math.abs(box.cents) > midCents) {
+            // In upper range, interpolate mid and high color
+            const t = Math.min(1, Math.max(0, (Math.abs(box.cents) - midCents) / (highCents - midCents)))
+            color = interpolateHsl(midColor, highColor, t)
+        } else {
+            // In lower range, interpolate low and mid color
+            const t = Math.min(1, Math.max(0, (midCents - Math.abs(box.cents)) / (midCents - lowCents)))
+            color = interpolateHsl(lowColor, midColor, t)
+        }
+
+        const colorHsl = `hsl(${color.h}, ${color.s}%, ${color.l}%)`
+        const colorHslDark = `hsl(${color.h}, ${color.s}%, ${color.l - 20}%)`
+
+        return { width, offsetX, y, alpha, color, colorHsl, colorHslDark }
     }
 
     const lastBoxProps = lastBox ? computeBoxProps(lastBox) : undefined
@@ -86,39 +129,37 @@ const PitchDisplay = () => {
                 </div>
             </div>
             <div className="card">
-                <button onClick={updateFunc}>add</button>
                 <svg viewBox="0 0 100 100">
                     <g>
                         {drawBoxes.map(box => {
-                            // const width = boxWidthPerCent * Math.abs(box.cents)
-                            // const offsetX = box.cents < 0 ? width : 0
-                            // const y = 89 - boxHeight - (lastTime - box.time) * boxHeight
-                            const { width, offsetX, y } = computeBoxProps(box)
-
+                            const { width, offsetX, y, alpha, color, colorHsl, colorHslDark } = computeBoxProps(box)
                             const capWidth = 0.5
+
                             return (
                                 <g key={box.time}>
-                                    <rect x={50 - offsetX} y={y} width={width} height={boxHeight} fill='rgba(6, 163, 6, 0.5)'></rect>
-                                    {box.cents < 0 && <rect x={50 - offsetX} y={y} width={capWidth} height={boxHeight} fill="rgba(6, 163, 6, 0.5)"></rect>}
-                                    {box.cents >= 0 && <rect x={50 + width - capWidth} y={y} width={capWidth} height={boxHeight} fill="rgba(6, 163, 6, 0.5)"></rect>}
+                                    <rect shapeRendering='crispEdges' x={50 - offsetX} y={y} width={width} height={boxHeight} fill={colorHsl} fillOpacity={alpha}></rect>
+                                    {box.cents < 0 && <rect x={50 - offsetX} y={y} width={capWidth} height={boxHeight} fill={colorHslDark} fillOpacity={alpha}></rect>}
+                                    {box.cents >= 0 && <rect x={50 + width - capWidth} y={y} width={capWidth} height={boxHeight} fill={colorHslDark} fillOpacity={alpha}></rect>}
                                 </g>
                             )
                         })}
                     </g>
                     <g>
-                        <line x1='50' y1='90' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line>
-                        <line x1='0' y1='89' x2='100' y2='89' stroke='black' strokeWidth='0.6'></line>
+                        <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line>
+                        {/* <line x1='0' y1={VIEW_HEIGHT} x2={VIEW_WIDTH} y2={VIEW_HEIGHT} stroke='black' strokeWidth='0.6'></line> */}
                         {lastBox && lastBox.cents < 0 &&
                             <>
-                                <line x1={50 - lastBoxProps.offsetX} y1={89} x2={50} y2={89} stroke="rgb(6, 163, 6)" strokeWidth='0.6'></line>
-                                <circle cx={50 - lastBoxProps.offsetX} cy={89} r={1} fill="rgb(6, 163, 6)"></circle>
+                                <line x1={50 - lastBoxProps.offsetX} y1={VIEW_HEIGHT} x2={50} y2={VIEW_HEIGHT} stroke={lastBoxProps.colorHslDark} strokeWidth='0.6'></line>
+                                <circle cx={50 - lastBoxProps.offsetX} cy={VIEW_HEIGHT} r={1} fill={lastBoxProps.colorHslDark}></circle>
                             </>}
                         {lastBox && lastBox.cents >= 0 &&
                             <>
-                                <line x1={50} y1={89} x2={50 + lastBoxProps.width} y2={89} stroke="rgb(6, 163, 6)" strokeWidth='0.6'></line>
-                                <circle cx={50 + lastBoxProps.width} cy={89} r={1} fill="rgb(6, 163, 6)"></circle>
+                                <line x1={50} y1={VIEW_HEIGHT} x2={50 + lastBoxProps.width} y2={VIEW_HEIGHT} stroke={lastBoxProps.colorHslDark} strokeWidth='0.6'></line>
+                                <circle cx={50 + lastBoxProps.width} cy={VIEW_HEIGHT} r={1} fill={lastBoxProps.colorHslDark}></circle>
                             </>}
-                        <circle cx='50' cy='89' r='10' fill='#aaa' stroke='black'></circle>
+                        <circle cx='50' cy='90' r='8' fill='#aaa' stroke='black' strokeWidth={0.75}>
+
+                        </circle>
                     </g>
                 </svg>
             </div>
