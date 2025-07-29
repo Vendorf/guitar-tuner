@@ -29,3 +29,10 @@ svg {
     height: auto;
     /* background-color: red; */
 }
+
+.detail-toggle {
+    margin-left: auto;
+    color: #888;
+    cursor: pointer;
+    align-self: flex-end;
+}

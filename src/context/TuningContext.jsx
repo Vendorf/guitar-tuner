@@ -50,6 +50,9 @@ const TuningProvider = ({ children }) => {
     }
 
     // Runs every time, but after tree is rendered, to prevent changing state during render phase
+    // TODO: bc it's just an object.is check can just define a non-state constant and compare that way
+    // so const targetNote = analysis?.targetNote ?? null, and then do useEffect(..., [targetNote]) and that will scope to just when
+    // the target changes, then don't need the swappedTarget at all
     useEffect(() => {
         if(swappedTargetNotesRef.current) {
             swappedTargetNotesRef.current = false
