@@ -4,8 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { AudioProvider } from './context/AudioContext'
 import { TuningProvider } from './context/TuningContext'
-import PitchDisplay from './components/PitchDisplay'
-import TunerDisplay from './components/Tuner/TunerDisplay'
+import PitchDisplay from './components/PitchDisplay/PitchDisplay'
+import TunerDisplay from './components/TunerDisplay/TunerDisplay'
 
 function App() {
   const [count, setCount] = useState(0)

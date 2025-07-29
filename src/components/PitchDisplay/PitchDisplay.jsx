@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { useAudio } from "../context/AudioContext"
-import { useTuning } from "../context/TuningContext"
+import { useAudio } from "../../context/AudioContext"
+import { useTuning } from "../../context/TuningContext"
 import './PitchDisplay.css'
-import WaveformCanvas from "./WaveformCanvas/WaveformCanvas"
-import { interpolateHsl } from "../utilities/colorUtils"
-import TuningSelector from "./TuningSelector/TuningSelector"
+import WaveformCanvas from "../WaveformCanvas/WaveformCanvas"
+import { interpolateHsl } from "../../utilities/colorUtils"
+import TuningSelector from "../TuningSelector/TuningSelector"
 
 //TODO: move constants up here
 
