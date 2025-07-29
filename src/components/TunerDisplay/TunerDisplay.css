@@ -1,3 +1,10 @@
+.unhighlightable {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .tuner-display-container {
     display: flex;
     flex-direction: column;
@@ -27,14 +34,15 @@
     justify-content: center;
     align-items: center;
 
-    transition: all 0.2s ease-in-out; /* Transition all properties for smooth effect */
+    transition: all 0.2s ease-in-out;
+    /* Transition all properties for smooth effect */
 
 }
 
 .tuner-peg:hover {
     /* border-color: #535bf2;
     transform: scale(1.2); */
-    background-color: #cccfff;
+    /* background-color: #cccfff; */
 }
 
 .tuner-peg-activated {

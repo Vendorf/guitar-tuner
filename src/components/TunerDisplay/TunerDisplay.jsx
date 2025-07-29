@@ -6,7 +6,7 @@ import TuningSelector from '../TuningSelector/TuningSelector'
 
 const TunerDisplay = () => {
 
-    const { tuningMode, noteInfo: { targetNote: targetNote } } = useTuning()
+    const { tuningMode, noteInfo: { targetNote: targetNote }, notesTuned } = useTuning()
     const strings = TUNINGS[tuningMode].strings
 
     const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetNote)
@@ -14,18 +14,20 @@ const TunerDisplay = () => {
     return (
         <div className='tuner-display-container card'>
             <TuningSelector></TuningSelector>
-            <div className='tuner-peg-container'>
+            <div className='tuner-peg-container unhighlightable'>
                 {/* {strings.map((s, i) => {
                     i == targetIdx
                     ? <div className='tuner-peg tuner-peg-activated'>{s}</div>
                     : <div className='tuner-peg'>{s}</div>
                 })} */}
-                {strings.map((s, i) => (
-                    <div key={i} className={`tuner-peg ${i == targetIdx ? 'tuner-peg-activated' : ''}`}>{s}</div>
-                    // <div className={`tuner-peg`}>{s}</div>
-                ))}
+                {strings.map((s, i) => {
+                    const note = TUNINGS[tuningMode].strings_ids[i]
+                    const isTuned = notesTuned.includes(note)
+
+                    return (<div key={i} className={`tuner-peg ${i == targetIdx ? 'tuner-peg-activated' : ''} ${isTuned ? 'tuner-peg-tuned' : ''}`}>{s}</div>)
+                })}
             </div>
-            
+
         </div>
     )
 

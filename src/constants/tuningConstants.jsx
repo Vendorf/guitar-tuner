@@ -67,9 +67,11 @@ const TUNINGS = {
 }
 
 const CENTS_DIST_MAX = Infinity
+const CENTS_DIST_IN_TUNE = 0.05
+const COUNT_IN_TUNE = 50
 
 //TODO: group all above into some sort of global single store object so can edit the values and shit
 // and also store notes inside of it etc
 // but then really move into a context ig so we get proper state updates too.....
 
-export { TUNINGS, A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, CENTS_DIST_MAX }
+export { TUNINGS, A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, CENTS_DIST_MAX, CENTS_DIST_IN_TUNE, COUNT_IN_TUNE }
