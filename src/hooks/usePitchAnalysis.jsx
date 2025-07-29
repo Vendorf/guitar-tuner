@@ -1,14 +1,10 @@
 import { useMemo, useRef } from "react"
 import { getExactNoteFromFrequency, toNearestNote } from "../utilities/tuningUtils"
 import { CENTS_DIST_IN_TUNE, CENTS_DIST_MAX, COUNT_IN_TUNE } from "../constants/tuningConstants"
+// import { useAudioControls } from "../context/AudioContext"
 
-// const defaultNoteInfo = {
-//     note: -1,
-//     nearestNote: -1,
-//     targetNote: -1,
-//     centsDist: 0,
-//     atTargetCount: 0
-// }
+// TODO: deselect target after interval
+// maybe do this in the context instead? idk
 
 /**
  * Performs pitch analysis to get note info on the current note/when it's in tune/etc
@@ -16,6 +12,7 @@ import { CENTS_DIST_IN_TUNE, CENTS_DIST_MAX, COUNT_IN_TUNE } from "../constants/
  * @returns note, nearestNote, targetNote, centsDist
  */
 const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
+    // const { resetHistory } = useAudioControls()
 
     const atTargetCountRef = useRef(0) // count of updates that pitch is at target
     const lastTargetNoteRef = useRef(-1) // last target note that were at
@@ -48,6 +45,9 @@ const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
                 // Reset target count if a new target
                 atTargetCountRef.current = 0
                 lastTargetNoteRef.current = targetNote
+
+                // Reset the history on change
+                // resetHistory() // TODO: I maybe like this more in the tuning context as this is kinda mixing logic
             }
 
             // Update target note count if we are in tune for the necessary period

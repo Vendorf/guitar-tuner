@@ -1,6 +1,7 @@
 import { PitchDetector } from "pitchy"
 import { createContext, use, useEffect, useRef, useState } from "react"
 import { getExactNoteFromFrequency } from "../utilities/tuningUtils"
+import usePitchHistory from "../hooks/usePitchHistory"
 
 // TODO: this controls the ultimate precision in FFT
 // I think beyond compute time there's some other tradeoffs here? but smaller seems better
@@ -8,39 +9,48 @@ import { getExactNoteFromFrequency } from "../utilities/tuningUtils"
 // but wonder what the negative tradeoff is gonna be
 // see https://hackernoon.com/guitar-tuner-pitch-detection-for-dummies-ok8e35o9#:~:text=To%20determine%20which%20frequencies%20are%20in%20which%20bin%2C%20we%20can%20use%20the%20following%20formula%3A
 // for a bit of explanation, but should find a better one for more details
-const FFT_SIZE = 8192
 
+//CONSTANTS-----------------------------------------------------
+const FFT_SIZE = 8192
 const MIN_DECIBALS = -20
 const MIN_CLARITY = 0.9
 // const MIN_FREQ = 24.5 // G0
 const MIN_FREQ = 36.71 // D0
 
 const HISTORY_SIZE = 1000 //50
+//--------------------------------------------------------------
 
-const AudioContext = createContext(undefined)
+// const AudioContext = createContext(undefined)
+const AudioStateContext = createContext(undefined)
+const AudioControlContext = createContext(undefined)
 
 const AudioProvider = ({ children }) => {
     const audioContextRef = useRef(undefined)
     const audioDataRef = useRef(undefined) // [AnalyzerNode, PitchDetector, Float32Array (getFloatTimeDomainData)]
+    const animationFrameRef = useRef(undefined)
 
-    const [audioTimeData, setAudioTimeData] = useState(new Float32Array(0))
-
-    const [updates, setUpdates] = useState(0) // number of updates
+    const [audioTimeData, setAudioTimeData] = useState(new Float32Array(0)) // data from AnalyzerNode
+    const [started, setStarted] = useState(false) // whether audio is started
     const [pitch, setPitch] = useState(0)
     const [clarity, setClarity] = useState(0)
+    const [updates, setUpdates] = useState(0) // number of updates
     /**
      * Structure:
      * [
      *   {
      *      pitch: number,
      *      clarity: number,
-     *      time: Date()
+     *      exactNote: number,
+     *      time: Date
      *   }, 
      * ]
      */
     const [history, setHistory] = useState([])
-    const [started, setStarted] = useState(false)
-    const animationFrameRef = useRef(undefined)
+
+    const resetHistory = () => {
+        setHistory([])
+    }
+
 
     useEffect(() => {
         // Cleanup when component destroyed/etc
@@ -96,14 +106,22 @@ const AudioProvider = ({ children }) => {
             setPitch(detPitch)
             setClarity(detClarity)
             setHistory((oldHist) => {
-                const newHistory = [...oldHist, { pitch: detPitch, clarity: detClarity, exactNote:getExactNoteFromFrequency(detPitch), time: (new Date()) }]
+                const newHistory = [...oldHist, {
+                    pitch: detPitch,
+                    clarity: detClarity,
+                    exactNote: getExactNoteFromFrequency(detPitch),
+                    time: (new Date())
+                }]
                 if (newHistory.length > HISTORY_SIZE) {
                     newHistory.shift()
                 }
                 return newHistory
             })
 
-            setUpdates((oldUpd) => oldUpd + 1)
+            // Update history
+            // usePitchHistory({ pitch: detPitch, clarity: detClarity })
+
+            setUpdates((u) => u + 1)
         }
 
         // Always increment updates
@@ -120,16 +138,30 @@ const AudioProvider = ({ children }) => {
     }
 
     return (
-        <AudioContext value={{ pitch, clarity, started, history, updates, startAudio, stopAudio, killAudio, audioTimeData }}>
-            {children}
-        </AudioContext>
+        // <AudioContext value={{ pitch, clarity, started, history, updates, startAudio, stopAudio, killAudio, audioTimeData, resetHistory }}>
+        //     {children}
+        // </AudioContext>
+
+        <AudioStateContext value={{ pitch, clarity, history, updates, audioTimeData }}>
+            <AudioControlContext value={{ started, startAudio, stopAudio, killAudio, resetHistory }}>
+                {children}
+            </AudioControlContext>
+        </AudioStateContext>
     )
 }
 
 // Hook for ease/clarity
-const useAudio = () => {
-    return use(AudioContext)
+// const useAudio = () => {
+//     return use(AudioContext)
+// }
+
+const useAudioState = () => {
+    return use(AudioStateContext)
+}
+
+const useAudioControls = () => {
+    return use(AudioControlContext)
 }
 
 
-export { AudioProvider, AudioContext, useAudio }
+export { AudioProvider, AudioStateContext, AudioControlContext, useAudioState, useAudioControls }

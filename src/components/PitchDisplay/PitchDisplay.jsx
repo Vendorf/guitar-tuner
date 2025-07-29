@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useAudio } from "../../context/AudioContext"
+import { useAudioState } from "../../context/AudioContext"
 import { useTuning } from "../../context/TuningContext"
 import './PitchDisplay.css'
 import WaveformCanvas from "../WaveformCanvas/WaveformCanvas"
@@ -14,7 +14,8 @@ import TuningSelector from "../TuningSelector/TuningSelector"
 
 const PitchDisplay = () => {
 
-    const { pitch, clarity, started, startAudio, stopAudio, killAudio, history, updates } = useAudio()
+    // const { pitch, clarity, started, startAudio, stopAudio, killAudio, history, updates } = useAudio()
+    const { pitch, clarity, history, updates} = useAudioState()
     const { notes, tuningMode, setTuningMode, noteInfo: { note, nearestNote, targetNote, centsDist } } = useTuning()
 
     const nearestNoteName = notes[nearestNote]?.fullName ?? ""

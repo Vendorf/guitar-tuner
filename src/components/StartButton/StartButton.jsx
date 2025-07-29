@@ -1,9 +1,10 @@
 // Broken into its own file for easier memoization/to avoid rerenders with constant pitch change of larger component
 
-import { useAudio } from "../../context/AudioContext"
+import { useAudioControls } from "../../context/AudioContext"
 
 const StartButton = () => {
-    const { started, startAudio, stopAudio, killAudio } = useAudio()
+    // const { started, startAudio, stopAudio, killAudio } = useAudio()
+    const { started, startAudio } = useAudioControls()
 
     return (
         // <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button>

@@ -1,5 +1,5 @@
-import { createContext, use, useEffect, useState } from "react";
-import { useAudio } from "./AudioContext";
+import { createContext, use, useEffect, useRef, useState } from "react";
+import { useAudioControls, useAudioState } from "./AudioContext";
 import { generateNotes, recomputeFrequencies, getNearestNoteFromFrequency, getExactNoteFromFrequency, toNearestNote } from "../utilities/tuningUtils";
 import { CENTS_DIST_IN_TUNE, CENTS_DIST_MAX, COUNT_IN_TUNE, TUNINGS } from "../constants/tuningConstants";
 import usePitchAnalysis from "../hooks/usePitchAnalysis";
@@ -12,7 +12,12 @@ const TuningContext = createContext(undefined)
  * @returns 
  */
 const TuningProvider = ({ children }) => {
-    const { pitch } = useAudio()
+    // const { pitch } = useAudio()
+    const { pitch } = useAudioState()
+    const { resetHistory } = useAudioControls()
+
+    const lastTargetNoteRef = useRef(-1)
+    const swappedTargetNotesRef = useRef(false)
 
     const [notes, setNotes] = useState([])
     const [tuningMode, setTuningMode] = useState("standard")
@@ -37,6 +42,21 @@ const TuningProvider = ({ children }) => {
     }
 
     const noteInfo = usePitchAnalysis({ pitch, currTuning: TUNINGS[tuningMode], onNoteTuned })
+
+    if(noteInfo.targetNote !== lastTargetNoteRef.current) {
+        // Target note switched, so reset our history'
+        lastTargetNoteRef.current = noteInfo.targetNote
+        swappedTargetNotesRef.current = true
+    }
+
+    // Runs every time, but after tree is rendered, to prevent changing state during render phase
+    useEffect(() => {
+        if(swappedTargetNotesRef.current) {
+            swappedTargetNotesRef.current = false
+            resetHistory()
+            console.log("reset hist")
+        }
+    })
 
     return (
         <TuningContext value={{ notes, tuningMode, setTuningMode, notesTuned, noteInfo }}>

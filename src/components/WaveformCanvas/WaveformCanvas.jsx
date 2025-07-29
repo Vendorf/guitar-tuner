@@ -1,9 +1,10 @@
 import { memo, useRef } from "react"
-import { useAudio } from "../../context/AudioContext"
+import { useAudioState } from "../../context/AudioContext"
 
 const WaveformCanvas = memo(() => {
 
-    const { audioTimeData } = useAudio()
+    // const { audioTimeData } = useAudio()
+    const { audioTimeData } = useAudioState()
     const canvasRef = useRef(undefined)
 
     const canvas = canvasRef.current
