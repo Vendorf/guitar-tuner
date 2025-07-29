@@ -1,6 +1,32 @@
+.tuning-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 8px 0;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .tuning-container-wrapper {
     /* for shadows */
     position: relative;
+    /* min-width will overwrite flexbox causing this to be auto and expand as much as possible */
+    /* with column not actually necessary but leaving this here */
+    min-width: 0;
+    /* max-width will ensure that stays constrained and won't overflow */
+    max-width: 100%;
+    /* min-height: 0; */
+}
+
+.tuning-label {
+    color: #888;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 5px;
+    padding-bottom: 2px;
 }
 
 .tuning-container {
@@ -106,8 +132,7 @@
 }
 
 .md-chips {
-    padding: 6px 0;
-
+    /* padding: 0 0 6px 0; */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -126,29 +151,29 @@
 /* from https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ (https://codepen.io/shadeed/pen/jWBjVd)*/
 /* Requires position: relative on NON-SCROLLING WRAPPER of container */
 .shadow {
-  position: absolute;
-  top: 0;
-  z-index: 100;
-  width: 50px;
-  height: 100%;
-  background: red;
-  /* allow scrolling/clicking thru this div */
-  pointer-events: none;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    width: 50px;
+    height: 100%;
+    background: red;
+    /* allow scrolling/clicking thru this div */
+    pointer-events: none;
 }
 
 .shadow--left {
-  left: 0;
-  /* background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent);
+    left: 0;
+    /* background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent);
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent); */
-  background: -webkit-linear-gradient(90deg, #e8e8e8, transparent);
-  background: linear-gradient(90deg, #e8e8e8, transparent);
-  opacity: 0;
+    background: -webkit-linear-gradient(90deg, #e8e8e8, transparent);
+    background: linear-gradient(90deg, #e8e8e8, transparent);
+    opacity: 0;
 }
 
 .shadow--right {
-  right: 0;
-  /* background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent);
+    right: 0;
+    /* background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent);
   background: linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent); */
-  background: -webkit-linear-gradient(270deg, #e8e8e8, transparent);
-  background: linear-gradient(270deg, #e8e8e8, transparent);
+    background: -webkit-linear-gradient(270deg, #e8e8e8, transparent);
+    background: linear-gradient(270deg, #e8e8e8, transparent);
 }

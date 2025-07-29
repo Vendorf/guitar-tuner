@@ -110,9 +110,6 @@ const PitchDisplay = () => {
         <>
             <div className="card">
                 <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button>
-
-                <TuningSelector></TuningSelector>
-
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Pitch:</div> <div className="pitch-value">{Math.round(pitch * 100) / 100}</div>
                 </div>

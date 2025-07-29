@@ -29,26 +29,30 @@ const TuningSelector = () => {
     const { tuningMode, setTuningMode } = useTuning()
 
     return (
-        <div className="tuning-container-wrapper" ref={wrapperRef}>
-            <div className="shadow shadow--left" style={atStart ? { opacity: 0 } : { opacity: 1 }}></div>
-            <div className="shadow shadow--right" style={atEnd ? { opacity: 0 } : { opacity: 1 }}></div>
-            <div className="tuning-container md-chips" ref={containerRef}
-                {...scrollProps}
-            >
-                {Object.entries(TUNINGS).map(tuning => {
-                    const [key, { name }] = tuning
-                    const selected = (key === tuningMode)
+        <div className="tuning-main">
+            <div className="tuning-label">Tuning</div>
+            <div className="tuning-container-wrapper" ref={wrapperRef}>
+                <div className="shadow shadow--left" style={atStart ? { opacity: 0 } : { opacity: 1 }}></div>
+                <div className="shadow shadow--right" style={atEnd ? { opacity: 0 } : { opacity: 1 }}></div>
 
-                    const render = selected
-                        ? <div key={key} className={`md-chip md-chip-clickable md-chip-hover md-chip-selected`}>{name}</div>
-                        : <div key={key} className={`md-chip md-chip-clickable md-chip-hover`} onClick={() => setTuningMode(key)}>{name}</div>
+                <div className="tuning-container md-chips" ref={containerRef}
+                    {...scrollProps}
+                >
+                    {Object.entries(TUNINGS).map(tuning => {
+                        const [key, { name }] = tuning
+                        const selected = (key === tuningMode)
 
-                    // ? <div key={key} className={`tuning-chip tuning-chip-selected`}>{name}</div>
-                    // ? <div key={key} className={`tuning-chip tuning-chip-selected`}>{name}<div className="tuning-chip-icon">×</div></div>
-                    // : <div key={key} className={`tuning-chip`}>{name}</div>
+                        const render = selected
+                            ? <div key={key} className={`md-chip md-chip-clickable md-chip-hover md-chip-selected`}>{name}</div>
+                            : <div key={key} className={`md-chip md-chip-clickable md-chip-hover`} onClick={() => setTuningMode(key)}>{name}</div>
 
-                    return (render)
-                })}
+                        // ? <div key={key} className={`tuning-chip tuning-chip-selected`}>{name}</div>
+                        // ? <div key={key} className={`tuning-chip tuning-chip-selected`}>{name}<div className="tuning-chip-icon">×</div></div>
+                        // : <div key={key} className={`tuning-chip`}>{name}</div>
+
+                        return (render)
+                    })}
+                </div>
             </div>
         </div>
     )

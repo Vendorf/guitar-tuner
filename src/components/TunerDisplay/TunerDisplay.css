@@ -1,4 +1,9 @@
-.tuner-wrapper {
+.tuner-display-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.tuner-peg-container {
     display: flex;
     justify-content: space-evenly;
 }
