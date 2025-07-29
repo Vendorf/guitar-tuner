@@ -15,7 +15,7 @@ import TuningSelector from "../TuningSelector/TuningSelector"
 const PitchDisplay = () => {
 
     const { pitch, clarity, started, startAudio, stopAudio, killAudio, history, updates } = useAudio()
-    const { notes, tuningMode, setTuningMode, noteInfo: { nearestNote, targetNote, note, centsDist } } = useTuning()
+    const { notes, tuningMode, setTuningMode, noteInfo: { note, nearestNote, targetNote, centsDist } } = useTuning()
 
     const nearestNoteName = notes[nearestNote]?.fullName ?? ""
     const targetNoteName = notes[targetNote]?.fullName ?? ""
@@ -109,21 +109,6 @@ const PitchDisplay = () => {
     return (
         <>
             <div className="card">
-                <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Pitch:</div> <div className="pitch-value">{Math.round(pitch * 100) / 100}</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Clarity:</div> <div className="pitch-value">{Math.round(clarity * 100)}%</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Note id:</div> <div className="pitch-value">{nearestNote}</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Note:</div> <div className="pitch-value">{nearestNoteName}</div>
-                </div>
-            </div>
-            <div className="card">
                 <svg viewBox="0 0 100 100">
                     <g>
                         {drawBoxes.map(box => {
@@ -158,6 +143,22 @@ const PitchDisplay = () => {
                     </g>
                 </svg>
             </div>
+            <div className="card">
+                {/* <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button> */}
+                <div className="pitch-wrapper">
+                    <div className="pitch-label">Pitch:</div> <div className="pitch-value">{Math.round(pitch * 100) / 100}</div>
+                </div>
+                <div className="pitch-wrapper">
+                    <div className="pitch-label">Clarity:</div> <div className="pitch-value">{Math.round(clarity * 100)}%</div>
+                </div>
+                <div className="pitch-wrapper">
+                    <div className="pitch-label">Note id:</div> <div className="pitch-value">{nearestNote}</div>
+                </div>
+                <div className="pitch-wrapper">
+                    <div className="pitch-label">Note:</div> <div className="pitch-value">{nearestNoteName}</div>
+                </div>
+            </div>
+
             <div className="card">
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Target id:</div> <div className="pitch-value">{targetNote}</div>

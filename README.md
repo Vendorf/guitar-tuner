@@ -1,5 +1,12 @@
 # TODO
 
+July 29 2025
+
+Okay so tuning sort of works prolly wanna adjust it later
+
+There's some bug with too many rerenders/too much depth of rerenders w the requestAnimationFrame
+In general this is all written like shit soooo
+
 July 28 2025
 
 Dude you got to work faster like come on lock in

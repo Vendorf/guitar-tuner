@@ -6,6 +6,7 @@ import { AudioProvider } from './context/AudioContext'
 import { TuningProvider } from './context/TuningContext'
 import PitchDisplay from './components/PitchDisplay/PitchDisplay'
 import TunerDisplay from './components/TunerDisplay/TunerDisplay'
+import StartButton from './components/StartButton/StartButton'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -42,6 +43,7 @@ function App() {
     <>
       <AudioProvider>
         <TuningProvider>
+          <StartButton></StartButton>
           <TunerDisplay></TunerDisplay>
           <PitchDisplay></PitchDisplay>
         </TuningProvider>
