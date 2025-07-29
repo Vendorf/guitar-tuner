@@ -22,6 +22,9 @@ const BOX_DURATION = 50 // assuming each history entry lasts 50ms; this sort of 
 const FADE_DELAY = 2000 // ms
 const CENTS_PER_SIDE = 3 // NOTE: this is in HUNDREDS of cents (IE, each cent is 0.01, so 3 --> 300 cents, 3 notes) either side
 //                          guitartuna shows +1 for 0.10 (10 cents); goes up to +30 on furthest edge (300 cents, 3 notes away)
+const MAX_CENTS = CENTS_PER_SIDE * 100 // e.g., 300
+const TICK_STEP = 100 // cents between markers
+
 
 //COLOR INTERPOLATION
 const HIGH_COLOR = { h: 0, s: 100, l: 50 }
@@ -38,7 +41,12 @@ const LOW_CENTS = 0 // when fully low color
  */
 const PitchDisplay = () => {
     const { history } = useAudioState()
-    const { noteInfo: { targetNote } } = useTuning()
+    const { notes, noteInfo: { targetNote, centsDist } } = useTuning()
+    const targetNoteName = notes[targetNote]?.fullName ?? ""
+
+    //TODO: replace with when in tune / when enough iterations or smthng
+    // or like 2 glows: one when near, then turns green when in tune fully
+    const inTune = targetNoteName ? Math.abs(centsDist) <= 0.05 : false // 5 cents
 
     const [showDetails, setShowDetails] = useState(false)
     const toggleDetails = () => {
@@ -107,12 +115,70 @@ const PitchDisplay = () => {
     }
 
     const lastBoxProps = lastBox ? computeBoxProps(lastBox) : undefined
+
+    const ticks = []
+    for (let c = -MAX_CENTS; c <= MAX_CENTS; c += TICK_STEP) {
+        ticks.push(c)
+    }
     return (
         <>
             <div className="card">
                 <svg viewBox="0 0 100 100">
+                    {/* TODO: use the vars for stopColor and get offset right*/}
+                    <defs>
+                        <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="hsl(147, 100%, 50%)" /> {/* LOW_COLOR */}
+                            <stop offset="50%" stopColor="hsl(39, 100%, 50%)" />  {/* MID_COLOR */}
+                            <stop offset="100%" stopColor="hsl(0, 100%, 50%)" />   {/* HIGH_COLOR */}
+                        </linearGradient>
+                    </defs>
                     <g>
-                        <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line>
+                        <rect
+                            x="50"
+                            y="0"
+                            width="50"
+                            height={VIEW_HEIGHT}
+                            fill="url(#bg-gradient)"
+                            opacity="0.1"
+                        />
+                        <rect
+                            x="0"
+                            y="0"
+                            width="50"
+                            height={VIEW_HEIGHT}
+                            fill="url(#bg-gradient)"
+                            opacity="0.1"
+                            transform={`translate(50, 0) scale(-1 1)`}
+                        />
+                    </g>
+
+                    <g>
+                        {/* In tune range TODO: maybe make it shade over the whole range with the colors */}
+                        <rect
+                            x={50 - boxWidthPerCent * 0.1}
+                            y="0"
+                            width={boxWidthPerCent * 0.2}
+                            height={VIEW_HEIGHT}
+                            fill="rgba(0,255,0,0.2)"
+                        />
+                        <line x1="0" y1={VIEW_HEIGHT} x2="100" y2={VIEW_HEIGHT} stroke="#ccc" strokeDasharray="2,2" strokeWidth="0.5" />
+                        <text x="52" y={VIEW_HEIGHT - 1} fontSize="3" fill="#999">Target</text>
+                        {/* {[-2, -1, 1, 2].map(n => (
+                            <line
+                                key={n}
+                                x1={50 + n * boxWidthPerCent * 1}
+                                x2={50 + n * boxWidthPerCent * 1}
+                                y1="0"
+                                y2={VIEW_HEIGHT}
+                                stroke="#ccc"
+                                strokeWidth="0.5"
+                            />
+                        ))} */}
+                        {/* <text x="1" y="10" fontSize="3" fill="#ccc">-300c</text>
+                        <text x="96" y="10" fontSize="3" fill="#ccc">+300c</text> */}
+
+
+                        {/* <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line> */}
                         {drawBoxes.map(box => {
                             const { width, offsetX, y, alpha, color, colorHsl, colorHslDark } = computeBoxProps(box)
                             const capWidth = 0.5
@@ -139,9 +205,126 @@ const PitchDisplay = () => {
                                 <line x1={50} y1={VIEW_HEIGHT} x2={50 + lastBoxProps.width} y2={VIEW_HEIGHT} stroke={lastBoxProps.colorHslDark} strokeWidth='1'></line>
                                 <circle cx={50 + lastBoxProps.width} cy={VIEW_HEIGHT} r={1} fill={lastBoxProps.colorHslDark}></circle>
                             </>}
-                        <circle cx='50' cy='90' r='8' fill='#aaa' stroke='black' strokeWidth={0.75}>
+                        {lastBox && (
+                            <g>
+                                {/* Background bubble */}
+                                <rect
+                                    x={50 + (lastBox.cents >= 0 ? lastBoxProps.width + 1.5 : -lastBoxProps.offsetX - 16)}
+                                    y={VIEW_HEIGHT + 6}
+                                    rx="1.5"
+                                    ry="1.5"
+                                    width="13"
+                                    height="5"
+                                    fill="#fff"
+                                    fillOpacity="0.5"
+                                    stroke={lastBoxProps.colorHslDark}
+                                    strokeWidth="0.3"
+                                />
 
-                        </circle>
+                                {/* Cent deviation text */}
+                                <text
+                                    x={50 + (lastBox.cents >= 0 ? lastBoxProps.width + 8 : -lastBoxProps.offsetX - 8.5)}
+                                    y={VIEW_HEIGHT - 2.5}
+                                    fontSize="3"
+                                    fill={lastBoxProps.colorHslDark}
+                                    textAnchor="middle"
+                                    fontWeight="bold"
+                                    stroke="#fff"
+                                    strokeWidth="0.2"
+                                    paintOrder="stroke"
+                                >
+                                    {Math.round(lastBox.cents * 100)}c
+                                </text>
+                            </g>
+                        )}
+                        {/* {lastBox && (
+                            <text
+                                x={50 + (lastBox.cents >= 0 ? lastBoxProps.width + 1.5 : -lastBoxProps.offsetX - 4.5)}
+                                y={VIEW_HEIGHT - 2}
+                                fontSize="3"
+                                fill={lastBoxProps.colorHslDark}
+                                textAnchor={lastBox.cents >= 0 ? 'start' : 'end'}
+                                // style={{
+                                //     filter: "drop-shadow(0px 0px 1px black)"
+                                // }}
+                            >
+                                {Math.round(lastBox.cents * 100)}c
+                            </text>
+                        )} */}
+
+                        <g>
+                            {ticks.map((cents) => {
+                                const x = 50 + (cents / 100) * boxWidthPerCent
+                                return (
+                                    <g key={cents}>
+                                        <line
+                                            x1={x}
+                                            y1="0"
+                                            x2={x}
+                                            y2={VIEW_HEIGHT}
+                                            stroke="#ccc"
+                                            strokeWidth="0.4"
+                                        />
+                                        <text
+                                            x={x}
+                                            y={VIEW_HEIGHT + 3}
+                                            fontSize="2.5"
+                                            textAnchor="middle"
+                                            fill={cents === 0 ? "black" : "#999"}
+                                            fontWeight={cents === 0 ? "bold" : "normal"}
+                                        >
+                                            {cents > 0 ? `+${cents}c` : `${cents}c`}
+                                        </text>
+                                    </g>
+                                )
+                            })}
+                        </g>
+
+
+                        {/* <circle cx='50' cy='90' r='8' fill='#aaa' stroke='black' strokeWidth={0.75}></circle> */}
+
+                        <g>
+                            <text
+                                x="50"
+                                y="89"
+                                fontSize="6"
+                                textAnchor="middle"
+                                fill={inTune ? "limegreen" : "#222"}
+                                fontWeight="bold"
+                                stroke="#fff"
+                                strokeWidth="0.5"
+                                paintOrder="stroke"
+                            >
+                                {targetNoteName}
+                            </text>
+                            {lastBox && Math.abs(lastBox.cents) > 0.05 && (
+                                <text
+                                    x="50"
+                                    y="94"
+                                    fontSize="3"
+                                    textAnchor="middle"
+                                    fill="#777"
+                                    fontStyle="italic"
+                                >
+                                    {lastBox.cents > 0 ? "↓ Tune Down" : "↑ Tune Up"}
+                                </text>
+                            )}
+
+
+                            {/* Direction label */}
+                            {/* {lastBox && Math.abs(lastBox.cents) > 0.05 && (
+                                <text
+                                    x={lastBox.cents > 0 ? 70 : 30}
+                                    y="82"
+                                    fontSize="3"
+                                    textAnchor="middle"
+                                    fill="#555"
+                                    fontStyle="italic"
+                                >
+                                    {lastBox.cents > 0 ? "↓ Tune Down" : "↑ Tune Up"}
+                                </text>
+                            )} */}
+                        </g>
                     </g>
                 </svg>
                 <div className="detail-toggle" onClick={toggleDetails}>{showDetails ? "Hide" : "Show"} Details</div>
@@ -152,3 +335,105 @@ const PitchDisplay = () => {
 }
 
 export default PitchDisplay
+
+
+
+
+// <g>
+//     {/* Capsule background */}
+//     <rect
+//         x="35"
+//         y="85"
+//         rx="6"
+//         ry="6"
+//         width="30"
+//         height="10"
+//         fill="#eee"
+//         stroke={inTune ? "limegreen" : "black"}
+//         strokeWidth={inTune ? 1.5 : 0.75}
+//     />
+//     {/* Note name */}
+//     <text
+//         x="50"
+//         y="92"
+//         fontSize="4"
+//         textAnchor="middle"
+//         fill="#222"
+//         fontWeight="bold"
+//     >
+//         {targetNoteName}
+//     </text>
+
+//     {/* Directional tip */}
+//     {lastBox && Math.abs(lastBox.cents) > 0.05 && (
+//         <text
+//             x={lastBox.cents > 0 ? 70 : 30}
+//             y="82"
+//             fontSize="3"
+//             textAnchor="middle"
+//             fill="#555"
+//             fontStyle="italic"
+//         >
+//             {lastBox.cents > 0 ? "↓ Tune Down" : "↑ Tune Up"}
+//         </text>
+//     )}
+// </g>
+
+
+// {/* <circle
+//     cx="50"
+//     cy="90"
+//     r="8"
+//     fill="#eee"
+//     stroke={inTune ? "limegreen" : "black"}
+//     strokeWidth={inTune ? 2 : 0.75}
+//     style={{
+//         filter: inTune ? "drop-shadow(0 0 2px limegreen)" : "none",
+//         transition: "stroke 0.2s, filter 0.2s"
+//     }}
+// /> */}
+// {/* Animated */}
+// {/* {inTune && (
+//     <circle
+//         cx="50"
+//         cy="90"
+//         r="11"
+//         fill="none"
+//         stroke="limegreen"
+//         strokeWidth="1.5"
+//     >
+//         <animate attributeName="r" values="11;13;11" dur="0.6s" repeatCount="indefinite" />
+//         <animate attributeName="stroke-opacity" values="1;0;1" dur="0.6s" repeatCount="indefinite" />
+//     </circle>
+// )} */}
+
+// {/* Meh */}
+// {/* <circle
+//     cx="50"
+//     cy="90"
+//     r="8"
+//     fill="#eee"
+//     stroke="black"
+//     strokeWidth="0.75"
+// /> */}
+// {/* {inTune && (
+//     <circle
+//         cx="50"
+//         cy="90"
+//         r="11"
+//         fill="none"
+//         stroke="rgba(0, 255, 0, 0.6)"
+//         strokeWidth="1.5"
+//     />
+// )} */}
+
+// {/* <text
+//     x="50"
+//     y="92.5"
+//     fontSize="4"
+//     textAnchor="middle"
+//     fill="#222"
+//     fontWeight="bold"
+// >
+//     {targetNoteName}
+// </text> */}
