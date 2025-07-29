@@ -10,12 +10,20 @@ import './TuningSelector.css'
 
 
 // from https://codesandbox.io/s/dawn-sunset-uhbtu?fontsize=14
+/**
+ * Hook to manage a scrolling container and get the `scrollLeft` property
+ * @returns {List} [scrollLeft, props] - the targets `scrollLeft` property and params to attach to the scrolling container that manage updating the scroll data
+ */
 function useScrollLeft() {
     const [scrollLeft, setScrollLeft] = useState(0)
     const onScroll = (e) => setScrollLeft(e.target.scrollLeft)
     return [scrollLeft, { onScroll }]
 }
 
+/**
+ * Display for selecting a tuning (ex: Standard, Drop-D, Open-C, etc)
+ * @returns 
+ */
 const TuningSelector = () => {
 
     const [scrollLeft, scrollProps] = useScrollLeft()
@@ -45,11 +53,6 @@ const TuningSelector = () => {
                         const render = selected
                             ? <div key={key} className={`md-chip md-chip-clickable md-chip-hover md-chip-selected`}>{name}</div>
                             : <div key={key} className={`md-chip md-chip-clickable md-chip-hover`} onClick={() => setTuningMode(key)}>{name}</div>
-
-                        // ? <div key={key} className={`tuning-chip tuning-chip-selected`}>{name}</div>
-                        // ? <div key={key} className={`tuning-chip tuning-chip-selected`}>{name}<div className="tuning-chip-icon">×</div></div>
-                        // : <div key={key} className={`tuning-chip`}>{name}</div>
-
                         return (render)
                     })}
                 </div>

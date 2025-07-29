@@ -8,8 +8,13 @@ import { CENTS_DIST_IN_TUNE, CENTS_DIST_MAX, COUNT_IN_TUNE } from "../constants/
 
 /**
  * Performs pitch analysis to get note info on the current note/when it's in tune/etc
- * @param {*} param0 pitch, currTuning (TUNINGS[tuningMode]), onNoteTuned
- * @returns note, nearestNote, targetNote, centsDist
+ * 
+ * Memoizes analysis so unchanged pitch/tuning does not redo analysis
+ * @param {Object} param
+ * @param {number} param.pitch current pitch from PitchDetector
+ * @param {Object} param.currTuning selected tuning from TuningContext
+ * @param {(number) => void} param.onNoteTuned callback for when a note is considered in tune with the target note
+ * @returns {Object} note, nearestNote, targetNote, centsDist
  */
 const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
     // const { resetHistory } = useAudioControls()

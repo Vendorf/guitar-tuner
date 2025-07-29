@@ -1,14 +1,14 @@
 import { createContext, use, useEffect, useRef, useState } from "react";
 import { useAudioControls, useAudioState } from "./AudioContext";
-import { generateNotes, recomputeFrequencies, getNearestNoteFromFrequency, getExactNoteFromFrequency, toNearestNote } from "../utilities/tuningUtils";
-import { CENTS_DIST_IN_TUNE, CENTS_DIST_MAX, COUNT_IN_TUNE, TUNINGS } from "../constants/tuningConstants";
+import { generateNotes, recomputeFrequencies } from "../utilities/tuningUtils";
+import { TUNINGS } from "../constants/tuningConstants";
 import usePitchAnalysis from "../hooks/usePitchAnalysis";
 
 const TuningContext = createContext(undefined)
 
 /**
- * Provides all tuning state
- * @param {*} param0 
+ * Provider for all tuning state via TuningContext
+ * @param {Object} param0 children to render inside provider with access to this context
  * @returns 
  */
 const TuningProvider = ({ children }) => {
@@ -25,7 +25,7 @@ const TuningProvider = ({ children }) => {
 
     useEffect(() => {
         const n = generateNotes()
-        recomputeFrequencies(n)
+        // recomputeFrequencies(n)
         setNotes(n)
     }, [])
 
@@ -57,7 +57,7 @@ const TuningProvider = ({ children }) => {
         if(swappedTargetNotesRef.current) {
             swappedTargetNotesRef.current = false
             resetHistory()
-            console.log("reset hist")
+            // console.log("reset hist")
         }
     })
 

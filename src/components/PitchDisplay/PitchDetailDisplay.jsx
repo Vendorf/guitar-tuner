@@ -1,10 +1,17 @@
 import { useAudioState } from "../../context/AudioContext"
 import { useTuning } from "../../context/TuningContext"
-import './PitchDisplay.css'
 import WaveformCanvas from "../WaveformCanvas/WaveformCanvas"
+import './PitchDisplay.css'
 
 //TODO: make this show up on right somehow
 
+/**
+ * Shows optional details for pitch (exact note, waveform, etc)
+ * 
+ * @param {Object} params 
+ * @param {boolean} params.display whether details are shown/hidden
+ * @returns 
+ */
 const PitchDetailDisplay = ({ display }) => {
 
     const { pitch, clarity, history, updates } = useAudioState()

@@ -1,9 +1,14 @@
 import { memo, useRef } from "react"
 import { useAudioState } from "../../context/AudioContext"
 
+/**
+ * Canvas that draws the waveform of the last FFT audio sample
+ * 
+ * Memoized, so only rerenders when AudioStateContext data changes
+ * 
+ * @returns
+ */
 const WaveformCanvas = memo(() => {
-
-    // const { audioTimeData } = useAudio()
     const { audioTimeData } = useAudioState()
     const canvasRef = useRef(undefined)
 

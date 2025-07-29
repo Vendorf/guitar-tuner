@@ -2,6 +2,14 @@
 
 import { useAudioControls } from "../../context/AudioContext"
 
+/**
+ * Button to start audio
+ * 
+ * Necessary given most browsers don't allow audio capture until some user input
+ * 
+ * Hides itself once audio begins
+ * @returns 
+ */
 const StartButton = () => {
     // const { started, startAudio, stopAudio, killAudio } = useAudio()
     const { started, startAudio } = useAudioControls()

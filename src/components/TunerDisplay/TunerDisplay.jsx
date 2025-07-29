@@ -4,6 +4,12 @@ import { TUNINGS } from '../../constants/tuningConstants'
 import './TunerDisplay.css'
 import TuningSelector from '../TuningSelector/TuningSelector'
 
+/**
+ * Display for tuning pegs based on the current tuning
+ * 
+ * Highlights current target note from the tuning and shows notes that have been tuned
+ * @returns 
+ */
 const TunerDisplay = () => {
     const { tuningMode, noteInfo: { targetNote }, notesTuned } = useTuning()
     const strings = TUNINGS[tuningMode].strings

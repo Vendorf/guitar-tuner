@@ -24,6 +24,15 @@ const HISTORY_SIZE = 1000 //50
 const AudioStateContext = createContext(undefined)
 const AudioControlContext = createContext(undefined)
 
+/**
+ * Provider for global audio state and control functions via AudioStateContext and AudioControlContext
+ * 
+ * Rapidly-changing state is isolated inside the AudioStateContext
+ * 
+ * Can subscribe to just the AudioControlContext to manage the audio but not consume it's rapid state changes
+ * @param {Object} param0 children to render inside the audio provider with access to its contexts
+ * @returns provider with AudioStateContext and AudioControlContext
+ */
 const AudioProvider = ({ children }) => {
     const audioContextRef = useRef(undefined)
     const audioDataRef = useRef(undefined) // [AnalyzerNode, PitchDetector, Float32Array (getFloatTimeDomainData)]
@@ -34,29 +43,30 @@ const AudioProvider = ({ children }) => {
     const [pitch, setPitch] = useState(0)
     const [clarity, setClarity] = useState(0)
     const [updates, setUpdates] = useState(0) // number of updates
+    
     /**
-     * Structure:
-     * [
-     *   {
-     *      pitch: number,
-     *      clarity: number,
-     *      exactNote: number,
-     *      time: Date
-     *   }, 
-     * ]
+     * @typedef {Object} HistoryEntry
+     * @property {number} pitch pitch detected by PitchDetector
+     * @property {number} clarity clarity (confidence) in pitch detected by PitchDetector
+     * @property {number} exactNote midi note with cents (ex: 69.03) for 3 cents above A4
+     * @property {Date} time time of history entry
      */
-    const [history, setHistory] = useState([])
-
+    const [history, setHistory] = useState(/** @type {HistoryEntry[]} */([]))
     const resetHistory = () => {
         setHistory([])
     }
-
 
     useEffect(() => {
         // Cleanup when component destroyed/etc
         return killAudio
     }, [])
 
+    /**
+     * Initializes audio context from `window` and creates AnalyzerNode and PitchDetector for audio and pitch detection
+     * 
+     * Sets `audioDataRef` to contain [AnalyzerNode, PitchDetector, audioData[]]
+     * @returns void
+     */
     const initAudio = () => {
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
         const analyserNode = audioContextRef.current.createAnalyser()
@@ -73,11 +83,19 @@ const AudioProvider = ({ children }) => {
         })
     }
 
+    /**
+     * Stops audio and closes the window AudioContext
+     */
     const killAudio = () => {
         stopAudio()
         audioContextRef.current?.close()
     }
 
+    /**
+     * Initializes audio if unintializes or resumes AudioContext if stopped
+     * 
+     * This is the method that should be called to begin processing audio
+     */
     const startAudio = () => {
         if (!audioContextRef.current) {
             initAudio().then(() => updatePitch(...audioDataRef.current, audioContextRef.current.sampleRate))
@@ -89,12 +107,27 @@ const AudioProvider = ({ children }) => {
         setStarted(true)
     }
 
+    /**
+     * Stops audio updates and suspends the AudioContext
+     */
     const stopAudio = () => {
         cancelAnimationFrame(animationFrameRef.current)
         audioContextRef.current?.suspend()
         setStarted(false)
     }
 
+    /**
+     * Performs a pitch update by reading data from the analyzerNode and supplying it to the pitchDetector
+     * 
+     * updatePitch calls itself in an indirect infinite loop with requestAnimationFrame
+     * 
+     * Note this method should not be called directly but is instead controlled by audio control methods (startAudio, stopAudio, killAudio)
+     * that handle supplying correct parameters and stopping/resuming the requestAnimationFrame loop
+     * @param {AnalyserNode} analyserNode the window's AnalyzerNode to get audio data from
+     * @param {PitchDetector} detector PitchDetector instance attached to analyzerNode to determine pitch/clarity
+     * @param {Float32Array} input float array to copy analyzerNode data into to supply to detector
+     * @param {number} sampleRate audio sample rate of the analyzerNode (ex: 48000 Hz)
+     */
     const updatePitch = (analyserNode, detector, input, sampleRate) => {
         analyserNode.getFloatTimeDomainData(input)
         // console.log(input)
@@ -138,10 +171,6 @@ const AudioProvider = ({ children }) => {
     }
 
     return (
-        // <AudioContext value={{ pitch, clarity, started, history, updates, startAudio, stopAudio, killAudio, audioTimeData, resetHistory }}>
-        //     {children}
-        // </AudioContext>
-
         <AudioStateContext value={{ pitch, clarity, history, updates, audioTimeData }}>
             <AudioControlContext value={{ started, startAudio, stopAudio, killAudio, resetHistory }}>
                 {children}
@@ -150,18 +179,20 @@ const AudioProvider = ({ children }) => {
     )
 }
 
-// Hook for ease/clarity
-// const useAudio = () => {
-//     return use(AudioContext)
-// }
-
+/**
+ * Hook to access the AudioStateContext
+ * @returns use(AudioStateContext) - uses the AudioStateContext and returns its current values
+ */
 const useAudioState = () => {
     return use(AudioStateContext)
 }
 
+/**
+ * Hook to access the AudioControlContext
+ * @returns use(AudioControlContext) - uses the AudioControlContext and returns its current values
+ */
 const useAudioControls = () => {
     return use(AudioControlContext)
 }
-
 
 export { AudioProvider, AudioStateContext, AudioControlContext, useAudioState, useAudioControls }

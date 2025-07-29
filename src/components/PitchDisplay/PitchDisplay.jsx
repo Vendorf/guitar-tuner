@@ -1,23 +1,44 @@
 import { useEffect, useState } from "react"
 import { useAudioState } from "../../context/AudioContext"
 import { useTuning } from "../../context/TuningContext"
-import './PitchDisplay.css'
-import WaveformCanvas from "../WaveformCanvas/WaveformCanvas"
 import { interpolateHsl } from "../../utilities/colorUtils"
-import TuningSelector from "../TuningSelector/TuningSelector"
 import PitchDetailDisplay from "./PitchDetailDisplay"
+import './PitchDisplay.css'
 
-//TODO: move constants up here
+//TODOS
+// 1. Maybe convert to canvas for performance idk
+//    - or D3 lmao
+// 2. Make some nice background with dots/grid to show cents
+//    - maybe have it move along w the bars
 
-// TODO
-// Make some nice background with dots/grid to show cents
-//      maybe have it move along w the bars
+////---CONSTANTS---------------------------------------------------------------
+// VIEW
+const VIEW_HEIGHT = 75
+const VIEW_WIDTH = 100
 
+// TIME
+const TIME_WINDOW = 5000 //ms
+const BOX_DURATION = 50 // assuming each history entry lasts 50ms; this sort of makes it look like its properly real-time without being tied to actual time
+const FADE_DELAY = 2000 // ms
+const CENTS_PER_SIDE = 3 // NOTE: this is in HUNDREDS of cents (IE, each cent is 0.01, so 3 --> 300 cents, 3 notes) either side
+//                          guitartuna shows +1 for 0.10 (10 cents); goes up to +30 on furthest edge (300 cents, 3 notes away)
+
+//COLOR INTERPOLATION
+const HIGH_COLOR = { h: 0, s: 100, l: 50 }
+const MID_COLOR = { h: 39, s: 100, l: 50 }
+const LOW_COLOR = { h: 147, s: 100, l: 50 }
+const MID_CENTS = 0.1 // when we are within 10 cents of the target become orange
+const HIGH_CENTS = 1 // when fully highColor
+const LOW_CENTS = 0 // when fully low color
+////---------------------------------------------------------------------------
+
+/**
+ * Displays real-time pitch info for distance of current audio from target note
+ * @returns 
+ */
 const PitchDisplay = () => {
-
-    // const { pitch, clarity, started, startAudio, stopAudio, killAudio, history, updates } = useAudio()
-    const { pitch, clarity, history, updates } = useAudioState()
-    const { notes, tuningMode, setTuningMode, noteInfo: { note, nearestNote, targetNote, centsDist } } = useTuning()
+    const { history } = useAudioState()
+    const { noteInfo: { targetNote } } = useTuning()
 
     const [showDetails, setShowDetails] = useState(false)
     const toggleDetails = () => {
@@ -25,6 +46,7 @@ const PitchDisplay = () => {
     }
 
     //TODO: is this too much lol
+    // Need constant now updates w rerender to get fading/etc effects
     const [now, setNow] = useState(Date.now())
     useEffect(() => {
         let frame
@@ -36,40 +58,10 @@ const PitchDisplay = () => {
         return () => cancelAnimationFrame(frame)
     }, [])
 
-
-    const nearestNoteName = notes[nearestNote]?.fullName ?? ""
-    const targetNoteName = notes[targetNote]?.fullName ?? ""
-    const targetFreq = notes[targetNote]?.frequency ?? 0
-
-    //TODO maybe convert to canvas for performance idk
-    // or D3 lmao
-
-    // TODO
-    // + organize properly code
-
-
-    const VIEW_HEIGHT = 75
-    const VIEW_WIDTH = 100
-    const timeWindow = 5000 //5000 //ms
-
-    const pixelsPerMs = VIEW_HEIGHT / timeWindow
-    const boxDuration = 50 // assuming each history entry lasts 100ms ig
-    const boxHeight = pixelsPerMs * boxDuration
-    const fadeDelay = 2000 // ms
-
-    // const timeLength = 100 //50
-    const centsSide = 3 // guitartuna shows +1 for 0.10 (10 cents); goes up to +30 on furthest edge (300 cents, 3 notes away)
-    // here not actually cents but 100s of cents (so this is 300 cents either side)
-
-    //COLOR INTERPOLATION
-    const highColor = { h: 0, s: 100, l: 50 }
-    const midColor = { h: 39, s: 100, l: 50 }
-    const lowColor = { h: 147, s: 100, l: 50 }
-    const midCents = 0.1 // when we are within 10 cents of the target become orange
-    const highCents = 1 // when fully highColor
-    const lowCents = 0 // when fully low color
-
-    const boxWidthPerCent = (VIEW_WIDTH / 2) / centsSide
+    // Derived values
+    const pixelsPerMs = VIEW_HEIGHT / TIME_WINDOW
+    const boxHeight = pixelsPerMs * BOX_DURATION
+    const boxWidthPerCent = (VIEW_WIDTH / 2) / CENTS_PER_SIDE
 
     const drawBoxes = history
         .map(entry => {
@@ -79,7 +71,7 @@ const PitchDisplay = () => {
             return { cents, ageMs }
         })
         // .filter(box => Math.abs(box.cents) < centsSide) // filter out extreme outlierss
-        .filter(entry => entry.ageMs < timeWindow) // only show most recent ones
+        .filter(entry => entry.ageMs < TIME_WINDOW) // only show most recent ones
         .map((box, i) => ({
             ...box,
             time: i // normalize time to index so we can compute Y
@@ -94,18 +86,18 @@ const PitchDisplay = () => {
         const y = VIEW_HEIGHT - boxHeight - (lastTime - box.time) * boxHeight
         // const y = VIEW_HEIGHT - (box.ageMs * pixelsPerMs)
 
-        const alpha = Math.max(0, 1 - Math.max(0, box.ageMs - fadeDelay) / timeWindow) // fades to 0 over window
+        const alpha = Math.max(0, 1 - Math.max(0, box.ageMs - FADE_DELAY) / TIME_WINDOW) // fades to 0 over window
 
         // Compute color
         let color = undefined
-        if (Math.abs(box.cents) > midCents) {
+        if (Math.abs(box.cents) > MID_CENTS) {
             // In upper range, interpolate mid and high color
-            const t = Math.min(1, Math.max(0, (Math.abs(box.cents) - midCents) / (highCents - midCents)))
-            color = interpolateHsl(midColor, highColor, t)
+            const t = Math.min(1, Math.max(0, (Math.abs(box.cents) - MID_CENTS) / (HIGH_CENTS - MID_CENTS)))
+            color = interpolateHsl(MID_COLOR, HIGH_COLOR, t)
         } else {
             // In lower range, interpolate low and mid color
-            const t = Math.min(1, Math.max(0, (midCents - Math.abs(box.cents)) / (midCents - lowCents)))
-            color = interpolateHsl(lowColor, midColor, t)
+            const t = Math.min(1, Math.max(0, (MID_CENTS - Math.abs(box.cents)) / (MID_CENTS - LOW_CENTS)))
+            color = interpolateHsl(LOW_COLOR, MID_COLOR, t)
         }
 
         const colorHsl = `hsl(${color.h}, ${color.s}%, ${color.l}%)`
@@ -154,10 +146,8 @@ const PitchDisplay = () => {
                 </svg>
                 <div className="detail-toggle" onClick={toggleDetails}>{showDetails ? "Hide" : "Show"} Details</div>
             </div>
-
             <PitchDetailDisplay display={showDetails}></PitchDetailDisplay>
         </>
-
     )
 }
 

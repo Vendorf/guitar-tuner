@@ -6,6 +6,8 @@ import { getExactNoteFromFrequency } from "../utilities/tuningUtils"
 
 const HISTORY_SIZE = 1000 //50
 
+
+// UNUSED
 const usePitchHistory = ({ pitch, clarity }) => {
 
     const historyRef = useRef([])
