@@ -15,7 +15,7 @@ import TuningSelector from "../TuningSelector/TuningSelector"
 const PitchDisplay = () => {
 
     // const { pitch, clarity, started, startAudio, stopAudio, killAudio, history, updates } = useAudio()
-    const { pitch, clarity, history, updates} = useAudioState()
+    const { pitch, clarity, history, updates } = useAudioState()
     const { notes, tuningMode, setTuningMode, noteInfo: { note, nearestNote, targetNote, centsDist } } = useTuning()
 
     const nearestNoteName = notes[nearestNote]?.fullName ?? ""
@@ -112,6 +112,7 @@ const PitchDisplay = () => {
             <div className="card">
                 <svg viewBox="0 0 100 100">
                     <g>
+                        <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line>
                         {drawBoxes.map(box => {
                             const { width, offsetX, y, alpha, color, colorHsl, colorHslDark } = computeBoxProps(box)
                             const capWidth = 0.5
@@ -126,16 +127,16 @@ const PitchDisplay = () => {
                         })}
                     </g>
                     <g>
-                        <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line>
+                        {/* <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line> */}
                         {/* <line x1='0' y1={VIEW_HEIGHT} x2={VIEW_WIDTH} y2={VIEW_HEIGHT} stroke='black' strokeWidth='0.6'></line> */}
                         {lastBox && lastBox.cents < 0 &&
                             <>
-                                <line x1={50 - lastBoxProps.offsetX} y1={VIEW_HEIGHT} x2={50} y2={VIEW_HEIGHT} stroke={lastBoxProps.colorHslDark} strokeWidth='0.6'></line>
+                                <line x1={50 - lastBoxProps.offsetX} y1={VIEW_HEIGHT} x2={50} y2={VIEW_HEIGHT} stroke={lastBoxProps.colorHslDark} strokeWidth='1'></line>
                                 <circle cx={50 - lastBoxProps.offsetX} cy={VIEW_HEIGHT} r={1} fill={lastBoxProps.colorHslDark}></circle>
                             </>}
                         {lastBox && lastBox.cents >= 0 &&
                             <>
-                                <line x1={50} y1={VIEW_HEIGHT} x2={50 + lastBoxProps.width} y2={VIEW_HEIGHT} stroke={lastBoxProps.colorHslDark} strokeWidth='0.6'></line>
+                                <line x1={50} y1={VIEW_HEIGHT} x2={50 + lastBoxProps.width} y2={VIEW_HEIGHT} stroke={lastBoxProps.colorHslDark} strokeWidth='1'></line>
                                 <circle cx={50 + lastBoxProps.width} cy={VIEW_HEIGHT} r={1} fill={lastBoxProps.colorHslDark}></circle>
                             </>}
                         <circle cx='50' cy='90' r='8' fill='#aaa' stroke='black' strokeWidth={0.75}>

@@ -2,6 +2,23 @@
 
 July 29 2025
 
+The many rerenders might have been half fixed w the refactors but still think maybe a problem
+
+Next would also be nice to have auto/manual selection like GuitarTuna; so click on the string and it enters manual mode, locking to that target note only. Then there is check button for going back to Auto mode
+
+Next steps:
+- Break out all the non-pitch info into a new component, and show it to the right of the pitch display
+  - So like you can expand/hide it as a detailed info panel
+  - Have history there too etc
+- Draw waveform on side too somehow
+- Then maybe Tailwind time?
+- And have to finish pitch display to not look ass and have cents/etc displayed
+- Then can do the dropdown for different instruments/etc
+- Then note chart + play audio when click
+- Then adjusting A4 Hz and scale (include/exclude notes checkboxes)
+
+July 29 2025
+
 Okay so tuning sort of works prolly wanna adjust it later
 
 There's some bug with too many rerenders/too much depth of rerenders w the requestAnimationFrame

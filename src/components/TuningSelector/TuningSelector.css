@@ -73,6 +73,9 @@
     padding: 0 12px;
     border-radius: 32px;
     font-size: 13px;
+
+    /* to prevent shrinking chips to all be same size within flexbox */
+    flex-shrink: 0;
 }
 
 .md-chip-hover:hover {

@@ -24,46 +24,31 @@ const TUNINGS = {
         strings: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4'],
         strings_ids: [38, 45, 50, 55, 59, 64]
     },
+    'double-drop-d': {
+        name: 'Double Drop D',
+        strings: ['D2', 'A2', 'D3', 'G3', 'B3', 'D4'],
+        strings_ids: [38, 45, 50, 55, 59, 62]
+    },
+    'open-d': {
+        name: 'Open D',
+        strings: ['D2', 'A2', 'D3', 'F♯3', 'B3', 'D4'],
+        strings_ids: [38, 45, 50, 54, 59, 62]
+    },
+    'open-g': {
+        name: 'Open G',
+        strings: ['D2', 'G2', 'D3', 'G3', 'B3', 'D4'],
+        strings_ids: [38, 43, 50, 55, 59, 62]
+    },
+    'drop-c': {
+        name: 'Drop C',
+        strings: ['C2', 'G2', 'C3', 'F3', 'A3', 'D4'],
+        strings_ids: [36, 43, 48, 53, 57, 62]
+    },
     'goofy': {
         name: 'Goofy',
         strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
         strings_ids: [64, 59, 55, 50, 45, 40]
     },
-    'goofy1': {
-        name: 'Goofy',
-        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
-        strings_ids: [64, 59, 55, 50, 45, 40]
-    },
-    'goofy2': {
-        name: 'Goofy',
-        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
-        strings_ids: [64, 59, 55, 50, 45, 40]
-    },
-    'goofy3': {
-        name: 'Goofy',
-        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
-        strings_ids: [64, 59, 55, 50, 45, 40]
-    },
-    'goofy4': {
-        name: 'Goofy',
-        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
-        strings_ids: [64, 59, 55, 50, 45, 40]
-    },
-    'goofy5': {
-        name: 'Goofy',
-        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
-        strings_ids: [64, 59, 55, 50, 45, 40]
-    },
-    'goofy6': {
-        name: 'Goofy',
-        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
-        strings_ids: [64, 59, 55, 50, 45, 40]
-    },
-    'goofy7': {
-        name: 'Goofy',
-        strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
-        strings_ids: [64, 59, 55, 50, 45, 40]
-    }
 }
 
 const CENTS_DIST_MAX = Infinity
