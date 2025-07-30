@@ -1,5 +1,21 @@
 # TODO
 
+## Deploy
+https://www.youtube.com/watch?v=yo2bMGnIKE8
+For GHPages
+npx vite build --base=/guitar-tuner
+
+For local
+npx vite build
+
+To preview (local only)
+npx vite preview
+
+Need to figure out how to configure this better ig idk
+
+Then:
+git subtree push --prefix dist origin gh-pages
+
 July 30 2025
 
 Okay it looks pretty cute now lol I don't have it anymore
