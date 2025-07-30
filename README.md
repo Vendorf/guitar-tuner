@@ -2,6 +2,22 @@
 
 July 29 2025
 
+Honestly wondering if it's even worth finishing this shit lol
+
+Like the tuner only works so well............. kinda pissing me off
+But rewriting the actual pitch detection seems horrible
+And in general mic tuners are only so good.....
+
+idk lol
+
+It's worth just getting it functional enough to be deployed and all at least which is pretty close
+
+But idk if I'll bother with the full range of features
+
+It was kinda enough practice now should go spend time applying and shit
+
+July 29 2025
+
 The many rerenders might have been half fixed w the refactors but still think maybe a problem
 
 Next would also be nice to have auto/manual selection like GuitarTuna; so click on the string and it enters manual mode, locking to that target note only. Then there is check button for going back to Auto mode

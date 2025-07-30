@@ -32,6 +32,12 @@ const TuningProvider = ({ children }) => {
     useEffect(() => {
         // Reset tuning
         setNotesTuned(new Set())
+        resetHistory()
+        //TODO: currently use notesTuned.targetNote to highlight the current note
+        // when we swap therefore that is unaffected as the pitch stays the same
+        // so need some way to tell it to give default analysis on a swap
+        // honestly it's okay the way it is now too tho so idk just a UX choice
+        // lastTargetNoteRef.current = -1
     }, [tuningMode])
 
     const onNoteTuned = (note) => {

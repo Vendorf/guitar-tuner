@@ -4,6 +4,7 @@ import { useTuning } from "../../context/TuningContext"
 import { interpolateHsl } from "../../utilities/colorUtils"
 import PitchDetailDisplay from "./PitchDetailDisplay"
 import './PitchDisplay.css'
+import { CENTS_DIST_IN_TUNE } from "../../constants/tuningConstants"
 
 //TODOS
 // 1. Maybe convert to canvas for performance idk
@@ -46,7 +47,7 @@ const PitchDisplay = () => {
 
     //TODO: replace with when in tune / when enough iterations or smthng
     // or like 2 glows: one when near, then turns green when in tune fully
-    const inTune = targetNoteName ? Math.abs(centsDist) <= 0.05 : false // 5 cents
+    const inTune = targetNoteName ? Math.abs(centsDist) <= CENTS_DIST_IN_TUNE : false // 5 cents
 
     const [showDetails, setShowDetails] = useState(false)
     const toggleDetails = () => {
@@ -105,7 +106,7 @@ const PitchDisplay = () => {
         } else {
             // In lower range, interpolate low and mid color
             const t = Math.min(1, Math.max(0, (MID_CENTS - Math.abs(box.cents)) / (MID_CENTS - LOW_CENTS)))
-            color = interpolateHsl(LOW_COLOR, MID_COLOR, t)
+            color = interpolateHsl(MID_COLOR, LOW_COLOR, t)
         }
 
         const colorHsl = `hsl(${color.h}, ${color.s}%, ${color.l}%)`
@@ -120,6 +121,15 @@ const PitchDisplay = () => {
     for (let c = -MAX_CENTS; c <= MAX_CENTS; c += TICK_STEP) {
         ticks.push(c)
     }
+
+    // Gradient derived
+    const lowOffset = Math.round((LOW_CENTS / CENTS_PER_SIDE) * 100)
+    const midOffset = Math.round((MID_CENTS / CENTS_PER_SIDE) * 100)
+    const highOffset = Math.round((HIGH_CENTS / CENTS_PER_SIDE) * 100)
+
+    const bubbleWidth = 13;
+    const targetNoteOffset = 9.5;
+
     return (
         <>
             <div className="card">
@@ -127,11 +137,14 @@ const PitchDisplay = () => {
                     {/* TODO: use the vars for stopColor and get offset right*/}
                     <defs>
                         <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="hsl(147, 100%, 50%)" /> {/* LOW_COLOR */}
-                            <stop offset="50%" stopColor="hsl(39, 100%, 50%)" />  {/* MID_COLOR */}
-                            <stop offset="100%" stopColor="hsl(0, 100%, 50%)" />   {/* HIGH_COLOR */}
+                            <stop offset={`${lowOffset}%`} stopColor={`hsl(${LOW_COLOR.h}, ${LOW_COLOR.s}%, ${LOW_COLOR.l}%)`} /> {/* LOW_COLOR */}
+                            <stop offset={`${midOffset}%`} stopColor={`hsl(${LOW_COLOR.h}, ${LOW_COLOR.s}%, ${LOW_COLOR.l*0.75}%)`} />
+                            {/* <stop offset={`${midOffset}%`} stopColor={`hsl(${MID_COLOR.h}, ${MID_COLOR.s}%, ${MID_COLOR.l}%)`} /> */}
+                            {/* <stop offset={`${highOffset}%`} stopColor={`hsl(${HIGH_COLOR.h}, ${HIGH_COLOR.s}%, ${HIGH_COLOR.l}%)`} />   HIGH_COLOR */}
+                            <stop offset={`${midOffset}%`} stopColor={`hsl(0, 0%, 91%)`} />   {/* HIGH_COLOR */}
                         </linearGradient>
                     </defs>
+                    {/* GRADIENT BACKGROUND */}
                     <g>
                         <rect
                             x="50"
@@ -139,7 +152,7 @@ const PitchDisplay = () => {
                             width="50"
                             height={VIEW_HEIGHT}
                             fill="url(#bg-gradient)"
-                            opacity="0.1"
+                            opacity="0.2"
                         />
                         <rect
                             x="0"
@@ -147,11 +160,39 @@ const PitchDisplay = () => {
                             width="50"
                             height={VIEW_HEIGHT}
                             fill="url(#bg-gradient)"
-                            opacity="0.1"
+                            opacity="0.2"
                             transform={`translate(50, 0) scale(-1 1)`}
                         />
                     </g>
-
+                    {/* TICKS AND LINES */}
+                    <g>
+                        {ticks.map((cents) => {
+                            const x = 50 + (cents / 100) * boxWidthPerCent
+                            return (
+                                <g key={cents}>
+                                    <line
+                                        x1={x}
+                                        y1="0"
+                                        x2={x}
+                                        y2={VIEW_HEIGHT}
+                                        stroke="#ccc"
+                                        strokeWidth="0.4"
+                                    />
+                                    <text
+                                        x={x}
+                                        y={VIEW_HEIGHT + 3}
+                                        fontSize="2.5"
+                                        textAnchor="middle"
+                                        fill={cents === 0 ? "black" : "#999"}
+                                        fontWeight={cents === 0 ? "bold" : "normal"}
+                                    >
+                                        {cents > 0 ? `+${cents}c` : `${cents}c`}
+                                    </text>
+                                </g>
+                            )
+                        })}
+                    </g>
+                    {/* LIVE TUNING BOXES */}
                     <g>
                         {/* In tune range TODO: maybe make it shade over the whole range with the colors */}
                         <rect
@@ -159,25 +200,10 @@ const PitchDisplay = () => {
                             y="0"
                             width={boxWidthPerCent * 0.2}
                             height={VIEW_HEIGHT}
-                            fill="rgba(0,255,0,0.2)"
+                            fill="rgba(0,255,0,0)"
                         />
                         <line x1="0" y1={VIEW_HEIGHT} x2="100" y2={VIEW_HEIGHT} stroke="#ccc" strokeDasharray="2,2" strokeWidth="0.5" />
                         <text x="52" y={VIEW_HEIGHT - 1} fontSize="3" fill="#999">Target</text>
-                        {/* {[-2, -1, 1, 2].map(n => (
-                            <line
-                                key={n}
-                                x1={50 + n * boxWidthPerCent * 1}
-                                x2={50 + n * boxWidthPerCent * 1}
-                                y1="0"
-                                y2={VIEW_HEIGHT}
-                                stroke="#ccc"
-                                strokeWidth="0.5"
-                            />
-                        ))} */}
-                        {/* <text x="1" y="10" fontSize="3" fill="#ccc">-300c</text>
-                        <text x="96" y="10" fontSize="3" fill="#ccc">+300c</text> */}
-
-
                         {/* <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line> */}
                         {drawBoxes.map(box => {
                             const { width, offsetX, y, alpha, color, colorHsl, colorHslDark } = computeBoxProps(box)
@@ -192,6 +218,7 @@ const PitchDisplay = () => {
                             )
                         })}
                     </g>
+                    {/* BOTTOM LINE FINAL BOX */}
                     <g>
                         {/* <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line> */}
                         {/* <line x1='0' y1={VIEW_HEIGHT} x2={VIEW_WIDTH} y2={VIEW_HEIGHT} stroke='black' strokeWidth='0.6'></line> */}
@@ -209,11 +236,11 @@ const PitchDisplay = () => {
                             <g>
                                 {/* Background bubble */}
                                 <rect
-                                    x={50 + (lastBox.cents >= 0 ? lastBoxProps.width + 1.5 : -lastBoxProps.offsetX - 16)}
-                                    y={VIEW_HEIGHT + 6}
+                                    x={Math.max(1, Math.min((50 + (lastBox.cents >= 0 ? lastBoxProps.width + 1.5 - bubbleWidth/2 : -lastBoxProps.offsetX - 16 + bubbleWidth/2 )), 99 - bubbleWidth))}
+                                    y={VIEW_HEIGHT + 3.5}
                                     rx="1.5"
                                     ry="1.5"
-                                    width="13"
+                                    width={bubbleWidth}
                                     height="5"
                                     fill="#fff"
                                     fillOpacity="0.5"
@@ -223,8 +250,8 @@ const PitchDisplay = () => {
 
                                 {/* Cent deviation text */}
                                 <text
-                                    x={50 + (lastBox.cents >= 0 ? lastBoxProps.width + 8 : -lastBoxProps.offsetX - 8.5)}
-                                    y={VIEW_HEIGHT - 2.5}
+                                    x={Math.max(1+bubbleWidth/2, Math.min((50 + (lastBox.cents >= 0 ? lastBoxProps.width + 8 - bubbleWidth/2 : -lastBoxProps.offsetX - 8.5 + bubbleWidth/2 )), 99 - bubbleWidth/2))}
+                                    y={VIEW_HEIGHT + 7}
                                     fontSize="3"
                                     fill={lastBoxProps.colorHslDark}
                                     textAnchor="middle"
@@ -233,86 +260,43 @@ const PitchDisplay = () => {
                                     strokeWidth="0.2"
                                     paintOrder="stroke"
                                 >
-                                    {Math.round(lastBox.cents * 100)}c
+                                    {lastBox.cents > 0 && "+"}{Math.round(lastBox.cents * 100)}c
                                 </text>
                             </g>
                         )}
-                        {/* {lastBox && (
-                            <text
-                                x={50 + (lastBox.cents >= 0 ? lastBoxProps.width + 1.5 : -lastBoxProps.offsetX - 4.5)}
-                                y={VIEW_HEIGHT - 2}
-                                fontSize="3"
-                                fill={lastBoxProps.colorHslDark}
-                                textAnchor={lastBox.cents >= 0 ? 'start' : 'end'}
-                                // style={{
-                                //     filter: "drop-shadow(0px 0px 1px black)"
-                                // }}
-                            >
-                                {Math.round(lastBox.cents * 100)}c
-                            </text>
-                        )} */}
-
-                        <g>
-                            {ticks.map((cents) => {
-                                const x = 50 + (cents / 100) * boxWidthPerCent
-                                return (
-                                    <g key={cents}>
-                                        <line
-                                            x1={x}
-                                            y1="0"
-                                            x2={x}
-                                            y2={VIEW_HEIGHT}
-                                            stroke="#ccc"
-                                            strokeWidth="0.4"
-                                        />
-                                        <text
-                                            x={x}
-                                            y={VIEW_HEIGHT + 3}
-                                            fontSize="2.5"
-                                            textAnchor="middle"
-                                            fill={cents === 0 ? "black" : "#999"}
-                                            fontWeight={cents === 0 ? "bold" : "normal"}
-                                        >
-                                            {cents > 0 ? `+${cents}c` : `${cents}c`}
-                                        </text>
-                                    </g>
-                                )
-                            })}
-                        </g>
-
-
-                        {/* <circle cx='50' cy='90' r='8' fill='#aaa' stroke='black' strokeWidth={0.75}></circle> */}
-
-                        <g>
+                    </g>
+                    {/* TARGET NOTE */}
+                    <g>
+                        <line x1={0} y1={VIEW_HEIGHT+targetNoteOffset} x2={100} y2={VIEW_HEIGHT+targetNoteOffset} stroke="#ccc" strokeWidth="0.1"></line>
+                        {/* Target Note Label */}
+                        <text
+                            x="50"
+                            y={VIEW_HEIGHT+targetNoteOffset+9}
+                            fontSize="6"
+                            fontWeight="bold"
+                            textAnchor="middle"
+                            fill={inTune ? "limegreen" : "#222"}
+                            stroke={inTune ? "limegreen" : "#222"}
+                            strokeWidth="0.4"
+                            paintOrder="stroke"
+                        >
+                            {targetNoteName}
+                        </text>
+                        {/* Direction Label */}
+                        {lastBox && !inTune && (
                             <text
                                 x="50"
-                                y="89"
-                                fontSize="6"
+                                y={VIEW_HEIGHT+targetNoteOffset+14}
+                                fontSize="3"
                                 textAnchor="middle"
-                                fill={inTune ? "limegreen" : "#222"}
-                                fontWeight="bold"
-                                stroke="#fff"
-                                strokeWidth="0.5"
-                                paintOrder="stroke"
+                                fill="#777"
+                                fontStyle="italic"
                             >
-                                {targetNoteName}
+                                {lastBox.cents > 0 ? "↓ Tune Down" : "↑ Tune Up"}
                             </text>
-                            {lastBox && Math.abs(lastBox.cents) > 0.05 && (
-                                <text
-                                    x="50"
-                                    y="94"
-                                    fontSize="3"
-                                    textAnchor="middle"
-                                    fill="#777"
-                                    fontStyle="italic"
-                                >
-                                    {lastBox.cents > 0 ? "↓ Tune Down" : "↑ Tune Up"}
-                                </text>
-                            )}
-
-
-                            {/* Direction label */}
-                            {/* {lastBox && Math.abs(lastBox.cents) > 0.05 && (
+                        )}
+                        {/* Direction label (left/right side) */}
+                        {/* {lastBox && Math.abs(lastBox.cents) > 0.05 && (
                                 <text
                                     x={lastBox.cents > 0 ? 70 : 30}
                                     y="82"
@@ -324,7 +308,6 @@ const PitchDisplay = () => {
                                     {lastBox.cents > 0 ? "↓ Tune Down" : "↑ Tune Up"}
                                 </text>
                             )} */}
-                        </g>
                     </g>
                 </svg>
                 <div className="detail-toggle" onClick={toggleDetails}>{showDetails ? "Hide" : "Show"} Details</div>
@@ -337,6 +320,21 @@ const PitchDisplay = () => {
 export default PitchDisplay
 
 
+// {/* {lastBox && (
+//                             <text
+//                                 x={50 + (lastBox.cents >= 0 ? lastBoxProps.width + 1.5 : -lastBoxProps.offsetX - 4.5)}
+//                                 y={VIEW_HEIGHT - 2}
+//                                 fontSize="3"
+//                                 fill={lastBoxProps.colorHslDark}
+//                                 textAnchor={lastBox.cents >= 0 ? 'start' : 'end'}
+//                                 // style={{
+//                                 //     filter: "drop-shadow(0px 0px 1px black)"
+//                                 // }}
+//                             >
+//                                 {Math.round(lastBox.cents * 100)}c
+//                             </text>
+//                         )} */}
+// {/* <circle cx='50' cy='90' r='8' fill='#aaa' stroke='black' strokeWidth={0.75}></circle> */ }
 
 
 // <g>
