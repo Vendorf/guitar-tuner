@@ -1,5 +1,19 @@
 # TODO
 
+July 30 2025
+
+Okay it looks pretty cute now lol I don't have it anymore
+
+I think the big thing is to fix the bear + get the sound stuff working
+
+And it would be nice to add a dark mode + campfire for the bear that lights up in dark mode :)
+
+So yeah that should be next steps lol
+
+And getting it deployed so can see on phone and shit
+
+Getting the main view to be a proper flexbox would be nice ig...? and some media queries to make the bear go below when screen is small and remove the flex 3 columns ig
+
 July 29 2025
 
 Honestly wondering if it's even worth finishing this shit lol
