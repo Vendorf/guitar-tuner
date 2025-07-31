@@ -65,10 +65,18 @@ function App() {
     <>
       <AudioProvider>
         <TuningProvider>
-          <img src={bear} className="logo" alt="Zustand Bear" onClick={() => audio.play()}/>
-          <StartButton></StartButton>
-          <TunerDisplay></TunerDisplay>
-          <PitchDisplay></PitchDisplay>
+          <div className='app-container'>
+            {/* <img src={bear} className="logo" alt="Zustand Bear" onClick={() => audio.play()} /> */}
+            <div className='all-container'>
+              <StartButton></StartButton>
+              <TunerDisplay></TunerDisplay>
+              <PitchDisplay></PitchDisplay>
+            </div>
+            <div className='sidebar sidebar-left'>
+              <img src={bear} className="bear" alt="Zustand Bear" onClick={() => audio.play()} />
+            </div>
+            <div className='sidebar sidebar-right'></div>
+          </div>
         </TuningProvider>
       </AudioProvider>
     </>

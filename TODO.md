@@ -1,21 +1,5 @@
 # TODO
 
-## Deploy
-https://www.youtube.com/watch?v=yo2bMGnIKE8
-For GHPages
-npx vite build --base=/guitar-tuner
-
-For local
-npx vite build
-
-To preview (local only)
-npx vite preview
-
-Need to figure out how to configure this better ig idk
-
-Then:
-git subtree push --prefix dist origin gh-pages
-
 July 30 2025
 
 Okay it looks pretty cute now lol I don't have it anymore
@@ -29,6 +13,14 @@ So yeah that should be next steps lol
 And getting it deployed so can see on phone and shit
 
 Getting the main view to be a proper flexbox would be nice ig...? and some media queries to make the bear go below when screen is small and remove the flex 3 columns ig
+
+Oh also make a little animation for the tuner pegs on top
+    when tuned --> shrink in and scale up a bit, then return to normal size
+
+Also it looks weird on windows so fix that
+  - Colors kinda off
+  - Start button not black?
+  - The SVG has a dif color background to the card...?
 
 July 29 2025
 
