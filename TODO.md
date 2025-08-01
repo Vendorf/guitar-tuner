@@ -5,6 +5,8 @@ July 31 2025
 Need to try this clamp shit: https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
 then can scale without a media query honestly, and just have everything still as REM
 
+I've got a png favicon, can try redeploying with that and then I think works in safari
+
 July 30 2025
 
 Okay it looks pretty cute now lol I don't have it anymore
