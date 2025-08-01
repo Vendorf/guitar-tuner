@@ -7,7 +7,7 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
+    user-select: none; 
 }
 
 .tuning-container-wrapper {
@@ -23,7 +23,8 @@
 
 .tuning-label {
     color: #888;
-    font-size: 12px;
+    /* font-size: 12px; */
+    font-size: 0.75rem;
     font-weight: bold;
     margin-left: 5px;
     padding-bottom: 2px;
@@ -70,9 +71,9 @@
 .md-chip {
     display: inline-block;
     background: #888;
-    padding: 0 12px;
-    border-radius: 32px;
-    font-size: 13px;
+    padding: 0 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.8125rem;
 
     /* to prevent shrinking chips to all be same size within flexbox */
     flex-shrink: 0;
@@ -92,8 +93,8 @@
 
 .md-chip,
 .md-chip-icon {
-    height: 32px;
-    line-height: 32px;
+    height: 2rem;
+    line-height: 2rem;
 }
 
 .md-chip-icon {
@@ -143,7 +144,8 @@
 }
 
 .md-chips .md-chip {
-    margin: 0 5px 3px 0;
+    /* margin: 0 5px 3px 0; */
+    margin: 0 0.315rem 0.19rem 0;
 }
 
 .md-chip-raised {

@@ -4,9 +4,9 @@ import { TUNINGS } from '../../constants/tuningConstants'
 import './TunerDisplay.css'
 import TuningSelector from '../TuningSelector/TuningSelector'
 
-const TunerPegSVG = ({ cx, cy, r, isTuned, isActived, name }) => {
+const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, name }) => {
     return (
-        <g>
+        <g key={key}>
             {/* <circle cx={cx} cy={cy} r={r} fill={isTuned
                 ? 'hsl(120, 61%, 70%)'
                 : isActived
@@ -86,7 +86,7 @@ const TunerDisplay = () => {
                     const cy = VIEW_HEIGHT / 2
                     const r = pegRadius
 
-                    return TunerPegSVG({ cx, cy, r, isTuned, isActived, name: s })
+                    return TunerPegSVG({ key: i, cx, cy, r, isTuned, isActived, name: s })
                     // return (<div key={i} className={`tuner-peg ${i == targetIdx ? 'tuner-peg-activated' : ''} ${isTuned ? 'tuner-peg-tuned' : ''}`}>{s}</div>)
                 })}
             </svg>

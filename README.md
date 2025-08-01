@@ -13,6 +13,7 @@ Need to figure out how to configure this better ig idk
 
 Then:
 git add dist -f
+git commit -m "Redeploy site"
 git subtree push --prefix dist origin gh-pages
 
 # React + Vite
