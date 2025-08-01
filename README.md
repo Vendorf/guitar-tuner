@@ -12,6 +12,7 @@ npx vite preview
 Need to figure out how to configure this better ig idk
 
 Then:
+git add dist -f
 git subtree push --prefix dist origin gh-pages
 
 # React + Vite

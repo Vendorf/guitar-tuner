@@ -20,7 +20,8 @@
   /* allow shrink but prefer 550px */
   max-width: 550px;
   /* min-width: 0; */
-  min-width: 500px;
+  /* min-width: 500px; */ 
+  min-width: 320px; /* NOTE: body resize limit is also 320 so if want smaller edit that too */
   /* TODO: adjust to something more reasonable */
   text-align: center;
   padding: 1rem;

@@ -59,3 +59,46 @@
     background-color: hsl(120, 61%, 70%);
     color: hsl(120, 61%, 30%);
 }
+
+/* SVG */
+/* svg {
+    width: 100%;
+    height: auto;
+    background-color: red;
+} */
+
+.tuner-peg-container-svg {
+    width: 100%;
+    height: auto;
+    /* background-color: red; */
+    box-sizing: border-box;
+
+    /* padding: 0 10px; */
+}
+
+.tuner-peg-svg {
+    fill: hsl(0, 0%, 80%);
+    transition: all 0.2s ease-in-out;
+}
+
+.tuner-peg-svg-text {
+    transition: all 0.2s ease-in-out;
+}
+
+.tuner-peg-activated-svg {
+    fill: hsl(0, 0%, 40%);
+    transform: scale(1.2);
+}
+
+.tuner-peg-activated-svg-text {
+    fill: hsla(0, 0%, 100%, 0.87);
+    transform: scale(1.2);
+}
+
+.tuner-peg-tuned-svg {
+    fill: hsl(120, 61%, 70%);
+}
+
+.tuner-peg-tuned-svg-text {
+    fill: hsl(120, 61%, 30%);
+}
