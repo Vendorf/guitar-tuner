@@ -45,8 +45,9 @@ function App() {
   //
   //some event for when finishes to set to playing --> false
 
+  const isSystemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useState(isSystemDarkMode)
   const [resetAnimation, setResetAnimation] = useState(false)
   // const audiosRef = useRef(AUDIO_FILES.map(file => new Audio(file)))
   const [currAudio, setCurrAudio] = useState(-1)
