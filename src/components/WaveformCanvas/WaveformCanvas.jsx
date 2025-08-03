@@ -37,12 +37,8 @@ const WaveformCanvas = memo(() => {
     }
 
     return (
-        <canvas ref={canvasRef} style={{
-            // position: 'absolute',
-            // top: '0',
-            // left: '0'
-        }}>
-        </canvas>)
+        <canvas ref={canvasRef}></canvas>
+    )
 })
 
 

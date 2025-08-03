@@ -16,16 +16,13 @@
 }
 
 .tuner-peg {
-    /* color: darkslategray; */
     color: hsl(0, 0%, 0%);
     font-size: 1.4rem;
     font-weight: bold;
 
     /* TODO: make this better */
     margin: 0px 10px 0px 10px;
-    /* border: 4px solid black; */
     border-radius: 100%;
-    /* background-color: gainsboro; */
     background-color: hsl(0, 0%, 80%);
     width: 50px;
     height: 50px;
@@ -41,40 +38,21 @@
 
 }
 
-.tuner-peg:hover {
-    /* border-color: #535bf2;
-    transform: scale(1.2); */
-    /* background-color: #cccfff; */
-}
-
 .tuner-peg-activated {
-    /* border-color: #535bf2; */
-    /* background-color: hsl(0, 0%, 40%); */
     background-color: var(--chip-select);
     color: var(--tuner-text-color);
     transform: scale(1.2);
 }
 
 .tuner-peg-tuned {
-    /* background-color: #cccfff; */
     background-color: hsl(120, 61%, 70%);
     color: hsl(120, 61%, 30%);
 }
 
-/* SVG */
-/* svg {
-    width: 100%;
-    height: auto;
-    background-color: red;
-} */
-
 .tuner-peg-container-svg {
     width: 100%;
     height: auto;
-    /* background-color: red; */
     box-sizing: border-box;
-
-    /* padding: 0 10px; */
 }
 
 .tuner-peg-svg {

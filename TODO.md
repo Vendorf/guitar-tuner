@@ -6,7 +6,9 @@ Need to do a bunch of cleanup now
 
 And need to get detail display to be a pop out with smaller text and things nicely grouped etc
 
-And also need to hide away the darkmode icon on small screens
+And then should fiddle with getting the tuner working a lil better too
+
+Then can go ahead and add the instrument selection thing and generic tuning
 
 July 31 2025
 

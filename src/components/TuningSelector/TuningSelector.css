@@ -66,8 +66,6 @@
 
 
 /* from https://codepen.io/bhv/pen/vRmRZR */
-/* $md-chip-height: 32px; */
-/* $md-chip-color: #e0e0e0; */
 
 .md-chip {
     color: var(--chip-text-color);
@@ -146,14 +144,12 @@
 }
 
 .md-chips .md-chip {
-    /* margin: 0 5px 3px 0; */
     margin: 0 0.315rem 0.19rem 0;
 }
 
 .md-chip-raised {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
-
 
 /* from https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ (https://codepen.io/shadeed/pen/jWBjVd)*/
 /* Requires position: relative on NON-SCROLLING WRAPPER of container */
@@ -170,8 +166,6 @@
 
 .shadow--left {
     left: 0;
-    /* background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent); */
     background: -webkit-linear-gradient(90deg, var(--background-color), transparent);
     background: linear-gradient(90deg, var(--background-color), transparent);
     opacity: 0;
@@ -179,8 +173,6 @@
 
 .shadow--right {
     right: 0;
-    /* background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent);
-  background: linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent); */
     background: -webkit-linear-gradient(270deg, var(--background-color), transparent);
     background: linear-gradient(270deg, var(--background-color), transparent);
 }

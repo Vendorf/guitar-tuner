@@ -29,8 +29,6 @@ and then define the functional vars in terms of those
 
 :root {
   --background-color: hsl(0, 0%, 91%);
-  /* --text-color: rgba(255, 255, 255, 0.87); */
-  /* --text-color: hsla(0, 0%, 100%, 0.87); */
   --text-color: hsl(0, 0%, 12%);
 
   /* CARD */
@@ -41,9 +39,6 @@ and then define the functional vars in terms of those
   --chip-regular: hsl(0, 0%, 45%);
   --chip-hover: hsl(0, 0%, 33.5%);
   --chip-select: hsl(0, 0%, 23%);
-  /* --chip-regular: hsl(0, 0%, 47%);
-  --chip-select: hsl(0, 0%, 35%);
-  --chip-hover: hsl(0, 0%, 22%); */
 
   /* TUNING SVG */
   --tick-color: hsl(0, 0%, 79.5%);
@@ -62,10 +57,7 @@ and then define the functional vars in terms of those
   font-weight: 400;
 
   color-scheme: light dark;
-  /* color: rgba(255, 255, 255, 0.87); */
   color: var(--text-color);
-  /* background-color: #242424; */
-  /* background-color: #e8e8e8; */
   background-color: var(--background-color);
 
   font-synthesis: none;
@@ -76,7 +68,6 @@ and then define the functional vars in terms of those
 
 .dark-mode {
   --background-color: hsl(0, 0%, 12%);
-  /* --text-color: #ffffff; */
   --text-color: hsl(0, 0%, 80%);
 
   /* CARD */
@@ -84,11 +75,6 @@ and then define the functional vars in terms of those
 
   /* CHIPS */
   --chip-text-color: hsla(0, 0%, 0%, 0.87);
-  /* --chip-regular: hsl(0, 0%, 50%);
-  --chip-select: hsl(0, 0%, 80%);
-  --chip-hover: hsl(0, 0%, 90%); */
-
-  /* --chip-text-color: hsla(0, 0%, 100%, 0.87); */
   --chip-regular: hsl(0, 0%, 56%);
   --chip-hover: hsl(0, 0%, 67.5%);
   --chip-select: hsl(0, 0%, 78%);
@@ -101,41 +87,12 @@ and then define the functional vars in terms of those
   --bubble-background-color: hsl(0, 0%, 10%);
   --tune-label-color: hsl(0, 0%, 56%);
 
-
     /* PEGS */
   --tuner-text-color: hsla(0, 0%, 0%, 0.87);
   --tuner-peg-background-color: hsl(0, 0%, 23.5%);
   --tuner-peg-active: hsl(0, 0%, 67.5%);
-
-
-  /*
-  LIGHT PALLETTE
-  color: hsl(0, 0%, 91%);
-  79.5
-  color: hsl(0, 0%, 68%);
-
-  color: hsl(0, 0%, 45%);
-  33.5
-  color: hsl(0, 0%, 23%);
-
-  color: hsl(0, 0%, 0%); */
-
-
-/* 
-  DARK PALLETTE
-  color: hsl(0, 0%, 12%);
-  23.5
-  color: hsl(0, 0%, 34%);
-  
-  color: hsl(0, 0%, 56%);
-  67.5
-  color: hsl(0, 0%, 78%);
-  
-  color: hsl(0, 0%, 100%); */
-
-
 }
-
+/* 
 a {
   font-weight: 500;
   color: #646cff;
@@ -144,7 +101,7 @@ a {
 
 a:hover {
   color: #535bf2;
-}
+} */
 
 body {
   margin: 0;
@@ -172,7 +129,6 @@ button {
 }
 
 button:hover {
-  /* border-color: #646cff; */
   border-color: #999eff;
 }
 
@@ -180,7 +136,7 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
+/* 
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -194,4 +150,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */

@@ -1,0 +1,62 @@
+.darkmode-float-wrapper {
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 32px;
+    height: 32px;
+    margin: 5px 8px;
+    padding: 3px;
+
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--tick-color);
+}
+
+@media (max-width: 750px) {
+    .darkmode-float-wrapper {
+        top: unset;
+        /* left: unset; */
+
+        bottom: 0;
+        /* right: 0; */
+    }
+
+}
+
+.darkmode-toggle {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    cursor: pointer;
+
+    will-change: filter;
+    transition: filter 0.1s linear;
+}
+
+.darkmode-toggle:hover {
+    filter: drop-shadow(0 0 0.5em var(--text-color));
+}
+
+.sun {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    transition: transform 1s linear;
+}
+
+.sun-off {
+    transform: translateY(200%);
+}
+
+.moon {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    transition: transform 1s linear;
+}
+
+.moon-off {
+    transform: translateY(200%);
+}
