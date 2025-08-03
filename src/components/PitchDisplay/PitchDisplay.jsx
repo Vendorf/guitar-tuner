@@ -141,7 +141,8 @@ const PitchDisplay = () => {
                             <stop offset={`${midOffset}%`} stopColor={`hsl(${LOW_COLOR.h}, ${LOW_COLOR.s}%, ${LOW_COLOR.l*0.75}%)`} />
                             {/* <stop offset={`${midOffset}%`} stopColor={`hsl(${MID_COLOR.h}, ${MID_COLOR.s}%, ${MID_COLOR.l}%)`} /> */}
                             {/* <stop offset={`${highOffset}%`} stopColor={`hsl(${HIGH_COLOR.h}, ${HIGH_COLOR.s}%, ${HIGH_COLOR.l}%)`} />   HIGH_COLOR */}
-                            <stop offset={`${midOffset}%`} stopColor={`hsl(0, 0%, 91%)`} />   {/* HIGH_COLOR */}
+                            {/* <stop offset={`${midOffset}%`} stopColor={`hsl(0, 0%, 91%)`} /> */}
+                            <stop offset={`${midOffset}%`} stopColor={`var(--background-color)`} />   {/* HIGH_COLOR */}
                         </linearGradient>
                     </defs>
                     {/* GRADIENT BACKGROUND */}
@@ -175,7 +176,7 @@ const PitchDisplay = () => {
                                         y1="0"
                                         x2={x}
                                         y2={VIEW_HEIGHT}
-                                        stroke="#ccc"
+                                        stroke="var(--tick-color)"
                                         strokeWidth="0.4"
                                     />
                                     <text
@@ -183,7 +184,7 @@ const PitchDisplay = () => {
                                         y={VIEW_HEIGHT + 3}
                                         fontSize="2.5"
                                         textAnchor="middle"
-                                        fill={cents === 0 ? "black" : "#999"}
+                                        fill={cents === 0 ? "var(--tick-text-accent-color)" : "var(--tick-text-color)"}
                                         fontWeight={cents === 0 ? "bold" : "normal"}
                                     >
                                         {cents > 0 ? `+${cents}c` : `${cents}c`}
@@ -202,8 +203,8 @@ const PitchDisplay = () => {
                             height={VIEW_HEIGHT}
                             fill="rgba(0,255,0,0)"
                         />
-                        <line x1="0" y1={VIEW_HEIGHT} x2="100" y2={VIEW_HEIGHT} stroke="#ccc" strokeDasharray="2,2" strokeWidth="0.5" />
-                        <text x="52" y={VIEW_HEIGHT - 1} fontSize="3" fill="#999">Target</text>
+                        <line x1="0" y1={VIEW_HEIGHT} x2="100" y2={VIEW_HEIGHT} stroke="var(--tick-color)" strokeDasharray="2,2" strokeWidth="0.5" />
+                        <text x="52" y={VIEW_HEIGHT - 1} fontSize="3" fill="var(--tick-text-color)">Target</text>
                         {/* <line x1='50' y1='100' x2='50' y2='0' stroke='black' strokeWidth='0.6'></line> */}
                         {drawBoxes.map(box => {
                             const { width, offsetX, y, alpha, color, colorHsl, colorHslDark } = computeBoxProps(box)
@@ -242,7 +243,7 @@ const PitchDisplay = () => {
                                     ry="1.5"
                                     width={bubbleWidth}
                                     height="5"
-                                    fill="#fff"
+                                    fill="var(--bubble-background-color)"
                                     fillOpacity="0.5"
                                     stroke={lastBoxProps.colorHslDark}
                                     strokeWidth="0.3"
@@ -256,7 +257,7 @@ const PitchDisplay = () => {
                                     fill={lastBoxProps.colorHslDark}
                                     textAnchor="middle"
                                     fontWeight="bold"
-                                    stroke="#fff"
+                                    stroke="var(--bubble-background-color)"
                                     strokeWidth="0.2"
                                     paintOrder="stroke"
                                 >
@@ -267,7 +268,7 @@ const PitchDisplay = () => {
                     </g>
                     {/* TARGET NOTE */}
                     <g>
-                        <line x1={0} y1={VIEW_HEIGHT+targetNoteOffset} x2={100} y2={VIEW_HEIGHT+targetNoteOffset} stroke="#ccc" strokeWidth="0.1"></line>
+                        <line x1={0} y1={VIEW_HEIGHT+targetNoteOffset} x2={100} y2={VIEW_HEIGHT+targetNoteOffset} stroke="var(--tick-color)" strokeWidth="0.1"></line>
                         {/* Target Note Label */}
                         <text
                             x="50"
@@ -275,8 +276,8 @@ const PitchDisplay = () => {
                             fontSize="6"
                             fontWeight="bold"
                             textAnchor="middle"
-                            fill={inTune ? "limegreen" : "#222"}
-                            stroke={inTune ? "limegreen" : "#222"}
+                            fill={inTune ? "limegreen" : "var(--text-color)"}
+                            stroke={inTune ? "limegreen" : "var(--text-color)"}
                             strokeWidth="0.4"
                             paintOrder="stroke"
                         >
@@ -289,7 +290,7 @@ const PitchDisplay = () => {
                                 y={VIEW_HEIGHT+targetNoteOffset+14}
                                 fontSize="3"
                                 textAnchor="middle"
-                                fill="#777"
+                                fill="var(--tune-label-color)"
                                 fontStyle="italic"
                             >
                                 {lastBox.cents > 0 ? "↓ Tune Down" : "↑ Tune Up"}

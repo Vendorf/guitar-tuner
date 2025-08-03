@@ -49,8 +49,9 @@
 
 .tuner-peg-activated {
     /* border-color: #535bf2; */
-    background-color: hsl(0, 0%, 40%);
-    color: hsla(0, 0%, 100%, 0.87);
+    /* background-color: hsl(0, 0%, 40%); */
+    background-color: var(--chip-select);
+    color: var(--tuner-text-color);
     transform: scale(1.2);
 }
 
@@ -77,21 +78,22 @@
 }
 
 .tuner-peg-svg {
-    fill: hsl(0, 0%, 80%);
+    fill: var(--tuner-peg-background-color);
     transition: all 0.2s ease-in-out;
 }
 
 .tuner-peg-svg-text {
+    fill: var(--text-color);
     transition: all 0.2s ease-in-out;
 }
 
 .tuner-peg-activated-svg {
-    fill: hsl(0, 0%, 40%);
+    fill: var(--tuner-peg-active);
     transform: scale(1.2);
 }
 
 .tuner-peg-activated-svg-text {
-    fill: hsla(0, 0%, 100%, 0.87);
+    fill: var(--tuner-text-color);
     transform: scale(1.2);
 }
 

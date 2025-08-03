@@ -1,6 +1,6 @@
 .pitch-wrapper {
     display: flex;
-    color: darkslategray;
+    /* color: darkslategray; */
     align-items: baseline; /* Aligns text on baseline */
     justify-content: space-evenly;
     padding: 0 2em 0 2em;
@@ -33,7 +33,15 @@ svg {
 .detail-toggle {
     margin-left: auto;
     margin-right: 3%;
-    color: #888;
+    /* color: #888; */
+    color: var(--tune-label-color);
     cursor: pointer;
     align-self: flex-end;
+}
+
+.waveform-label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 5px;
+    text-align: left;
 }

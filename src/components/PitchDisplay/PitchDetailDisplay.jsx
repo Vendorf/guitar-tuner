@@ -22,7 +22,11 @@ const PitchDetailDisplay = ({ display }) => {
     const targetFreq = notes[targetNote]?.frequency ?? 0
 
     return (
-        <div style={{display: display ? '' : 'none'}}>
+        <div style={{ display: display ? '' : 'none' }}>
+            <div className="card">
+                <div className="waveform-label">Waveform</div>
+                <WaveformCanvas></WaveformCanvas>
+            </div>
             <div className="card">
                 {/* <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button> */}
                 <div className="pitch-wrapper">
@@ -38,7 +42,7 @@ const PitchDetailDisplay = ({ display }) => {
                     <div className="pitch-label">Note:</div> <div className="pitch-value">{nearestNoteName}</div>
                 </div>
             </div>
-
+        
             <div className="card">
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Target id:</div> <div className="pitch-value">{targetNote}</div>
@@ -58,14 +62,12 @@ const PitchDetailDisplay = ({ display }) => {
                     <div className="pitch-label">Cents:</div> <div className="pitch-value">{Math.round(centsDist * 100) / 100}</div>
                 </div>
             </div>
-            <div className="card">
-                <WaveformCanvas></WaveformCanvas>
-            </div>
+
             <div className="card">
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Update:</div> <div className="pitch-value">{updates}</div>
                 </div>
-                <pre style={{ color: 'black', textAlign: 'left' }}>{history.length} {JSON.stringify(history, null, 2)}</pre>
+                <pre style={{ textAlign: 'left' }}>{history.length} {JSON.stringify(history, null, 2)}</pre>
             </div>
 
         </div>

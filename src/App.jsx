@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -48,6 +48,14 @@ function App() {
 
   }
 
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark-mode')
+    } else {
+      document.documentElement.classList.remove('dark-mode')
+    }
+  }, [darkMode]);
+
   const audio = new Audio(guitar1_stalker)
 
   // const [playAudio, stopPlayAudio]
@@ -85,7 +93,8 @@ function App() {
     <>
       <AudioProvider>
         <TuningProvider>
-          <div className='app-container'>
+          {/* <div className={`app-container ${darkMode ? 'dark-mode' : ''}`}> */}
+          <div className={`app-container`}>
             {/* <img src={bear} className="logo" alt="Zustand Bear" onClick={() => audio.play()} /> */}
             <div className='all-container'>
               <StartButton></StartButton>
@@ -96,7 +105,7 @@ function App() {
               <div className='camping-scene'>
                 <div className='camping-box'>
                   <img src={bear} className="bear" alt="Zustand Bear" onClick={() => audio.play()} />
-                  <img src={campfire} className="campfire" alt="Campfire" onClick={() => toggleDark()}/>
+                  <img src={campfire} className="campfire" alt="Campfire" onClick={() => toggleDark()} />
                   {/* <img src={flame} className='flame' style={{display: darkMode ? '' : 'none'}} alt='Flame' /> */}
                   {/* <img src={flame} className={`flame ${darkMode ? '' : 'flame-off'}`} alt='Flame' /> */}
                   {/* <img src={soot} className={`soot ${darkMode ? '' : ''}`} alt='Soot' style={{ display: darkMode ? 'none' : '' }} /> */}

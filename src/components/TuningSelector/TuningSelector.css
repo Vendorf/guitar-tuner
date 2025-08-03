@@ -22,7 +22,8 @@
 }
 
 .tuning-label {
-    color: #888;
+    /* color: #888; */
+    color: var(--tune-label-color);
     /* font-size: 12px; */
     font-size: 0.75rem;
     font-weight: bold;
@@ -69,8 +70,9 @@
 /* $md-chip-color: #e0e0e0; */
 
 .md-chip {
+    color: var(--chip-text-color);
     display: inline-block;
-    background: #888;
+    background: var(--chip-regular);
     padding: 0 0.75rem;
     border-radius: 2rem;
     font-size: 0.8125rem;
@@ -80,7 +82,7 @@
 }
 
 .md-chip-hover:hover {
-    background: #444;
+    background: var(--chip-hover);
 }
 
 .md-chip-clickable {
@@ -88,7 +90,7 @@
 }
 
 .md-chip-selected {
-    background: #666;
+    background: var(--chip-select);
 }
 
 .md-chip,
@@ -170,8 +172,8 @@
     left: 0;
     /* background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent);
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent); */
-    background: -webkit-linear-gradient(90deg, #e8e8e8, transparent);
-    background: linear-gradient(90deg, #e8e8e8, transparent);
+    background: -webkit-linear-gradient(90deg, var(--background-color), transparent);
+    background: linear-gradient(90deg, var(--background-color), transparent);
     opacity: 0;
 }
 
@@ -179,6 +181,6 @@
     right: 0;
     /* background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent);
   background: linear-gradient(270deg, rgba(0, 0, 0, 0.15), transparent); */
-    background: -webkit-linear-gradient(270deg, #e8e8e8, transparent);
-    background: linear-gradient(270deg, #e8e8e8, transparent);
+    background: -webkit-linear-gradient(270deg, var(--background-color), transparent);
+    background: linear-gradient(270deg, var(--background-color), transparent);
 }
