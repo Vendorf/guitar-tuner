@@ -154,6 +154,12 @@ function App() {
 
               </div>
             </div>
+
+            {/* <div className='darkmode-tray-wrapper'>
+              <div className='darkmode-tray'>
+                <div className='darkmode-tray-handle'>bbbbbbbb</div>
+              </div>
+            </div> */}
             {/* <img src={bear} className="logo" alt="Zustand Bear" onClick={() => audio.play()} /> */}
             <div className='all-container'>
               <StartButton></StartButton>
