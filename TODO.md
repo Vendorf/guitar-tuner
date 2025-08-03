@@ -1,5 +1,11 @@
 # TODO
 
+August 2 2025
+
+Need to do a bunch of cleanup now
+
+And need to get detail display to be a pop out with smaller text and things nicely grouped etc
+
 July 31 2025
 
 Need to try this clamp shit: https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
