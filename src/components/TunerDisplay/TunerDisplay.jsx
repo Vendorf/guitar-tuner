@@ -3,17 +3,19 @@ import { useTuning } from '../../context/TuningContext'
 import { TUNINGS } from '../../constants/tuningConstants'
 import './TunerDisplay.css'
 import TuningSelector from '../TuningSelector/TuningSelector'
+import { useSynth } from '../../context/SynthContext'
 
-const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, name }) => {
+const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick }) => {
+    // console.log(isSynthHeld)
     return (
-        <g key={key}>
+        <g key={key} className='tuner-peg-svg-g' onClick={handleClick}>
             {/* <circle cx={cx} cy={cy} r={r} fill={isTuned
                 ? 'hsl(120, 61%, 70%)'
                 : isActived
                     ? 'hsl(0, 0%, 40%)'
                     : 'hsl(0, 0%, 80%)'} /> */}
             <circle
-                className={`tuner-peg-svg ${isActived ? 'tuner-peg-activated-svg' : ''} ${isTuned ? 'tuner-peg-tuned-svg' : ''}`}
+                className={`tuner-peg-svg ${isActived ? 'tuner-peg-activated-svg' : ''} ${isTuned ? 'tuner-peg-tuned-svg' : ''} ${isSynthHeld ? `tuner-peg-held-svg` : ``}`}
                 cx={cx}
                 cy={cy}
                 r={r}
@@ -50,7 +52,8 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, name }) => {
  * @returns 
  */
 const TunerDisplay = () => {
-    const { tuningMode, noteInfo: { targetNote }, notesTuned } = useTuning()
+    const { notes, tuningMode, noteInfo: { targetNote }, notesTuned } = useTuning()
+    const { triggerTone, holdTone, heldFreq } = useSynth()
     const strings = TUNINGS[tuningMode].strings
 
     const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetNote)
@@ -62,7 +65,10 @@ const TunerDisplay = () => {
     const pegRadius = 3.4
     const widthPerPeg = VIEW_WIDTH / numPegs
 
-
+    const playNote = (noteFreq) => {
+        // triggerTone(noteFreq)
+        holdTone(noteFreq)
+    }
 
     return (
         <div className='tuner-display-container card'>
@@ -79,14 +85,16 @@ const TunerDisplay = () => {
             <svg className="tuner-peg-container-svg unhighlightable" viewBox='0 0 60 10'>
                 {strings.map((s, i) => {
                     const note = TUNINGS[tuningMode].strings_ids[i]
+                    const noteFreq = notes[note]?.frequency
                     const isTuned = notesTuned.has(note)
                     const isActived = (i === targetIdx)
+                    const isSynthHeld = (noteFreq === heldFreq)
 
                     const cx = (i * widthPerPeg) + (widthPerPeg / 2)
                     const cy = VIEW_HEIGHT / 2
                     const r = pegRadius
 
-                    return TunerPegSVG({ key: i, cx, cy, r, isTuned, isActived, name: s })
+                    return TunerPegSVG({ key: i, cx, cy, r, isTuned, isActived, isSynthHeld, name: s, handleClick: () => playNote(noteFreq) })
                     // return (<div key={i} className={`tuner-peg ${i == targetIdx ? 'tuner-peg-activated' : ''} ${isTuned ? 'tuner-peg-tuned' : ''}`}>{s}</div>)
                 })}
             </svg>

@@ -55,8 +55,13 @@
     box-sizing: border-box;
 }
 
+.tuner-peg-svg-g {
+    cursor: pointer;
+}
+
 .tuner-peg-svg {
     fill: var(--tuner-peg-background-color);
+    stroke-width: 0px;
     transition: all 0.2s ease-in-out;
 }
 
@@ -68,6 +73,11 @@
 .tuner-peg-activated-svg {
     fill: var(--tuner-peg-active);
     transform: scale(1.2);
+}
+
+.tuner-peg-held-svg {
+    stroke: var(--accent-purple);
+    stroke-width: 0.75px;
 }
 
 .tuner-peg-activated-svg-text {

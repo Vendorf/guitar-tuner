@@ -52,6 +52,9 @@ and then define the functional vars in terms of those
   --tuner-peg-background-color: hsl(0, 0%, 79.5%);
   --tuner-peg-active: hsl(0, 0%, 33.5%);
 
+  /* MISC */
+  --accent-purple: #999eff;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -129,7 +132,7 @@ button {
 }
 
 button:hover {
-  border-color: #999eff;
+  border-color: var(--accent-purple);
 }
 
 button:focus,

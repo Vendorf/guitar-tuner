@@ -7,6 +7,7 @@ import TunerDisplay from './components/TunerDisplay/TunerDisplay'
 import StartButton from './components/StartButton/StartButton'
 import DarkmodeToggle from './components/DarkmodeToggle/DarkmodeToggle'
 import CampingScene from './components/CampingScene/CampingScene'
+import { SynthProvider } from './context/SynthContext'
 
 function App() {
   const isSystemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -39,18 +40,20 @@ function App() {
     <>
       <AudioProvider>
         <TuningProvider>
-          <div className={`app-container`}>
-            <DarkmodeToggle darkMode={darkMode} toggleDark={toggleDark}></DarkmodeToggle>
-            <div className='all-container'>
-              <StartButton></StartButton>
-              <TunerDisplay></TunerDisplay>
-              <PitchDisplay></PitchDisplay>
+          <SynthProvider>
+            <div className={`app-container`}>
+              <DarkmodeToggle darkMode={darkMode} toggleDark={toggleDark}></DarkmodeToggle>
+              <div className='all-container'>
+                <StartButton></StartButton>
+                <TunerDisplay></TunerDisplay>
+                <PitchDisplay></PitchDisplay>
+              </div>
+              <div className='sidebar sidebar-left'>
+                <CampingScene resetAnimation={resetAnimation} darkMode={darkMode} toggleDark={toggleDark}></CampingScene>
+              </div>
+              <div className='sidebar sidebar-right'></div>
             </div>
-            <div className='sidebar sidebar-left'>
-              <CampingScene resetAnimation={resetAnimation} darkMode={darkMode} toggleDark={toggleDark}></CampingScene>
-            </div>
-            <div className='sidebar sidebar-right'></div>
-          </div>
+          </SynthProvider>
         </TuningProvider>
       </AudioProvider>
     </>
