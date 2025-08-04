@@ -24,8 +24,12 @@ const PitchDetailDisplay = ({ display }) => {
     return (
         <div style={{ display: display ? '' : 'none' }}>
             <div className="card">
-                <div className="waveform-label">Waveform</div>
-                <WaveformCanvas></WaveformCanvas>
+                <div className="waveform-label">Time Data Waveform</div>
+                <WaveformCanvas drawTime={true}></WaveformCanvas>
+            </div>
+            <div className="card">
+                <div className="waveform-label">Frequency Data Waveform</div>
+                <WaveformCanvas drawTime={false}></WaveformCanvas>
             </div>
             <div className="card">
                 {/* <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button> */}

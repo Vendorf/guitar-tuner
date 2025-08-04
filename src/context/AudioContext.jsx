@@ -1,7 +1,12 @@
 import { PitchDetector } from "pitchy"
 import { createContext, use, useEffect, useRef, useState } from "react"
 import { getExactNoteFromFrequency } from "../utilities/tuningUtils"
-import usePitchHistory from "../hooks/usePitchHistory"
+// import usePitchHistory from "../hooks/usePitchHistory"
+import scale from '../assets/scale.m4a'
+import hz1000 from '../assets/hz1000.wav'
+import sweep from '../assets/sweep.wav'
+
+// TODO: refactor some of the state passing to be more sane
 
 // TODO: this controls the ultimate precision in FFT
 // I think beyond compute time there's some other tradeoffs here? but smaller seems better
@@ -10,8 +15,15 @@ import usePitchHistory from "../hooks/usePitchHistory"
 // see https://hackernoon.com/guitar-tuner-pitch-detection-for-dummies-ok8e35o9#:~:text=To%20determine%20which%20frequencies%20are%20in%20which%20bin%2C%20we%20can%20use%20the%20following%20formula%3A
 // for a bit of explanation, but should find a better one for more details
 
+const USE_FAKE_INPUT = false
+// const FAKE_INPUT_DATA = new Audio(scale)
+// const FAKE_INPUT_DATA = new Audio(hz1000)
+const FAKE_INPUT_DATA = new Audio(sweep)
+
+
 //CONSTANTS-----------------------------------------------------
 const FFT_SIZE = 8192
+// const FFT_SIZE = 16384
 const MIN_DECIBALS = -20
 const MIN_CLARITY = 0.9
 // const MIN_FREQ = 24.5 // G0
@@ -39,11 +51,12 @@ const AudioProvider = ({ children }) => {
     const animationFrameRef = useRef(undefined)
 
     const [audioTimeData, setAudioTimeData] = useState(new Float32Array(0)) // data from AnalyzerNode
+    const [audioFrequencyData, setAudioFrequencyData] = useState(new Float32Array(0)) // data from AnalyzerNode
     const [started, setStarted] = useState(false) // whether audio is started
     const [pitch, setPitch] = useState(0)
     const [clarity, setClarity] = useState(0)
     const [updates, setUpdates] = useState(0) // number of updates
-    
+
     /**
      * @typedef {Object} HistoryEntry
      * @property {number} pitch pitch detected by PitchDetector
@@ -67,20 +80,25 @@ const AudioProvider = ({ children }) => {
      * Sets `audioDataRef` to contain [AnalyzerNode, PitchDetector, audioData[]]
      * @returns void
      */
-    const initAudio = () => {
+    const initAudio = async () => {
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
         const analyserNode = audioContextRef.current.createAnalyser()
         analyserNode.fftSize = FFT_SIZE
-        return navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-            console.log(audioContextRef, analyserNode)
-            audioContextRef.current.createMediaStreamSource(stream).connect(analyserNode)
-            const detector = PitchDetector.forFloat32Array(analyserNode.fftSize)
-            detector.minVolumeDecibels = MIN_DECIBALS
-            const input = new Float32Array(detector.inputLength)
 
-            audioDataRef.current = [analyserNode, detector, input]
-            // updatePitch(analyserNode, detector, input, audioContextRef.current.sampleRate)
-        })
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        console.log(audioContextRef, analyserNode)
+        if (USE_FAKE_INPUT) {
+            FAKE_INPUT_DATA.loop = true
+            FAKE_INPUT_DATA.play()
+            audioContextRef.current.createMediaElementSource(FAKE_INPUT_DATA).connect(analyserNode)
+        } else {
+            audioContextRef.current.createMediaStreamSource(stream).connect(analyserNode)
+        }
+        const detector = PitchDetector.forFloat32Array(analyserNode.fftSize)
+        detector.minVolumeDecibels = MIN_DECIBALS
+        const inputTime = new Float32Array(detector.inputLength)
+        const inputFreq = new Float32Array(analyserNode.frequencyBinCount)
+        audioDataRef.current = [analyserNode, detector, inputTime, inputFreq]
     }
 
     /**
@@ -125,17 +143,18 @@ const AudioProvider = ({ children }) => {
      * that handle supplying correct parameters and stopping/resuming the requestAnimationFrame loop
      * @param {AnalyserNode} analyserNode the window's AnalyzerNode to get audio data from
      * @param {PitchDetector} detector PitchDetector instance attached to analyzerNode to determine pitch/clarity
-     * @param {Float32Array} input float array to copy analyzerNode data into to supply to detector
+     * @param {Float32Array} inputTime float array to copy analyzerNode data into to supply to detector
      * @param {number} sampleRate audio sample rate of the analyzerNode (ex: 48000 Hz)
      */
-    const updatePitch = (analyserNode, detector, input, sampleRate) => {
-        analyserNode.getFloatTimeDomainData(input)
-        // console.log(input)
-        const [detPitch, detClarity] = detector.findPitch(input, sampleRate)
+    const updatePitch = (analyserNode, detector, inputTime, inputFreq, sampleRate) => {
+        analyserNode.getFloatTimeDomainData(inputTime)
+        analyserNode.getFloatFrequencyData(inputFreq)
+        const [detPitch, detClarity] = detector.findPitch(inputTime, sampleRate)
 
         // Update react state
         if ((detClarity >= MIN_CLARITY) && (detPitch >= MIN_FREQ)) {
-            setAudioTimeData(input) // NOTE: this will on it's own not trigger updates bc same object!
+            setAudioTimeData(inputTime) // NOTE: this will on it's own not trigger updates bc same object!
+            setAudioFrequencyData(inputFreq)
             setPitch(detPitch)
             setClarity(detClarity)
             setHistory((oldHist) => {
@@ -167,11 +186,11 @@ const AudioProvider = ({ children }) => {
 
         // Keep updating
         //TODO: can bind this somehow to get updated state? idk
-        animationFrameRef.current = requestAnimationFrame(() => updatePitch(analyserNode, detector, input, sampleRate))
+        animationFrameRef.current = requestAnimationFrame(() => updatePitch(analyserNode, detector, inputTime, inputFreq, sampleRate))
     }
 
     return (
-        <AudioStateContext value={{ pitch, clarity, history, updates, audioTimeData }}>
+        <AudioStateContext value={{ pitch, clarity, history, updates, audioTimeData, audioFrequencyData }}>
             <AudioControlContext value={{ started, startAudio, stopAudio, killAudio, resetHistory }}>
                 {children}
             </AudioControlContext>
