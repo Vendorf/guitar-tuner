@@ -31,7 +31,7 @@ const initTunings = () => {
  * @returns {Note[]} list of notes containing {id (midi note/index), name, octave, fullName (name + octave)}
  */
 const generateNotes = () => {
-    const notes = [];
+    const notes = []
 
     for (let i = 0; i <= (MAX_OCTAVE - MIN_OCTAVE + 1); i++) {
         const octaveNotes = SCALE.map((n, j) => {
@@ -42,8 +42,8 @@ const generateNotes = () => {
                 octave: i,
                 fullName: `${n}${MIN_OCTAVE + i}`,
                 frequency: computeNoteFrequency(noteId)
-            };
-        });
+            }
+        })
 
         // Append all
         notes.push(...octaveNotes)

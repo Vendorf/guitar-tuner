@@ -1,8 +1,8 @@
-import { createContext, use, useEffect, useRef, useState } from "react";
-import { useAudioControls, useAudioState } from "./AudioContext";
-import { generateNotes, recomputeFrequencies } from "../utilities/tuningUtils";
-import { TUNINGS } from "../constants/tuningConstants";
-import usePitchAnalysis from "../hooks/usePitchAnalysis";
+import { createContext, use, useEffect, useRef, useState } from "react"
+import { useAudioControls, useAudioState } from "./AudioContext"
+import { generateNotes, recomputeFrequencies } from "../utilities/tuningUtils"
+import { TUNINGS } from "../constants/tuningConstants"
+import usePitchAnalysis from "../hooks/usePitchAnalysis"
 
 const TuningContext = createContext(undefined)
 

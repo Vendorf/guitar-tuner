@@ -1,5 +1,67 @@
 # TODO
 
+ Use right: 0 with max-width: calc(100vw - (550px + whatever tf the sidebar size is ig))
+ or really just (100vw-550px) / 2?
+ but then what about when it starts to shrink...... to 500px min or whatever
+ akldjflkajsdlkf
+
+ i think in this case it would be fine cuz it sticks at 550px until it turns into one column.... but whats the general solution :P
+ ig do it like this for now then think about how to do it right
+
+ honesetly maybe the move is making some sort of component for it that takes in a bounding box and the parent it should be attached to with absolute positioning {left, right, top, bottom} info, and resizes its width dynamically based on that
+  (so like, gets parent box, figures out x/y of attachment point, checks against bounding box to clamp its width/height)
+
+  can maybe make it generic enough, like ClampedContainer and takes {children} and can dump them in
+  so it becomes a container around some content that should fill it 100%, and it will set up its size based on whatever
+
+August 5 2025
+
+Okay so summary:
+1. Refactor audio and synth contexts
+2. Hann window and bandpass
+3. Make note class
+4. Documentation
+5. Generic tuner / other instruments
+6. TypeScript?
+7. Bandpass centering stuff idk
+
+
+Refactor ideas with useAudioEngine and useSynthEngine to clean things up
+
+See Pitch detection improvements.pdf in reference
+- Hann window
+- bandpass filter around instrument range
+  - define this for each instrument ig
+  - and for the generic tuner, ig from C1 to C7 or smthng would be good
+  - the idea w centering around the note as below
+
+bandpassFilter.frequency.setValueAtTime(targetFreq, audioContext.currentTime);
+- This lets you focus detection around a user-selected note (like A4 = 440 Hz), improving sensitivity and reducing false detection from harmonics or background noise.
+- This is neat cause could set the bandpass to less than 1 harmonic maybe so we ensure we get the right one (IE, A4 not A5, etc)
+  - idk if this is too harsh tho and will lead to just not detecting; would be better to just transform an A5 detection to an A4 with some heuristics checking if the A4 peak exists etc etc to realize it's the real fundamental frequency
+- In any case can use this when 'sticky' around a note for improvements
+  - Unstick when... smthng
+
+August 4 2025
+
+Need to get tones with full chart I think
+
+Then do some cleanup
+- not sure I like how the synth context currently works
+  - also figure out where to actually do the useref honestly
+- also audiocontext with initaudio etc feels kinda shittily written w how it's passing data raound so fix
+- and some components need to figure out where business logic should live (tuning pegs play sounds, etc - not sure where best maybe okay honestly where it is)
+- Other big thing is if could get some sort of proper 'note' class that we pass around with midi/freq data
+  - So can always just pass the Note object instead of weirdly retrieving shit in different places
+- Then add docs
+  - Would be nice to see this actually deploy too
+- Would also be nice to transition to TS
+
+Then can add generic tuner/guitar/bass/violin dropdown
+- Later also subdropdowns for immediately selecting a tuningMode as well instead of just default
+
+Then ig it would be about adjusting, some little reset icon for resetting the tunings
+
 August 2 2025
 
 Need to do a bunch of cleanup now

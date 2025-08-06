@@ -8,6 +8,7 @@ import StartButton from './components/StartButton/StartButton'
 import DarkmodeToggle from './components/DarkmodeToggle/DarkmodeToggle'
 import CampingScene from './components/CampingScene/CampingScene'
 import { SynthProvider } from './context/SynthContext'
+import ClampedContainer from './libcomponents/ClampedContainer/ClampedContainer'
 
 function App() {
   const isSystemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -44,6 +45,9 @@ function App() {
             <div className={`app-container`}>
               <DarkmodeToggle darkMode={darkMode} toggleDark={toggleDark}></DarkmodeToggle>
               <div className='all-container'>
+                <ClampedContainer className='test-clamped'>
+                  <div>hello</div>
+                </ClampedContainer>
                 <StartButton></StartButton>
                 <TunerDisplay></TunerDisplay>
                 <PitchDisplay></PitchDisplay>

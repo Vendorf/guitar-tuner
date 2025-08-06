@@ -127,8 +127,8 @@ const PitchDisplay = () => {
     const midOffset = Math.round((MID_CENTS / CENTS_PER_SIDE) * 100)
     const highOffset = Math.round((HIGH_CENTS / CENTS_PER_SIDE) * 100)
 
-    const bubbleWidth = 13;
-    const targetNoteOffset = 9.5;
+    const bubbleWidth = 13
+    const targetNoteOffset = 9.5
 
     return (
         <>
