@@ -6,6 +6,8 @@ import './ClampedContainer.css'
 // TODO: this currently does not adjust x/y if our box is too far to the left
 // there we want to adjust width/height by overflow, but also add the overflow to x/y to make it not off the left edge/top of the boundary
 
+// TODO: account for margin/padding?
+
 // TODO: make this adjust x/y as well?
 // maybe not honestly so that it works okay with scrolling and the like; can have another component
 // or a flag to get x/y clamed as well

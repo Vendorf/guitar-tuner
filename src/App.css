@@ -74,6 +74,7 @@
   flex-direction: column;
 }
 
+/* NOTE: this is in a few different stylesheets so if you update 1050px change everywhere */
 @media (max-width: 1050px) {
 
   /* 250 + 550 + 250 for sidebar + content + sidebar */

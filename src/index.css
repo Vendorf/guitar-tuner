@@ -54,6 +54,7 @@ and then define the functional vars in terms of those
 
   /* MISC */
   --accent-purple: #999eff;
+  --detail-background: hsl(0, 0%, 79.5%);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -90,11 +91,15 @@ and then define the functional vars in terms of those
   --bubble-background-color: hsl(0, 0%, 10%);
   --tune-label-color: hsl(0, 0%, 56%);
 
-    /* PEGS */
+  /* PEGS */
   --tuner-text-color: hsla(0, 0%, 0%, 0.87);
   --tuner-peg-background-color: hsl(0, 0%, 23.5%);
   --tuner-peg-active: hsl(0, 0%, 67.5%);
+
+  /* MISC */
+  --detail-background: hsl(0, 0%, 23.5%);
 }
+
 /* 
 a {
   font-weight: 500;
@@ -139,6 +144,7 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
 /* 
 @media (prefers-color-scheme: light) {
   :root {

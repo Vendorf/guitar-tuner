@@ -45,9 +45,6 @@ function App() {
             <div className={`app-container`}>
               <DarkmodeToggle darkMode={darkMode} toggleDark={toggleDark}></DarkmodeToggle>
               <div className='all-container'>
-                <ClampedContainer className='test-clamped'>
-                  <div>hello</div>
-                </ClampedContainer>
                 <StartButton></StartButton>
                 <TunerDisplay></TunerDisplay>
                 <PitchDisplay></PitchDisplay>

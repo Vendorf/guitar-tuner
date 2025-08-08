@@ -5,6 +5,7 @@ import { interpolateHsl } from "../../utilities/colorUtils"
 import PitchDetailDisplay from "./PitchDetailDisplay"
 import './PitchDisplay.css'
 import { CENTS_DIST_IN_TUNE } from "../../constants/tuningConstants"
+import ClampedContainer from "../../libcomponents/ClampedContainer/ClampedContainer"
 
 //TODOS
 // 1. Maybe convert to canvas for performance idk
@@ -65,6 +66,27 @@ const PitchDisplay = () => {
         }
         tick()
         return () => cancelAnimationFrame(frame)
+    }, [])
+
+    // Check if we are in single column mode to remove the ClampedContainer
+    const [isSingleColumn, setIsSingleColumn] = useState(false)
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 1050px)')
+
+        const handleMediaQueryChange = (e) => {
+            setIsSingleColumn(e.matches)
+        };
+
+        // Initial check
+        setIsSingleColumn(mediaQuery.matches);
+
+        // Listen for changes
+        mediaQuery.addEventListener('change', handleMediaQueryChange)
+
+        // Cleanup
+        return () => {
+            mediaQuery.removeEventListener('change', handleMediaQueryChange);
+        }
     }, [])
 
     // Derived values
@@ -132,13 +154,13 @@ const PitchDisplay = () => {
 
     return (
         <>
-            <div className="card">
+            <div className={`card pitch-display ${showDetails ? 'card-remove-edges' : ''}`}>
                 <svg viewBox="0 0 100 100">
                     {/* TODO: use the vars for stopColor and get offset right*/}
                     <defs>
                         <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset={`${lowOffset}%`} stopColor={`hsl(${LOW_COLOR.h}, ${LOW_COLOR.s}%, ${LOW_COLOR.l}%)`} /> {/* LOW_COLOR */}
-                            <stop offset={`${midOffset}%`} stopColor={`hsl(${LOW_COLOR.h}, ${LOW_COLOR.s}%, ${LOW_COLOR.l*0.75}%)`} />
+                            <stop offset={`${midOffset}%`} stopColor={`hsl(${LOW_COLOR.h}, ${LOW_COLOR.s}%, ${LOW_COLOR.l * 0.75}%)`} />
                             {/* <stop offset={`${midOffset}%`} stopColor={`hsl(${MID_COLOR.h}, ${MID_COLOR.s}%, ${MID_COLOR.l}%)`} /> */}
                             {/* <stop offset={`${highOffset}%`} stopColor={`hsl(${HIGH_COLOR.h}, ${HIGH_COLOR.s}%, ${HIGH_COLOR.l}%)`} />   HIGH_COLOR */}
                             {/* <stop offset={`${midOffset}%`} stopColor={`hsl(0, 0%, 91%)`} /> */}
@@ -237,7 +259,7 @@ const PitchDisplay = () => {
                             <g>
                                 {/* Background bubble */}
                                 <rect
-                                    x={Math.max(1, Math.min((50 + (lastBox.cents >= 0 ? lastBoxProps.width + 1.5 - bubbleWidth/2 : -lastBoxProps.offsetX - 16 + bubbleWidth/2 )), 99 - bubbleWidth))}
+                                    x={Math.max(1, Math.min((50 + (lastBox.cents >= 0 ? lastBoxProps.width + 1.5 - bubbleWidth / 2 : -lastBoxProps.offsetX - 16 + bubbleWidth / 2)), 99 - bubbleWidth))}
                                     y={VIEW_HEIGHT + 3.5}
                                     rx="1.5"
                                     ry="1.5"
@@ -251,7 +273,7 @@ const PitchDisplay = () => {
 
                                 {/* Cent deviation text */}
                                 <text
-                                    x={Math.max(1+bubbleWidth/2, Math.min((50 + (lastBox.cents >= 0 ? lastBoxProps.width + 8 - bubbleWidth/2 : -lastBoxProps.offsetX - 8.5 + bubbleWidth/2 )), 99 - bubbleWidth/2))}
+                                    x={Math.max(1 + bubbleWidth / 2, Math.min((50 + (lastBox.cents >= 0 ? lastBoxProps.width + 8 - bubbleWidth / 2 : -lastBoxProps.offsetX - 8.5 + bubbleWidth / 2)), 99 - bubbleWidth / 2))}
                                     y={VIEW_HEIGHT + 7}
                                     fontSize="3"
                                     fill={lastBoxProps.colorHslDark}
@@ -268,11 +290,11 @@ const PitchDisplay = () => {
                     </g>
                     {/* TARGET NOTE */}
                     <g>
-                        <line x1={0} y1={VIEW_HEIGHT+targetNoteOffset} x2={100} y2={VIEW_HEIGHT+targetNoteOffset} stroke="var(--tick-color)" strokeWidth="0.1"></line>
+                        <line x1={0} y1={VIEW_HEIGHT + targetNoteOffset} x2={100} y2={VIEW_HEIGHT + targetNoteOffset} stroke="var(--tick-color)" strokeWidth="0.1"></line>
                         {/* Target Note Label */}
                         <text
                             x="50"
-                            y={VIEW_HEIGHT+targetNoteOffset+9}
+                            y={VIEW_HEIGHT + targetNoteOffset + 9}
                             fontSize="6"
                             fontWeight="bold"
                             textAnchor="middle"
@@ -287,7 +309,7 @@ const PitchDisplay = () => {
                         {lastBox && !inTune && (
                             <text
                                 x="50"
-                                y={VIEW_HEIGHT+targetNoteOffset+14}
+                                y={VIEW_HEIGHT + targetNoteOffset + 14}
                                 fontSize="3"
                                 textAnchor="middle"
                                 fill="var(--tune-label-color)"
@@ -312,8 +334,14 @@ const PitchDisplay = () => {
                     </g>
                 </svg>
                 <div className="detail-toggle" onClick={toggleDetails}>{showDetails ? "Hide" : "Show"} Details</div>
+                {!isSingleColumn && <ClampedContainer className="detail-container" style={{ display: showDetails ? '' : 'none' }}>
+                    <PitchDetailDisplay display={showDetails}></PitchDetailDisplay>
+                </ClampedContainer>}
+                {isSingleColumn && <div className="detail-container" style={{ display: showDetails ? '' : 'none' }}>
+                    <PitchDetailDisplay display={showDetails}></PitchDetailDisplay>
+                </div>}
             </div>
-            <PitchDetailDisplay display={showDetails}></PitchDetailDisplay>
+            {/* <PitchDetailDisplay display={showDetails}></PitchDetailDisplay> */}
         </>
     )
 }
