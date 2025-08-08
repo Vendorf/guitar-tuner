@@ -26,10 +26,11 @@ import './ClampedContainer.css'
  * @param {Object} boundingElementRef the React ref to the DOM element which should bound this component. Will use the 
  * `boundingElementRef.current` value to extract the bounding rectangle from the element
  * @param {Object} boundingRect the bounding rect supplied directly
+ * @param {Object} style React style prop for overriding CSS styles
  * @param {any[]} props remaining props to apply to this container (ex: className)
  * @returns container div that will clamp its width/height styles to the bounding element's bounding box, supplied bounding box, or window size
  */
-const ClampedContainer = ({ children, boundingElementRef, boundingRect, ...props }) => {
+const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, ...props }) => {
 
     console.log('props', props)
 
@@ -60,21 +61,19 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, ...props
             // console.log('init styles', initialStyle)
 
             console.log('pre dims', selfRef.current.offsetWidth, selfRef.current.offsetHeight)
-            
+
             // Unset the width/height style to go back to CSS default
-            // TODO: if in the style prop they have their own width/height they tried to set, then use those as the default and unset
-            //       to those values instead of ''; so just be like `default = style?.width ? style.widh : ''` or whatever
-            selfRef.current.style.width = ''
-            selfRef.current.style.height = ''
+            // If they supply their own style prop with width/height overrides for the CSS defaults, use those instead
+            selfRef.current.style.width = style?.width ?? ''
+            selfRef.current.style.height = style?.height ?? ''
+            
             //TODO: offseWidth/Height probably better than getBoundingClientRect(), but not on SVG
             // (I don't think we care though given this is a div always, can't use this inside SVG)
-            const preferredDims = {
-                width: selfRef.current.offsetWidth,
-                height: selfRef.current.offsetHeight
-            }
-            console.log('preferred dims', preferredDims)
-            //TODO: just merge preferredDims into rect.x and rect.y and rename to preferredRect
-            const rect = selfRef.current.getBoundingClientRect()
+            const preferredRect = selfRef.current.getBoundingClientRect()
+            // Set preferred width/height with offset to include any CSS transforms
+            preferredRect.width = selfRef.current.offsetWidth
+            preferredRect.height = selfRef.current.offsetHeight
+            console.log('preferred rect', preferredRect)
 
             let boundDims = undefined
             if (boundingRect) {
@@ -114,13 +113,13 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, ...props
             // How far we are beyond the window width/height
             // This is offset to adjust by to get to the end of the window
             // (or 0, if end position is smaller than end of window)
-            const overflowWidth = Math.max(0, (rect.x + preferredDims.width) - (boundDims.x + boundDims.width))
-            const overflowHeight = Math.max(0, (rect.y + preferredDims.height) - (boundDims.y + boundDims.height))
+            const overflowWidth = Math.max(0, (preferredRect.x + preferredRect.width) - (boundDims.x + boundDims.width))
+            const overflowHeight = Math.max(0, (preferredRect.y + preferredRect.height) - (boundDims.y + boundDims.height))
 
             // Squeezed dimensions
             const adjustedDims = {
-                width: preferredDims.width - overflowWidth,
-                height: preferredDims.height - overflowHeight
+                width: preferredRect.width - overflowWidth,
+                height: preferredRect.height - overflowHeight
             }
 
             console.log('adjusted dims', adjustedDims)
@@ -176,17 +175,17 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, ...props
     }, [boundingRect, boundingElementRef]) //TODO: is this best
     // }, [])
 
+    // For React version
+    // const clampedStyle = dimensions ? { width: dimensions.width, height: dimensions.height } : {}
+    // const mergedStyle = { ...style, ...clampedStyle }
 
     return (
         <div
             ref={selfRef}
+            // style={mergedStyle}
+            style={style}
             {...props}
-        // TODO: would need to merge style declarations
         // style={{width: '60%'}}
-        // style={dimensions ? {
-        //     width: dimensions.width,
-        //     height: dimensions.height
-        // } : {}}
         >
             {children}
         </div>
