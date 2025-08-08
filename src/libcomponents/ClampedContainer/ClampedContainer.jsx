@@ -3,11 +3,14 @@ import './ClampedContainer.css'
 
 // SEE ./notes.md for rationales/etc
 
-//TODO: make this adjust x/y as well?
+// TODO: this currently does not adjust x/y if our box is too far to the left
+// there we want to adjust width/height by overflow, but also add the overflow to x/y to make it not off the left edge/top of the boundary
+
+// TODO: make this adjust x/y as well?
 // maybe not honestly so that it works okay with scrolling and the like; can have another component
 // or a flag to get x/y clamed as well
 
-//TODO: should we make this a portal? not really sure if its necessary but maybe good for some edge cases?
+// TODO: should we make this a portal? not really sure if its necessary but maybe good for some edge cases?
 // idk need to think... https://react.dev/reference/react-dom/createPortal
 
 /**
@@ -32,7 +35,7 @@ import './ClampedContainer.css'
  */
 const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, ...props }) => {
 
-    console.log('props', props)
+    //console.log('props', props)
 
     const selfRef = useRef(undefined)
     // For React version
@@ -46,6 +49,21 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, .
             return
         }
 
+        /**
+         * Clamps the container to the provided boundary (boundingElementRef/boundingRect/window size)
+         * 
+         * This will directly manipulate the DOM in order to resize the element
+         * 
+         * Note that computing the preferred size/setting the clamped size triggers reflows that might cause the browser to repaint,
+         * potentially leading to some visual layout thrashing
+         * 
+         * This is a 2-phase constraint
+         * 
+         * First, we constrain one dimensions, allowing the other to potentially change with it's default style rules to fit content
+         * Next, we constrain the second dimension, now placing it within bounds and potentially cutting off content
+         * Note this means there are 2 reflows and potential repaints per constraint
+         * See the ClampTest for an example
+         */
         const constrainDimensions = () => {
             if (!selfRef.current) {
                 // Ref not yet attached, abort
@@ -53,84 +71,121 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, .
                 return
             }
 
+            //// Get Boundary /////////////////////////////////////////////////
+            /**
+             * Retrieves bounding box that container must be constrained within
+             * @returns {Object} dimensions of the boundary including `x`, `y`, `width`, `height`
+             */
+            const getBoundary = () => {
+                if (boundingRect) {
+                    return boundingRect
+                } else if (boundingElementRef?.current) {
+                    const boundDims = boundingElementRef.current.getBoundingClientRect()
+                    // Account for scrollbars
+                    const scrollbarWidth = boundingElementRef.current.offsetWidth - boundingElementRef.current.clientWidth
+                    const scrollbarHeight = boundingElementRef.current.offsetHeight - boundingElementRef.current.clientHeight
+                    const availableWidth = boundDims.width - scrollbarWidth
+                    const availableHeight = boundDims.height - scrollbarHeight
+
+                    boundDims.width = availableWidth
+                    boundDims.height = availableHeight
+                    return boundDims
+                } else {
+                    const windowDimensions = {
+                        width: window.innerWidth,
+                        height: window.innerHeight,
+                        x: 0,
+                        y: 0
+                    }
+                    return windowDimensions
+                }
+            }
+            const boundDims = getBoundary()
+            ///////////////////////////////////////////////////////////////////
+
+            //// Do Constrain /////////////////////////////////////////////////
             // For resetting in React version
             // const initialStyle = {
             //     width: selfRef.current.style.width,
             //     height: selfRef.current.style.height,
             // }
             // console.log('init styles', initialStyle)
-
-            console.log('pre dims', selfRef.current.offsetWidth, selfRef.current.offsetHeight)
+            //console.log('pre dims', selfRef.current.offsetWidth, selfRef.current.offsetHeight)
 
             // Unset the width/height style to go back to CSS default
             // If they supply their own style prop with width/height overrides for the CSS defaults, use those instead
             selfRef.current.style.width = style?.width ?? ''
             selfRef.current.style.height = style?.height ?? ''
-            
+
             //TODO: offseWidth/Height probably better than getBoundingClientRect(), but not on SVG
             // (I don't think we care though given this is a div always, can't use this inside SVG)
             const preferredRect = selfRef.current.getBoundingClientRect()
             // Set preferred width/height with offset to include any CSS transforms
             preferredRect.width = selfRef.current.offsetWidth
             preferredRect.height = selfRef.current.offsetHeight
-            console.log('preferred rect', preferredRect)
+            //console.log('preferred rect', preferredRect)
 
-            let boundDims = undefined
-            if (boundingRect) {
-                boundDims = boundingRect
-            } else if (boundingElementRef?.current) {
-                boundDims = boundingElementRef.current.getBoundingClientRect()
-                // Account for scrollbars
-                const scrollbarWidth = boundingElementRef.current.offsetWidth - boundingElementRef.current.clientWidth
-                const scrollbarHeight = boundingElementRef.current.offsetHeight - boundingElementRef.current.clientHeight
-                const availableWidth = boundDims.width - scrollbarWidth
-                const availableHeight = boundDims.height - scrollbarHeight
+            /**
+             * This works fine but for clarity just doing some code reuse with constrainWidth and constrainHeight so easier to follow
+             * @param {string} dimension 'width' or 'height'
+             */
+            // const constrainSingleDimension = (dimension) => {
+            //     const position = dimension === 'width' ? 'x' : 'y'
 
-                boundDims.width = availableWidth
-                boundDims.height = availableHeight
-            } else {
-                const windowDimensions = {
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                    x: 0,
-                    y: 0
-                }
-                boundDims = windowDimensions
+            //     // How far we are beyond the window width/height
+            //     // This is offset to adjust by to get to the end of the window (or 0, if end position is smaller than end of window)
+            //     const overflow = Math.max(0, (preferredRect[position] + preferredRect[dimension]) - (boundDims[position] + boundDims[dimension]))
+
+            //     // Squeezed dimension
+            //     const adjustedDim = preferredRect[dimension] - overflow
+
+            //     //// DIRECT DOM VERSION ///////////////////////////////////////
+            //     selfRef.current.style[dimension] = `${adjustedDim}px`
+            //     ///////////////////////////////////////////////////////////////
+            // }
+
+            /**
+             * Clamps the container to the boundary only along the width
+             */
+            const constrainWidth = () => {
+                // How far we are beyond the window width/height
+                // This is offset to adjust by to get to the end of the window (or 0, if end position is smaller than end of window)
+                const overflowWidth = Math.max(0, (preferredRect.x + preferredRect.width) - (boundDims.x + boundDims.width))
+
+                // Squeezed dimension
+                const adjustedWidth = preferredRect.width - overflowWidth
+
+                //// DIRECT DOM VERSION ///////////////////////////////////////
+                selfRef.current.style.width = `${adjustedWidth}px`
+                ///////////////////////////////////////////////////////////////
             }
 
-            //// Do Constrain /////////////////////////////////////////////////
-            //TODO: this actually needs to be a 2 phase constrain I think:
-            // first, we constrain width for example, and set the style --> this will cause height to potentially change
-            // to fit content
-            // next, we constrain the new height now --> content may now cut off, but it's by the bounds
-            // as otherwise we constrain width and height together --> content no longer fits
-            // this will mean two reflows tho :P ig make it an optional flag thing
-            // see the ClampTest for example
-            // also make sure they can configure which axis has priority then?
-            // so if they want width to first shrink so it takes on a large height then gets cropped or vice versa
+            /**
+             * Clamps the container to the boundary only along the height
+             */
+            const constrainHeight = () => {
+                // How far we are beyond the window width/height
+                // This is offset to adjust by to get to the end of the window (or 0, if end position is smaller than end of window)
+                const overflowHeight = Math.max(0, (preferredRect.y + preferredRect.height) - (boundDims.y + boundDims.height))
 
-            // Use current x/y, but the desired initial width/height
-            // How far we are beyond the window width/height
-            // This is offset to adjust by to get to the end of the window
-            // (or 0, if end position is smaller than end of window)
-            const overflowWidth = Math.max(0, (preferredRect.x + preferredRect.width) - (boundDims.x + boundDims.width))
-            const overflowHeight = Math.max(0, (preferredRect.y + preferredRect.height) - (boundDims.y + boundDims.height))
+                // Squeezed dimension
+                const adjustedHeight = preferredRect.height - overflowHeight
 
-            // Squeezed dimensions
-            const adjustedDims = {
-                width: preferredRect.width - overflowWidth,
-                height: preferredRect.height - overflowHeight
+                //// DIRECT DOM VERSION ///////////////////////////////////////
+                selfRef.current.style.height = `${adjustedHeight}px`
+                ///////////////////////////////////////////////////////////////
             }
 
-            console.log('adjusted dims', adjustedDims)
+            // Perform 2 phase constraint
 
-            //// DIRECT DOM VERSION ///////////////////////////////////////
-            //TODO: if style prop supplied and flag to only adjust width/height alone, revert other to original
-            selfRef.current.style.width = `${adjustedDims.width}px`
-            selfRef.current.style.height = `${adjustedDims.height}px`
-            ///////////////////////////////////////////////////////////////
-            console.log('final dims', selfRef.current.offsetWidth, selfRef.current.offsetHeight)
+            // TODO: if style prop supplied and flag to only adjust width/height alone, revert other to original
+            // TODO: let them choose order that width/height constraint done in
+            constrainWidth()
+            // Update preferred height given new width
+            preferredRect.height = selfRef.current.offsetHeight
+            constrainHeight()
 
+            // TODO: for React version would need to adjust to do one dimension at a time
             // Avoiding this bc extra render then ig idk? not sure what best practice would be cause
             // might be nice to do it inside react render so it plays well
             //// REACT VERSION ////////////////////////////////////////////
@@ -146,6 +201,9 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, .
         }
 
         let animationFrameId = null
+        /**
+         * Debounces constrainDimensions to only trigger at most once per frame
+         */
         const safeConstrain = () => {
             if (animationFrameId !== null) {
                 cancelAnimationFrame(animationFrameId)
@@ -153,6 +211,7 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, .
             animationFrameId = requestAnimationFrame(constrainDimensions)
         }
 
+        // Setup resize watchers
         const resizeObserver = new ResizeObserver(safeConstrain)
         // TODO: will this react to parent changes too?
         resizeObserver.observe(selfRef.current)
@@ -162,6 +221,7 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, .
         }
         window.addEventListener('resize', safeConstrain)
 
+        // Clamp container boundary on initial render as well
         safeConstrain()
 
         // Cleanup listeners so if component unmounts and remounts won't get duplicates
@@ -185,7 +245,6 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, .
             // style={mergedStyle}
             style={style}
             {...props}
-        // style={{width: '60%'}}
         >
             {children}
         </div>
