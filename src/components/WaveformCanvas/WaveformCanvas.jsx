@@ -20,13 +20,14 @@ const WaveformCanvas = memo(({ drawTime }) => {
         const context = canvas.getContext('2d')
 
         const zeroY = drawTime ? canvas.height / 2 : 0
-        const scaleY = drawTime ? 100 : 1
+        const base = drawTime ? zeroY : canvas.height
+        const scaleY = drawTime ? 100 : 0.9
 
         context.clearRect(0, 0, canvas.width, canvas.height)
         context.beginPath() // reset strokes
 
         // Redraw w data
-        context.moveTo(0, zeroY)
+        context.moveTo(0, base)
         const bufferLength = audioData.length / 10
         const deltaX = canvas.width / bufferLength
         let x = 0
@@ -38,7 +39,7 @@ const WaveformCanvas = memo(({ drawTime }) => {
             x += deltaX
         }
 
-        context.lineTo(canvas.width, zeroY)
+        context.lineTo(canvas.width, base)
         context.stroke()
     }
 
