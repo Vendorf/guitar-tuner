@@ -5,6 +5,8 @@ August 8 2025
 Resizing from the bottom causes the bear to move :P so need to fix
 Worst case can shove him in another clamped container lol
 
+Also on ios if you overscroll the background is white so idk how to config that
+
 August 5 2025
 
  Use right: 0 with max-width: calc(100vw - (550px + whatever tf the sidebar size is ig))

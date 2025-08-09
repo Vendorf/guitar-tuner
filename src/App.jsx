@@ -8,7 +8,9 @@ import StartButton from './components/StartButton/StartButton'
 import DarkmodeToggle from './components/DarkmodeToggle/DarkmodeToggle'
 import CampingScene from './components/CampingScene/CampingScene'
 import { SynthProvider } from './context/SynthContext'
-import ClampedContainer from './libcomponents/ClampedContainer/ClampedContainer'
+
+const LIGHT_MODE_BACKGROUND_COLOR = 'hsl(0, 0%, 91%)';
+const DARK_MODE_BACKGROUND_COLOR = 'hsl(0, 0%, 12%)';
 
 function App() {
   const isSystemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -39,6 +41,7 @@ function App() {
 
   return (
     <>
+      <meta name='theme-color' content={darkMode ? DARK_MODE_BACKGROUND_COLOR : LIGHT_MODE_BACKGROUND_COLOR}></meta>
       <AudioProvider>
         <TuningProvider>
           <SynthProvider>
