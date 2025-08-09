@@ -1,8 +1,11 @@
-# Bär Tuner 🐻
+# Bär Tuner :bear:
 
 ### *__Welcome to Bär Tuner!__*
 
 ![Zustand Bear](https://github.com/Vendorf/guitar-tuner/raw/main/src/assets/bear.png "Zustand Bear")
+
+[^1]: Zustand Bear images from [Zustand](https://zustand-demo.pmnd.rs/)
+[^2]: Guitar from [STALKER OST](https://archive.org/details/12.-alexey-omelchuk-call-of-pripyat-ost-outro/S.T.A.L.K.E.R/stalker_cs_ost_flac.mp3)
 
 # Deploy
 
