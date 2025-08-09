@@ -1,6 +1,6 @@
 # Bär Tuner :bear:
 
-### *__Welcome to Bär Tuner!__*
+### *__Welcome to Bär Tuner!__*[^1] [^2]
 
 ![Zustand Bear](https://github.com/Vendorf/guitar-tuner/raw/main/src/assets/bear.png "Zustand Bear")
 
