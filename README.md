@@ -1,4 +1,14 @@
+# Bär Tuner 🐻
+
+### *__Welcome to Bär Tuner!__*
+
+![Zustand Bear](https://github.com/Vendorf/guitar-tuner/raw/main/src/assets/bear.png "Zustand Bear")
+
 # Deploy
+
+Run the `./redeploy.sh` script
+
+Alternatively:
 https://www.youtube.com/watch?v=yo2bMGnIKE8
 For GHPages
 npx vite build --base=/guitar-tuner
@@ -16,7 +26,7 @@ git add dist -f
 git commit -m "Redeploy site"
 git subtree push --prefix dist origin gh-pages
 
-# React + Vite
+<!-- # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -27,4 +37,4 @@ Currently, two official plugins are available:
 
 ## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project. -->
