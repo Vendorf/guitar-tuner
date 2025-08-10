@@ -43,12 +43,14 @@ const LOW_CENTS = 0 // when fully low color
  */
 const PitchDisplay = () => {
     const { history } = useAudioState()
-    const { notes, noteInfo: { targetNote, centsDist } } = useTuning()
-    const targetNoteName = notes[targetNote]?.fullName ?? ""
+    const { notes, noteInfo: { targetMidiNote, inTune } } = useTuning()
+    const targetNoteName = notes[targetMidiNote]?.fullName ?? ""
 
     //TODO: replace with when in tune / when enough iterations or smthng
     // or like 2 glows: one when near, then turns green when in tune fully
-    const inTune = targetNoteName ? Math.abs(centsDist) <= CENTS_DIST_IN_TUNE : false // 5 cents
+    // const inTune = targetNoteName ? Math.abs(centsDist) <= CENTS_DIST_IN_TUNE : false // 5 cents
+
+    // console.log(targetMidiNote, inTune)
 
     const [showDetails, setShowDetails] = useState(false)
     const toggleDetails = () => {
@@ -96,7 +98,7 @@ const PitchDisplay = () => {
 
     const drawBoxes = history
         .map(entry => {
-            const cents = entry.exactNote - targetNote
+            const cents = entry.exactNote - targetMidiNote
             const ageMs = now - entry.time.getTime()
 
             return { cents, ageMs }

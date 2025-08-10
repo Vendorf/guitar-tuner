@@ -10,7 +10,7 @@ import sweep from '../../assets/sweep.wav'
 // alternatively could set timer since last update in each component, reset on an update, and then if it goes thru
 // run the cleanup
 
-const USE_FAKE_INPUT = true
+const USE_FAKE_INPUT = false
 // const FAKE_INPUT_DATA = new Audio(scale)
 // const FAKE_INPUT_DATA = new Audio(hz1000)
 const FAKE_INPUT_DATA = new Audio(sweep)

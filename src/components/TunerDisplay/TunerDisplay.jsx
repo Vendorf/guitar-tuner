@@ -51,11 +51,11 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, ha
  * @returns 
  */
 const TunerDisplay = () => {
-    const { notes, tuningMode, noteInfo: { targetNote }, notesTuned } = useTuning()
+    const { notes, tuningMode, noteInfo: { targetMidiNote }, notesTuned } = useTuning()
     const { holdFreq, heldFreq } = useSynth()
     const strings = TUNINGS[tuningMode].strings
 
-    const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetNote)
+    const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetMidiNote)
 
     const numPegs = strings.length
     const VIEW_WIDTH = 60

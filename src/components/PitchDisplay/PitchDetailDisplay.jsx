@@ -15,11 +15,11 @@ import './PitchDisplay.css'
 const PitchDetailDisplay = ({ display }) => {
 
     const { pitch, clarity, history, updates } = useAudioState()
-    const { notes, noteInfo: { note, nearestNote, targetNote, centsDist } } = useTuning()
+    const { notes, noteInfo: { midiNote, nearestMidiNote, targetMidiNote, centsDist } } = useTuning()
 
-    const nearestNoteName = notes[nearestNote]?.fullName ?? ""
-    const targetNoteName = notes[targetNote]?.fullName ?? ""
-    const targetFreq = notes[targetNote]?.frequency ?? 0
+    const nearestNoteName = notes[nearestMidiNote]?.fullName ?? ""
+    const targetNoteName = notes[targetMidiNote]?.fullName ?? ""
+    const targetFreq = notes[targetMidiNote]?.frequency ?? 0
 
     return (
         <div style={{ display: display ? '' : 'none' }}>
@@ -40,7 +40,7 @@ const PitchDetailDisplay = ({ display }) => {
                     <div className="pitch-label">Clarity:</div> <div className="pitch-value">{Math.round(clarity * 100)}%</div>
                 </div>
                 <div className="pitch-wrapper">
-                    <div className="pitch-label">Note id:</div> <div className="pitch-value">{nearestNote}</div>
+                    <div className="pitch-label">Note id:</div> <div className="pitch-value">{nearestMidiNote}</div>
                 </div>
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Note:</div> <div className="pitch-value">{nearestNoteName}</div>
@@ -49,7 +49,7 @@ const PitchDetailDisplay = ({ display }) => {
         
             <div className="card">
                 <div className="pitch-wrapper">
-                    <div className="pitch-label">Target id:</div> <div className="pitch-value">{targetNote}</div>
+                    <div className="pitch-label">Target id:</div> <div className="pitch-value">{targetMidiNote}</div>
                 </div>
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Target:</div> <div className="pitch-value">{targetNoteName}</div>
@@ -60,7 +60,7 @@ const PitchDetailDisplay = ({ display }) => {
             </div>
             <div className="card">
                 <div className="pitch-wrapper">
-                    <div className="pitch-label">Exact:</div> <div className="pitch-value">{Math.round(note * 100) / 100}</div>
+                    <div className="pitch-label">Exact:</div> <div className="pitch-value">{Math.round(midiNote * 100) / 100}</div>
                 </div>
                 <div className="pitch-wrapper">
                     <div className="pitch-label">Cents:</div> <div className="pitch-value">{Math.round(centsDist * 100) / 100}</div>

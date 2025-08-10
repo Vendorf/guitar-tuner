@@ -35,9 +35,10 @@ const generateNotes = () => {
 
     for (let i = 0; i <= (MAX_OCTAVE - MIN_OCTAVE + 1); i++) {
         const octaveNotes = SCALE.map((n, j) => {
+            //TODO: redo this so it's actually always MIDI index regardless of scale size
             const noteId = (i * SCALE.length) + j
             return {
-                id: noteId, // index
+                id: noteId, // midi index
                 name: n,
                 octave: i,
                 fullName: `${n}${MIN_OCTAVE + i}`,
@@ -111,6 +112,4 @@ const recomputeFrequencies = (notes) => {
     })
 }
 
-export {
-    generateNotes, computeNoteFrequency, recomputeFrequencies, toNearestNote, getExactNoteFromFrequency, getNearestNoteFromFrequency
-}
+export { generateNotes, computeNoteFrequency, recomputeFrequencies, toNearestNote, getExactNoteFromFrequency, getNearestNoteFromFrequency }

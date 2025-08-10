@@ -1,31 +1,31 @@
 import { createContext, use, useEffect, useRef, useState } from "react"
 import { useAudioControls, useAudioState } from "./AudioContext"
-import { generateNotes, recomputeFrequencies } from "../utilities/tuningUtils"
 import { TUNINGS } from "../constants/tuningConstants"
 import usePitchAnalysis from "../hooks/usePitchAnalysis"
+import { generateNotes } from "../utilities/tuningUtils"
+/** @import { Note } from '../utilities/tuningUtils' */
 
 const TuningContext = createContext(undefined)
 
 /**
  * Provider for all tuning state via TuningContext
- * @param {Object} param0 children to render inside provider with access to this context
+ * @param {Object} param
+ * @param {Object} param.children children to render inside provider with access to this context
  * @returns 
  */
 const TuningProvider = ({ children }) => {
-    // const { pitch } = useAudio()
     const { pitch } = useAudioState()
     const { resetHistory } = useAudioControls()
 
     const lastTargetNoteRef = useRef(-1)
     const swappedTargetNotesRef = useRef(false)
 
-    const [notes, setNotes] = useState([])
+    const [notes, setNotes] = useState(/** @type {Note[]} */([]))
     const [tuningMode, setTuningMode] = useState("standard")
     const [notesTuned, setNotesTuned] = useState(new Set())
 
     useEffect(() => {
         const n = generateNotes()
-        // recomputeFrequencies(n)
         setNotes(n)
     }, [])
 
@@ -40,18 +40,22 @@ const TuningProvider = ({ children }) => {
         // lastTargetNoteRef.current = -1
     }, [tuningMode])
 
-    const onNoteTuned = (note) => {
+    /**
+     * Adds note to currently stored tuned note set
+     * @param {number} note midi note index
+     */
+    const addTunedNote = (note) => {
         if (!notesTuned.has(note)) {
             //TODO play sound effect
             setNotesTuned((new Set(notesTuned)).add(note))
         }
     }
 
-    const noteInfo = usePitchAnalysis({ pitch, currTuning: TUNINGS[tuningMode], onNoteTuned })
+    const noteInfo = usePitchAnalysis({ pitch, currTuning: TUNINGS[tuningMode], onNoteTuned: addTunedNote })
 
-    if(noteInfo.targetNote !== lastTargetNoteRef.current) {
+    if(noteInfo.targetMidiNote !== lastTargetNoteRef.current) {
         // Target note switched, so reset our history'
-        lastTargetNoteRef.current = noteInfo.targetNote
+        lastTargetNoteRef.current = noteInfo.targetMidiNote
         swappedTargetNotesRef.current = true
     }
 

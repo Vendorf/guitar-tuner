@@ -20,7 +20,7 @@ const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
     // const { resetHistory } = useAudioControls()
 
     const atTargetCountRef = useRef(0) // count of updates that pitch is at target
-    const lastTargetNoteRef = useRef(-1) // last target note that were at
+    const lastTargetMidiNoteRef = useRef(-1) // last target note that were at
 
     // Whenever pitch/tuning mode change, update analysis
     const analysis = useMemo(() => {
@@ -29,39 +29,42 @@ const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
         if (pitch <= 0) {
             //TODO: this would be bad (maybe?) if it happened during actual tuning if we somehow got a pitch=0
             //but it seems it only happens on the first iteration when initializing and never again, so I think this is fine
-            return { note: -1, nearestNote: -1, targetNote: -1, centsDist: 0 }
+            return { midiNote: -1, nearestMidiNote: -1, targetMidiNote: -1, centsDist: 0, inTune: false }
         }
 
-        const note = getExactNoteFromFrequency(pitch)
-        const nearestNote = toNearestNote(note)
+        const midiNote = getExactNoteFromFrequency(pitch)
+        const nearestMidiNote = toNearestNote(midiNote)
 
-        const tuningNotes = currTuning?.strings_ids ?? []
-        const targetDistances = tuningNotes.map(n => Math.abs(n - nearestNote))
+        const tuningMidiNotes = currTuning?.strings_ids ?? []
+        const targetDistances = tuningMidiNotes.map(n => Math.abs(n - nearestMidiNote))
         const targetIdx = targetDistances.indexOf(Math.min(...targetDistances))
-        const targetNote = tuningNotes[targetIdx]
+        const targetMidiNote = tuningMidiNotes[targetIdx]
 
-        const centsDist = note - targetNote
+        const centsDist = midiNote - targetMidiNote
         const magnitudeCentsDist = Math.abs(centsDist)
+
+        //TODO extract as tuningUtil function
+        const inTune = (magnitudeCentsDist <= CENTS_DIST_IN_TUNE)
 
         // Do tuning updates
         if (magnitudeCentsDist < CENTS_DIST_MAX) {
             // Within distance to target to be valid, so select a note as the target
-            if (lastTargetNoteRef.current !== targetNote) {
+            if (lastTargetMidiNoteRef.current !== targetMidiNote) {
                 // Reset target count if a new target
                 atTargetCountRef.current = 0
-                lastTargetNoteRef.current = targetNote
+                lastTargetMidiNoteRef.current = targetMidiNote
 
                 // Reset the history on change
                 // resetHistory() // TODO: I maybe like this more in the tuning context as this is kinda mixing logic
             }
 
             // Update target note count if we are in tune for the necessary period
-            if (magnitudeCentsDist <= CENTS_DIST_IN_TUNE) {
+            if (inTune) {
                 atTargetCountRef.current++
                 // Check if we are in tune
                 if (atTargetCountRef.current >= COUNT_IN_TUNE) {
                     // This note is tuned
-                    onNoteTuned?.(targetNote)
+                    onNoteTuned?.(targetMidiNote)
                 }
             } else {
                 // Count a bad pitch against the total, but don't completely remove in case it's a slight fluke
@@ -71,7 +74,7 @@ const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
             }
         }
 
-        return { note, nearestNote, targetNote, centsDist }
+        return { midiNote, nearestMidiNote, targetMidiNote, centsDist, inTune }
     }, [pitch, currTuning])
 
     return analysis

@@ -58,7 +58,7 @@ const TUNINGS = {
 }
 
 // CENTS CONSTANTS
-const CENTS_DIST_MAX = Infinity
+const CENTS_DIST_MAX = Infinity // Max cents distance from target to select it
 const CENTS_DIST_IN_TUNE = 0.05
 const COUNT_IN_TUNE = 50
 
