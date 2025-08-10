@@ -1,5 +1,16 @@
 # TODO
 
+August 9 2025
+
+Aight so in immediate future do these:
+
+1. Refactor audio and synth contexts
+2. Make note class
+3. Documentation fixes
+4. Hann window and bandpass
+
+Then can either try to deploy docs, add unit tests, or add generic instrument tuning ig (or fiddle w audio processing more like bandpass centering idk)
+
 August 8 2025
 
 Resizing from the bottom causes the bear to move :P so need to fix
