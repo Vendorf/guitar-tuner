@@ -1,5 +1,5 @@
 import { createContext, use } from "react"
-import useSynthEngine from "../hooks/useSynthEngine"
+import useSynthEngine from "../hooks/engines/useSynthEngine"
 
 const SynthContext = createContext(undefined)
 

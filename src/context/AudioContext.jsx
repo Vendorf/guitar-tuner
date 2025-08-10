@@ -1,6 +1,6 @@
 import { createContext, use, useEffect, useState } from "react"
 import { getExactNoteFromFrequency } from "../utilities/tuningUtils"
-import useAudioEngine from "../hooks/useAudioEngine"
+import useAudioEngine from "../hooks/engines/useAudioEngine"
 
 //// TYPEDEFS /////////////////////////////////////////////////////////////////
 /**

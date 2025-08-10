@@ -1,9 +1,8 @@
 import { PitchDetector } from "pitchy"
 import { useRef, useState } from "react"
-// import usePitchHistory from "../hooks/usePitchHistory"
-import scale from '../assets/scale.m4a'
-import hz1000 from '../assets/hz1000.wav'
-import sweep from '../assets/sweep.wav'
+import scale from '../../assets/scale.m4a'
+import hz1000 from '../../assets/hz1000.wav'
+import sweep from '../../assets/sweep.wav'
 
 // TODO: set 'updating' true/false thing; if we are updating, set true, once no longer, set to false
 // that way will set 'updating' to false as final thing of a pitch detection sequence, so then can
@@ -11,7 +10,7 @@ import sweep from '../assets/sweep.wav'
 // alternatively could set timer since last update in each component, reset on an update, and then if it goes thru
 // run the cleanup
 
-const USE_FAKE_INPUT = false
+const USE_FAKE_INPUT = true
 // const FAKE_INPUT_DATA = new Audio(scale)
 // const FAKE_INPUT_DATA = new Audio(hz1000)
 const FAKE_INPUT_DATA = new Audio(sweep)
