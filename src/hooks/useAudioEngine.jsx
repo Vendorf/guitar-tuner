@@ -47,7 +47,6 @@ const useAudioEngine = ({ onPitchData }) => {
 
     const [started, setStarted] = useState(false) // whether audio is started
 
-
     /**
      * TODO fix this doc
      * Initializes audio context from `window` and creates AnalyzerNode and PitchDetector for audio and pitch detection

@@ -1,12 +1,11 @@
 
 import { useTuning } from '../../context/TuningContext'
 import { TUNINGS } from '../../constants/tuningConstants'
-import './TunerDisplay.css'
 import TuningSelector from '../TuningSelector/TuningSelector'
 import { useSynth } from '../../context/SynthContext'
+import './TunerDisplay.css'
 
 const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick }) => {
-    // console.log(isSynthHeld)
     return (
         <g key={key} className='tuner-peg-svg-g' onClick={handleClick}>
             {/* <circle cx={cx} cy={cy} r={r} fill={isTuned
@@ -53,7 +52,7 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, ha
  */
 const TunerDisplay = () => {
     const { notes, tuningMode, noteInfo: { targetNote }, notesTuned } = useTuning()
-    const { triggerTone, holdTone, heldFreq } = useSynth()
+    const { holdFreq, heldFreq } = useSynth()
     const strings = TUNINGS[tuningMode].strings
 
     const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetNote)
@@ -67,7 +66,7 @@ const TunerDisplay = () => {
 
     const playNote = (noteFreq) => {
         // triggerTone(noteFreq)
-        holdTone(noteFreq)
+        holdFreq(noteFreq)
     }
 
     return (

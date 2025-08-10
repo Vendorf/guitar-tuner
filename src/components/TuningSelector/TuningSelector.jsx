@@ -1,8 +1,8 @@
 import { useRef, useState } from "react"
 import { TUNINGS } from "../../constants/tuningConstants"
 import { useTuning } from "../../context/TuningContext"
-import './TuningSelector.css'
 import { useSynth } from "../../context/SynthContext"
+import './TuningSelector.css'
 
 //TODO: store and remember order of tunings so they move to the front when selected and stay as most-recently-used order
 //TODO: add scroll arrows left/right
@@ -26,7 +26,7 @@ function useScrollLeft() {
  * @returns 
  */
 const TuningSelector = () => {
-    const { stopTone } = useSynth()
+    const { stopHeldFreq } = useSynth()
 
     const [scrollLeft, scrollProps] = useScrollLeft()
     const wrapperRef = useRef(undefined)
@@ -38,9 +38,9 @@ const TuningSelector = () => {
 
     const { tuningMode, setTuningMode } = useTuning()
 
-    const handleClick = (key) => {
-        stopTone()
-        setTuningMode(key)
+    const changeTuningMode = (tuning) => {
+        stopHeldFreq()
+        setTuningMode(tuning)
     }
 
     return (
@@ -59,7 +59,7 @@ const TuningSelector = () => {
 
                         const render = selected
                             ? <div key={key} className={`md-chip md-chip-clickable md-chip-hover md-chip-selected`}>{name}</div>
-                            : <div key={key} className={`md-chip md-chip-clickable md-chip-hover`} onClick={() => handleClick(key)}>{name}</div>
+                            : <div key={key} className={`md-chip md-chip-clickable md-chip-hover`} onClick={() => changeTuningMode(key)}>{name}</div>
                         return (render)
                     })}
                 </div>
