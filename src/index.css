@@ -1,25 +1,25 @@
 /* Note this is <html> tag */
 :root {
   /* THEME COLORS */
-  --color-light-0:   hsl(0, 0%, 91%);
+  --color-light-0: hsl(0, 0%, 91%);
   --color-light-0_5: hsl(0, 0%, 79.5%);
-  --color-light-1:   hsl(0, 0%, 68%);
+  --color-light-1: hsl(0, 0%, 68%);
   --color-light-1_5: hsl(0, 0%, 56.5%);
-  --color-light-2:   hsl(0, 0%, 45%);
+  --color-light-2: hsl(0, 0%, 45%);
   --color-light-2_5: hsl(0, 0%, 33.5%);
-  --color-light-3:   hsl(0, 0%, 23%);
+  --color-light-3: hsl(0, 0%, 23%);
   --color-light-3_5: hsl(0, 0%, 11.5%);
-  --color-light-4:   hsl(0, 0%, 0%);
+  --color-light-4: hsl(0, 0%, 0%);
 
-  --color-dark-0:    hsl(0, 0%, 12%);
-  --color-dark-0_5:  hsl(0, 0%, 23.5%);
-  --color-dark-1:    hsl(0, 0%, 34%);
-  --color-dark-1_5:  hsl(0, 0%, 45.5%);
-  --color-dark-2:    hsl(0, 0%, 56%);
-  --color-dark-2_5:  hsl(0, 0%, 67.5%);
-  --color-dark-3:    hsl(0, 0%, 78%);
-  --color-dark-3_5:  hsl(0, 0%, 89.5%);
-  --color-dark-4:    hsl(0, 0%, 100%);
+  --color-dark-0: hsl(0, 0%, 12%);
+  --color-dark-0_5: hsl(0, 0%, 23.5%);
+  --color-dark-1: hsl(0, 0%, 34%);
+  --color-dark-1_5: hsl(0, 0%, 45.5%);
+  --color-dark-2: hsl(0, 0%, 56%);
+  --color-dark-2_5: hsl(0, 0%, 67.5%);
+  --color-dark-3: hsl(0, 0%, 78%);
+  --color-dark-3_5: hsl(0, 0%, 89.5%);
+  --color-dark-4: hsl(0, 0%, 100%);
 
   /* BACKGROUND/TEXT COLORS */
   --background-color: var(--color-light-0);
@@ -45,6 +45,12 @@
   --tuner-text-color: hsla(0, 0%, 100%, 0.87);
   --tuner-peg-background-color: var(--color-light-0_5);
   --tuner-peg-active: var(--color-light-2_5);
+
+  /* INSTRUMENT SELECT */
+  --instr-select-background: var(--color-light-0);
+  --instr-select-dropdown-background: var(--color-light-0_5);
+  --instr-select-hover: var(--color-light-1);
+  --instr-select-selected: var(--color-light-1_5);
 
   /* MISC */
   --accent-purple: #999eff;
@@ -89,6 +95,12 @@
   --tuner-text-color: hsla(0, 0%, 0%, 0.87);
   --tuner-peg-background-color: var(--color-dark-0_5);
   --tuner-peg-active: var(--color-dark-2_5);
+
+  /* INSTRUMENT SELECT */
+  --instr-select-background: var(--color-dark-0);
+  --instr-select-dropdown-background: var(--color-dark-0_5);
+  --instr-select-hover: var(--color-dark-1);
+  --instr-select-selected: var(--color-dark-1_5);
 
   /* MISC */
   --detail-background: var(--color-dark-0_5);

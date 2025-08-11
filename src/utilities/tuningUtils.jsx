@@ -112,8 +112,12 @@ const recomputeFrequencies = (notes) => {
     })
 }
 
+const getInstrument = (config) => {
+    return [INSTRUMENTS[config.instrument], INSTRUMENTS[config.instrument]?.tunings[config.tuning]]
+}
+
 const getTargetMidiNote = (instrConfig, midiNote) => {
-    const [instr, tuning] = INSTRUMENTS.getInstrument(instrConfig)
+    const [instr, tuning] = getInstrument(instrConfig)
     switch (instr.type) {
         case 'generic': {
             // Get closest note
@@ -131,4 +135,4 @@ const getTargetMidiNote = (instrConfig, midiNote) => {
     }
 }
 
-export { generateNotes, computeNoteFrequency, recomputeFrequencies, toNearestNote, getExactNoteFromFrequency, getNearestNoteFromFrequency, getTargetMidiNote }
+export { generateNotes, computeNoteFrequency, recomputeFrequencies, toNearestNote, getExactNoteFromFrequency, getNearestNoteFromFrequency, getTargetMidiNote, getInstrument }

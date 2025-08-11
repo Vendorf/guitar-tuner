@@ -2,7 +2,7 @@ import { createContext, use, useEffect, useRef, useState } from "react"
 import { useAudioControls, useAudioState } from "./AudioContext"
 import { INSTRUMENTS } from "../constants/tuningConstants"
 import usePitchAnalysis from "../hooks/usePitchAnalysis"
-import { generateNotes } from "../utilities/tuningUtils"
+import { generateNotes, getInstrument } from "../utilities/tuningUtils"
 /** @import { Note } from '../utilities/tuningUtils' */
 
 const TuningContext = createContext(undefined)
@@ -17,13 +17,10 @@ const TuningProvider = ({ children }) => {
     const { pitch } = useAudioState()
     const { resetHistory } = useAudioControls()
 
-    // const lastTargetNoteRef = useRef(-1)
     const swappedTargetNotesRef = useRef(false)
 
     const [notes, setNotes] = useState(/** @type {Note[]} */([]))
-    // const [instrConfig, setInstrConfig] = useState({ instrument: 'guitar', tuning: 'standard' })
-    const [instrConfig, setInstrConfig] = useState({ instrument: 'generic', tuning: 'standard' })
-    // const [tuningMode, setTuningMode] = useState("standard")
+    const [instrConfig, setInstrConfig] = useState({ instrument: 'guitar', tuning: 'standard' })
     const [notesTuned, setNotesTuned] = useState(new Set())
 
     useEffect(() => {
@@ -78,7 +75,7 @@ const TuningProvider = ({ children }) => {
             // console.log("reset hist")
 
             // TODO: is there a less shitty way to write this cause I feel it's ass to hardcode instruments here
-            if (INSTRUMENTS.getInstrument(instrConfig)[0].type === 'generic') {
+            if (getInstrument(instrConfig)[0].type === 'generic') {
                 // We want to reset which notes are tuned every time for a generic instrument
                 setNotesTuned(new Set())
             }

@@ -3,6 +3,7 @@ import { INSTRUMENTS } from "../../constants/tuningConstants"
 import { useTuning } from "../../context/TuningContext"
 import { useSynth } from "../../context/SynthContext"
 import './TuningSelector.css'
+import { getInstrument } from "../../utilities/tuningUtils"
 
 //TODO: store and remember order of tunings so they move to the front when selected and stay as most-recently-used order
 //TODO: add scroll arrows left/right
@@ -37,7 +38,7 @@ const TuningSelector = () => {
     const atEnd = (scrollLeft === totalScrollWidth)
 
     const { instrConfig, setInstrConfig } = useTuning()
-    const [instrument, _] = INSTRUMENTS.getInstrument(instrConfig)
+    const [instrument, _] = getInstrument(instrConfig)
 
     const changeTuningMode = (tuning) => {
         stopHeldFreq()

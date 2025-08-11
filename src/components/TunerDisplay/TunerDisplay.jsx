@@ -4,6 +4,8 @@ import { INSTRUMENTS } from '../../constants/tuningConstants'
 import TuningSelector from '../TuningSelector/TuningSelector'
 import { useSynth } from '../../context/SynthContext'
 import './TunerDisplay.css'
+import InstrumentSelect from '../InstrumentSelector/InstrumentSelect'
+import { getInstrument } from '../../utilities/tuningUtils'
 
 const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick }) => {
     return (
@@ -44,12 +46,12 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, ha
  * @returns 
  */
 const TunerDisplay = () => {
-    const { notes, instrConfig, noteInfo: { targetMidiNote }, notesTuned } = useTuning()
+    const { notes, instrConfig, setInstrConfig, noteInfo: { targetMidiNote }, notesTuned } = useTuning()
     const { holdFreq, heldFreq } = useSynth()
     // const strings = TUNINGS[tuningMode].strings
 
     // const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetMidiNote)
-    const [instr, tuning] = INSTRUMENTS.getInstrument(instrConfig)
+    const [instr, tuning] = getInstrument(instrConfig)
     const targetIdx = tuning?.strings_ids?.indexOf(targetMidiNote) ?? -1
 
     const strings = instr.type === 'generic' ? [targetMidiNote] : tuning.strings_ids
@@ -62,12 +64,18 @@ const TunerDisplay = () => {
     const widthPerPeg = VIEW_WIDTH / numPegs
 
     const playNote = (noteFreq) => {
-        if(instr.type === 'generic') return
+        if (instr.type === 'generic') return
         holdFreq(noteFreq)
+    }
+
+    const changeInstrument = (newInstrConfig) => {
+        console.log('selecting', newInstrConfig)
+        setInstrConfig({ ...newInstrConfig })
     }
 
     return (
         <div className='tuner-display-container card'>
+            <InstrumentSelect instrConfig={instrConfig} onSelect={changeInstrument}></InstrumentSelect>
             <TuningSelector></TuningSelector>
             <svg className="tuner-peg-container-svg unhighlightable" viewBox='0 0 60 10'>
                 {strings.map((midiNote, i) => {

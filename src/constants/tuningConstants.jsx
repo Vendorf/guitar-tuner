@@ -25,11 +25,9 @@ const MAX_OCTAVE = 9
  */
 
 const INSTRUMENTS = {
-    getInstrument: function (config) {
-        return [this[config.instrument], this[config.instrument]?.tunings[config.tuning]]
-    },
     'generic': {
         type: 'generic',
+        name: 'Generic Tuner',
         tunings: {
             'standard': {
                 name: 'Standard',
@@ -40,6 +38,7 @@ const INSTRUMENTS = {
     },
     'guitar': {
         type: 'stringed',
+        name: '6-String Guitar',
         tunings: {
             'standard': {
                 name: 'Standard',
@@ -77,7 +76,19 @@ const INSTRUMENTS = {
                 strings_ids: [64, 59, 55, 50, 45, 40]
             },
         }
-    }
+    },
+    'violin': {
+        type: 'stringed',
+        name: 'Violin',
+        tunings: {
+            'standard': {
+                name: 'Standard',
+                strings: ['G3', 'D4', 'A4', 'E5'],
+                strings_ids: [55, 62, 69, 76]
+            },
+        }
+    },
+
 }
 
 // TUNING CONSTANTS
