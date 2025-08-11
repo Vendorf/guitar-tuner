@@ -26,7 +26,7 @@ const FAKE_INPUT_DATA = new Audio(sweep)
 
 const FFT_SIZE = 8192
 // const FFT_SIZE = 16384
-const MIN_DECIBALS = -20
+const MIN_DECIBALS = -40 //-20
 const MIN_CLARITY = 0.9
 // const MIN_FREQ = 24.5 // G0
 const MIN_FREQ = 36.71 // D0
@@ -46,6 +46,15 @@ const useAudioEngine = ({ onPitchData }) => {
 
     const [started, setStarted] = useState(false) // whether audio is started
 
+    // Stores full signal chain
+    // TODO: extract as a separate class or something to manage easier?
+    const signalChainRef = useRef({
+        sourceNode: undefined,
+        gainNode: undefined,
+        bandpassNode: undefined,
+        analyserNode: undefined
+    })
+
     /**
      * TODO fix this doc
      * Initializes audio context from `window` and creates AnalyzerNode and PitchDetector for audio and pitch detection
@@ -55,28 +64,47 @@ const useAudioEngine = ({ onPitchData }) => {
      */
     const initAudio = async () => {
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
-        const analyserNode = audioContextRef.current.createAnalyser()
-        analyserNode.fftSize = FFT_SIZE
+        signalChainRef.current.analyserNode = audioContextRef.current.createAnalyser()
+        signalChainRef.current.analyserNode.fftSize = FFT_SIZE
 
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-        console.log(audioContextRef, analyserNode)
+        console.log(audioContextRef, signalChainRef.current)
         if (USE_FAKE_INPUT) {
             FAKE_INPUT_DATA.loop = true
             FAKE_INPUT_DATA.play()
-            audioContextRef.current.createMediaElementSource(FAKE_INPUT_DATA).connect(analyserNode)
+            signalChainRef.current.sourceNode = audioContextRef.current.createMediaElementSource(FAKE_INPUT_DATA)
         } else {
-            audioContextRef.current.createMediaStreamSource(stream).connect(analyserNode)
+            signalChainRef.current.sourceNode = audioContextRef.current.createMediaStreamSource(stream)
         }
 
-        const detector = PitchDetector.forFloat32Array(analyserNode.fftSize)
+        // Create gain node
+        signalChainRef.current.gainNode = audioContextRef.current.createGain()
+        signalChainRef.current.gainNode.gain.setValueAtTime(1, audioContextRef.current.currentTime)
+
+        // Create bandpass filter
+        //TODO: expose methods for configuring bandpass
+        //TODO: configure based on tuning mode
+        signalChainRef.current.bandpassNode = audioContextRef.current.createBiquadFilter()
+        signalChainRef.current.bandpassNode.type = 'bandpass'
+        signalChainRef.current.bandpassNode.frequency.value = 440
+        signalChainRef.current.bandpassNode.Q.value = 1.5
+
+        // Connect signal chain
+        signalChainRef.current.sourceNode.connect(signalChainRef.current.gainNode)
+        signalChainRef.current.gainNode.connect(signalChainRef.current.bandpassNode)
+        signalChainRef.current.bandpassNode.connect(signalChainRef.current.analyserNode)
+
+        // signalChainRef.current.sourceNode.connect(signalChainRef.current.analyserNode)
+
+        const detector = PitchDetector.forFloat32Array(signalChainRef.current.analyserNode.fftSize)
         detector.minVolumeDecibels = MIN_DECIBALS
 
         const inputTime = new Float32Array(detector.inputLength)
-        const inputFreq = new Float32Array(analyserNode.frequencyBinCount)
+        const inputFreq = new Float32Array(signalChainRef.current.analyserNode.frequencyBinCount)
 
         const sampleRate = audioContextRef.current.sampleRate
 
-        audioDataRef.current = { analyserNode, detector, inputTime, inputFreq, sampleRate }
+        audioDataRef.current = { analyserNode: signalChainRef.current.analyserNode, detector, inputTime, inputFreq, sampleRate }
     }
 
     /**
@@ -93,6 +121,27 @@ const useAudioEngine = ({ onPitchData }) => {
 
         analyserNode.getFloatTimeDomainData(inputTime)
         analyserNode.getFloatFrequencyData(inputFreq)
+
+        const normalize = (buffer) => {
+            const max = Math.max(...buffer.map(Math.abs))
+            const invMax = 1 / max
+            if (max === 0) return
+            const N = buffer.length
+            for (let i = 0; i < N; i++) {
+                buffer[i] *= invMax
+            }
+        }
+
+        const applyHannWindow = (buffer) => {
+            const N = buffer.length
+            for (let i = 0; i < N; i++) {
+                buffer[i] *= 0.5 * (1 - Math.cos((2 * Math.PI * i) / (N - 1)))
+            }
+        }
+
+        // This seems to make detection shittier
+        // applyHannWindow(inputTime)
+        // normalize(inputTime)
 
         const [pitch, clarity] = detector.findPitch(inputTime, sampleRate)
 

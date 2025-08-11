@@ -53,7 +53,9 @@ const AudioProvider = ({ children }) => {
                 pitch: detPitch,
                 clarity: detClarity,
                 exactNote: getExactNoteFromFrequency(detPitch),
-                time: (new Date())
+                time: (new Date()),
+                timeDataRange: [Math.min(...inputTime), Math.max(...inputTime)],
+                freqDataRange: [Math.min(...inputFreq), Math.max(...inputFreq)],
             }]
             if (newHistory.length > HISTORY_SIZE) {
                 newHistory.shift()
