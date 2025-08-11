@@ -1,5 +1,19 @@
 # TODO
 
+August 11 2025
+
+Okay sweet the generic tuner is okayish and instrument selection exists now
+
+So just need to make the selector look pretty + close on clicking off + scroll focus + etc
+
+Then maybe the new generic tuner styling with the infinite scroll thing
+
+And then maybe just an A4 configurer in the corner or in an options panel on the right of the top card
+
+Then we document, can try typescript, and we're done essentially!
+
+but look at the bugs like the bear moving weird or whatever
+
 August 10 2025
 
 Well I tried :P

@@ -1,12 +1,16 @@
+/* Using outline bc width always uses content-box, so parent's border won't line up with child's */
+
 .instrument-selector {
     display: flex;
 
     background-color: var(--instr-select-background);
-    border: 1px solid gray;
+    outline: 1px solid var(--text-color);
     border-radius: 5px;
     box-sizing: border-box;
 
     position: relative;
+
+    font-weight: bold;
 
     /* unhighlightable */
     -webkit-user-select: none;
@@ -15,9 +19,14 @@
     user-select: none;
 }
 
+.instrument-selector-open {
+    border-radius: 5px 5px 0 0;
+    border-bottom: 0;
+}
+
 .instrument-selector-selected {
     display: flex;
-    
+
     padding-left: 5px;
     /* border: 1px solid orange; */
     box-sizing: border-box;
@@ -33,9 +42,13 @@
     box-sizing: border-box;
     background-color: var(--instr-select-dropdown-background);
 
+    border-radius: 0 0 5px 5px;
+    outline: 1px solid var(--text-color);
+    box-shadow: 0 4px 35px var(--card-shadow);
+
     top: 100%;
     width: 100%;
-    max-height: 800%;
+    /* max-height: 800%; */
 
     z-index: 200;
     overflow: scroll;
@@ -51,29 +64,99 @@
 
 .instrument-list-item-label {
     display: flex;
-    width: 100%;
+    align-items: center;
+    width: 50%;
+
+    height: 2em;
 }
 
-.instrument-list-item-label:hover {
+.instrument-list-item-label-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    height: 2em;
+}
+
+.instrument-list-item-label-wrapper:hover {
     background-color: var(--instr-select-hover);
 }
 
 .tuning-list-item {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
 
-    font-size: 0.9rem;
+    /* font-size: 0.9rem; */
+    font-size: 1rem;
 
-    width: 100%;
+    width: calc(100% - 10px);
 
     padding-left: 10px;
+
+    min-height: 2em;
+}
+
+.tuning-list-item-label {
+    width: 50%;
+    display: flex;
 }
 
 .tuning-list-item:hover {
     background-color: var(--instr-select-hover);
+    color: var(--instr-select-alt-text-color);
 }
 
 .item-selected {
     background-color: var(--instr-select-selected);
+    color: var(--instr-select-alt-text-color);
+}
+
+.item-selected-underline {
+    background-color: var(--instr-select-selected);
+    border-bottom: 2px solid var(--accent-purple);
+}
+
+.check-icon {
+    margin-left: auto;
+    margin-right: 0.5em;
+    fill: var(--accent-purple);
+    stroke: var(--accent-purple);
+    stroke-width: 0.5px;
+    width: 1.3em;
+}
+
+.chevron-icon {
+    margin-left: auto;
+    margin-right: 0.5em;
+    fill: var(--text-color);
+    stroke: var(--text-color);
+    stroke-width: 2px;
+    width: 1em;
+
+    will-change: transform;
+    /* transition: transform 300ms; */
+}
+
+.icon-flipped {
+    transform: rotate(180deg);
+}
+
+.string-box-container {
+    display: flex;
+    /* width: 50%; */
+
+    /* background-color: orange; */
+}
+
+.string-box {
+    font-size: 0.65em;
+    border-radius: 2px;
+    background-color: var(--tuner-peg-background-color);
+    margin: 0 5px 0 0;
+    padding: 0 2px 0 2px;
+}
+
+.to-right {
+    display: flex;
+    align-items: center;
 }
