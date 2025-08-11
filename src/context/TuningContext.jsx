@@ -1,6 +1,6 @@
 import { createContext, use, useEffect, useRef, useState } from "react"
 import { useAudioControls, useAudioState } from "./AudioContext"
-import { TUNINGS } from "../constants/tuningConstants"
+import { INSTRUMENTS } from "../constants/tuningConstants"
 import usePitchAnalysis from "../hooks/usePitchAnalysis"
 import { generateNotes } from "../utilities/tuningUtils"
 /** @import { Note } from '../utilities/tuningUtils' */
@@ -17,11 +17,13 @@ const TuningProvider = ({ children }) => {
     const { pitch } = useAudioState()
     const { resetHistory } = useAudioControls()
 
-    const lastTargetNoteRef = useRef(-1)
+    // const lastTargetNoteRef = useRef(-1)
     const swappedTargetNotesRef = useRef(false)
 
     const [notes, setNotes] = useState(/** @type {Note[]} */([]))
-    const [tuningMode, setTuningMode] = useState("standard")
+    const [instrConfig, setInstrConfig] = useState({ instrument: 'guitar', tuning: 'standard' })
+    // const [instrument, setInstrument] = useState('guitar')
+    // const [tuningMode, setTuningMode] = useState("standard")
     const [notesTuned, setNotesTuned] = useState(new Set())
 
     useEffect(() => {
@@ -38,7 +40,7 @@ const TuningProvider = ({ children }) => {
         // so need some way to tell it to give default analysis on a swap
         // honestly it's okay the way it is now too tho so idk just a UX choice
         // lastTargetNoteRef.current = -1
-    }, [tuningMode])
+    }, [instrConfig])
 
     /**
      * Adds note to currently stored tuned note set
@@ -51,28 +53,40 @@ const TuningProvider = ({ children }) => {
         }
     }
 
-    const noteInfo = usePitchAnalysis({ pitch, currTuning: TUNINGS[tuningMode], onNoteTuned: addTunedNote })
-
-    if(noteInfo.targetMidiNote !== lastTargetNoteRef.current) {
-        // Target note switched, so reset our history'
-        lastTargetNoteRef.current = noteInfo.targetMidiNote
+    const handleTargetChanged = () => {
+        // Setup for useEffect to pick this up
+        // This is so we avoid doing state updates during the render phase
         swappedTargetNotesRef.current = true
     }
+
+    const noteInfo = usePitchAnalysis({ pitch, instrConfig, onNoteTuned: addTunedNote, onTargetChanged: handleTargetChanged })
+
+    // if(noteInfo.targetMidiNote !== lastTargetNoteRef.current) {
+    //     // Target note switched, so reset our history'
+    //     lastTargetNoteRef.current = noteInfo.targetMidiNote
+    //     swappedTargetNotesRef.current = true
+    // }
 
     // Runs every time, but after tree is rendered, to prevent changing state during render phase
     // TODO: bc it's just an object.is check can just define a non-state constant and compare that way
     // so const targetNote = analysis?.targetNote ?? null, and then do useEffect(..., [targetNote]) and that will scope to just when
     // the target changes, then don't need the swappedTarget at all
     useEffect(() => {
-        if(swappedTargetNotesRef.current) {
+        if (swappedTargetNotesRef.current) {
             swappedTargetNotesRef.current = false
             resetHistory()
             // console.log("reset hist")
+
+            // TODO: is there a less shitty way to write this cause I feel it's ass to hardcode instruments here
+            if (INSTRUMENTS.getInstrument(instrConfig)[0].type === 'generic') {
+                // We want to reset which notes are tuned every time for a generic instrument
+                setNotesTuned([])
+            }
         }
     })
 
     return (
-        <TuningContext value={{ notes, tuningMode, setTuningMode, notesTuned, noteInfo }}>
+        <TuningContext value={{ notes, instrConfig, setInstrConfig, notesTuned, noteInfo }}>
             {children}
         </TuningContext>
     )

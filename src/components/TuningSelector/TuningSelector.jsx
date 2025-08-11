@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { TUNINGS } from "../../constants/tuningConstants"
+import { INSTRUMENTS } from "../../constants/tuningConstants"
 import { useTuning } from "../../context/TuningContext"
 import { useSynth } from "../../context/SynthContext"
 import './TuningSelector.css'
@@ -36,11 +36,13 @@ const TuningSelector = () => {
     const atStart = (scrollLeft === 0)
     const atEnd = (scrollLeft === totalScrollWidth)
 
-    const { tuningMode, setTuningMode } = useTuning()
+    const { instrConfig, setInstrConfig } = useTuning()
+    const [instrument, _] = INSTRUMENTS.getInstrument(instrConfig)
 
     const changeTuningMode = (tuning) => {
         stopHeldFreq()
-        setTuningMode(tuning)
+        // setTuningMode(tuning)
+        setInstrConfig({ ...instrConfig, tuning: tuning })
     }
 
     return (
@@ -53,9 +55,9 @@ const TuningSelector = () => {
                 <div className="tuning-container md-chips" ref={containerRef}
                     {...scrollProps}
                 >
-                    {Object.entries(TUNINGS).map(tuning => {
+                    {Object.entries(instrument.tunings).map(tuning => {
                         const [key, { name }] = tuning
-                        const selected = (key === tuningMode)
+                        const selected = (key === instrConfig.tuning)
 
                         const render = selected
                             ? <div key={key} className={`md-chip md-chip-clickable md-chip-hover md-chip-selected`}>{name}</div>

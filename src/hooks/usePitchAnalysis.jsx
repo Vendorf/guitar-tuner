@@ -1,5 +1,5 @@
 import { useMemo, useRef } from "react"
-import { getExactNoteFromFrequency, toNearestNote } from "../utilities/tuningUtils"
+import { getExactNoteFromFrequency, getTargetMidiNote, toNearestNote } from "../utilities/tuningUtils"
 import { CENTS_DIST_IN_TUNE, CENTS_DIST_MAX, COUNT_IN_TUNE } from "../constants/tuningConstants"
 // import { useAudioControls } from "../context/AudioContext"
 
@@ -12,11 +12,12 @@ import { CENTS_DIST_IN_TUNE, CENTS_DIST_MAX, COUNT_IN_TUNE } from "../constants/
  * Memoizes analysis so unchanged pitch/tuning does not redo analysis
  * @param {Object} param
  * @param {number} param.pitch current pitch from PitchDetector
- * @param {Object} param.currTuning selected tuning from TuningContext
+ * @param {Object} param.instrConfig current instrument configuration
  * @param {(number) => void} param.onNoteTuned callback for when a note is considered in tune with the target note
+ * @param {(void) => void} param.onTargetChanged callback for when target note that tuning towards changed
  * @returns {Object} note, nearestNote, targetNote, centsDist
  */
-const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
+const usePitchAnalysis = ({ pitch, instrConfig, onNoteTuned, onTargetChanged }) => {
     // const { resetHistory } = useAudioControls()
 
     const atTargetCountRef = useRef(0) // count of updates that pitch is at target
@@ -34,11 +35,14 @@ const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
 
         const midiNote = getExactNoteFromFrequency(pitch)
         const nearestMidiNote = toNearestNote(midiNote)
+        const targetMidiNote = getTargetMidiNote(instrConfig, midiNote)
 
-        const tuningMidiNotes = currTuning?.strings_ids ?? []
-        const targetDistances = tuningMidiNotes.map(n => Math.abs(n - nearestMidiNote))
-        const targetIdx = targetDistances.indexOf(Math.min(...targetDistances))
-        const targetMidiNote = tuningMidiNotes[targetIdx]
+        ///// extract to instrument.getTargetMidiNote()
+        // const tuningMidiNotes = currTuning?.strings_ids ?? []
+        // const targetDistances = tuningMidiNotes.map(n => Math.abs(n - nearestMidiNote))
+        // const targetIdx = targetDistances.indexOf(Math.min(...targetDistances))
+        // const targetMidiNote = tuningMidiNotes[targetIdx]
+        ////
 
         const centsDist = midiNote - targetMidiNote
         const magnitudeCentsDist = Math.abs(centsDist)
@@ -54,8 +58,7 @@ const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
                 atTargetCountRef.current = 0
                 lastTargetMidiNoteRef.current = targetMidiNote
 
-                // Reset the history on change
-                // resetHistory() // TODO: I maybe like this more in the tuning context as this is kinda mixing logic
+                onTargetChanged?.()
             }
 
             // Update target note count if we are in tune for the necessary period
@@ -75,7 +78,7 @@ const usePitchAnalysis = ({ pitch, currTuning, onNoteTuned }) => {
         }
 
         return { midiNote, nearestMidiNote, targetMidiNote, centsDist, inTune }
-    }, [pitch, currTuning])
+    }, [pitch, instrConfig])
 
     return analysis
 }

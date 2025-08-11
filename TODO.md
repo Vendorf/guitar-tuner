@@ -1,5 +1,34 @@
 # TODO
 
+August 10 2025
+
+Well I tried :P
+
+Hann window/normalization/gain doesn't seem to help much
+
+The RMS gain maybe would help.... but honestly can't be bothered rn
+
+I think really need to go restudy fourier transform if wanna have a decent concept of what tf could even make it better otherwise it's just blind trial and error and really frustrating and stupid
+
+Bandpass does help a tiny bit I think tho, and in the freq spectrum you can def tell it helps but yeah
+
+So ig now:
+
+0. audioEngine refactor...? idk if necessary anymore really cause not gonna have a more complex signal chain I don't think
+1. Generic tuner
+2. Instrument selection
+3. Tuner SVG? auto mode toggle?
+4. A4 config
+5. Documentation fixes
+6. TypeScript conversion
+7. Bandpass centering?
+
+Honestly getting tired now fr of this shit :P
+
+So I think just get the generic tuner shit working and instrument selection working, then just document everything nicely, do some final refactors, and call it
+
+Ig can go ahead and do TypeScript conversion just to learn TS as well but yeah just wanna move on at this point I think the glamor is kinda worn off by now fs
+
 August 9 2025
 
 Aight so in immediate future do these:

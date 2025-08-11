@@ -1,12 +1,12 @@
 // See https://en.wikipedia.org/wiki/Scientific_pitch_notation
-import { TUNINGS, A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE } from "../constants/tuningConstants"
+import { A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, INSTRUMENTS } from "../constants/tuningConstants"
 
 // Unused
-const initTunings = () => {
-    Object.values(TUNINGS).forEach((tuning) => {
-        tuning.strings_ids = tuning.strings?.map(note => stringFullNameToId(note))
-    })
-}
+// const initTunings = () => {
+//     Object.values(TUNINGS).forEach((tuning) => {
+//         tuning.strings_ids = tuning.strings?.map(note => stringFullNameToId(note))
+//     })
+// }
 
 // Unused
 // const stringFullNameToId = (fullname) => {
@@ -112,4 +112,23 @@ const recomputeFrequencies = (notes) => {
     })
 }
 
-export { generateNotes, computeNoteFrequency, recomputeFrequencies, toNearestNote, getExactNoteFromFrequency, getNearestNoteFromFrequency }
+const getTargetMidiNote = (instrConfig, midiNote) => {
+    const [instr, tuning] = INSTRUMENTS.getInstrument(instrConfig)
+    switch (instr.type) {
+        case 'generic': {
+            // Get closest note
+            const targetMidiNote = toNearestNote(midiNote)
+            return targetMidiNote
+        }
+        case 'stringed': {
+            // Get closest note from instrument's strings
+            const tuningMidiNotes = tuning?.strings_ids ?? []
+            const targetDistances = tuningMidiNotes.map(n => Math.abs(n - midiNote))
+            const targetIdx = targetDistances.indexOf(Math.min(...targetDistances))
+            const targetMidiNote = tuningMidiNotes[targetIdx]
+            return targetMidiNote
+        }
+    }
+}
+
+export { generateNotes, computeNoteFrequency, recomputeFrequencies, toNearestNote, getExactNoteFromFrequency, getNearestNoteFromFrequency, getTargetMidiNote }
