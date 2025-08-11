@@ -15,7 +15,9 @@
     position: relative;
     /* min-width will overwrite flexbox causing this to be auto and expand as much as possible */
     /* with column not actually necessary but leaving this here */
-    min-width: 0;
+    /* min-width: 0; */
+    /* idk what changed but 0 is wrong but 100% seems fine now */
+    min-width: 100%;
     /* max-width will ensure that stays constrained and won't overflow */
     max-width: 100%;
     /* min-height: 0; */
