@@ -28,7 +28,7 @@ const WaveformCanvas = memo(({ drawTime }) => {
 
         // Redraw w data
         context.moveTo(0, base)
-        const bufferLength = audioData.length / 10
+        const bufferLength = audioData.length
         const deltaX = canvas.width / bufferLength
         let x = 0
         for (let i = 0; i < bufferLength; i++) {
