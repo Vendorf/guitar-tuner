@@ -8,11 +8,6 @@ import './TunerDisplay.css'
 const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick }) => {
     return (
         <g key={key} className='tuner-peg-svg-g' onClick={handleClick}>
-            {/* <circle cx={cx} cy={cy} r={r} fill={isTuned
-                ? 'hsl(120, 61%, 70%)'
-                : isActived
-                    ? 'hsl(0, 0%, 40%)'
-                    : 'hsl(0, 0%, 80%)'} /> */}
             <circle
                 className={`tuner-peg-svg ${isActived ? 'tuner-peg-activated-svg' : ''} ${isTuned ? 'tuner-peg-tuned-svg' : ''} ${isSynthHeld ? `tuner-peg-held-svg` : ``}`}
                 cx={cx}
@@ -33,10 +28,6 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, ha
                 textAnchor="middle"
                 dominantBaseline="central"
                 transformOrigin={`${cx}px ${cy}px`}
-
-            // stroke="#000"
-            // strokeWidth="0.02"
-            // paintOrder="stroke"
             >
                 {name}
             </text>
@@ -45,6 +36,8 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, ha
 }
 
 /**
+ * TODO: have a totally separate display with an infinite scroll thru the whole note range for generic tuner
+ * and select it with variatn or something
  * Display for tuning pegs based on the current tuning
  * 
  * Highlights current target note from the tuning and shows notes that have been tuned
@@ -69,7 +62,7 @@ const TunerDisplay = () => {
     const widthPerPeg = VIEW_WIDTH / numPegs
 
     const playNote = (noteFreq) => {
-        // triggerTone(noteFreq)
+        if(instr.type === 'generic') return
         holdFreq(noteFreq)
     }
 
@@ -80,7 +73,7 @@ const TunerDisplay = () => {
                 {strings.map((midiNote, i) => {
                     // const note = TUNINGS[tuningMode].strings_ids[i]
                     // const midiNote = tuning.strings[i]
-                    const name = tuning.strings[i] ?? notes[midiNote].fullName
+                    const name = tuning.strings[i] ?? notes[midiNote]?.fullName
                     const noteFreq = notes[midiNote]?.frequency
                     const isTuned = notesTuned.has(midiNote)
                     const isActived = (i === targetIdx)

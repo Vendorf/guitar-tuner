@@ -31,7 +31,7 @@ const INSTRUMENTS = {
     'generic': {
         type: 'generic',
         tunings: {
-            'generic': {
+            'standard': {
                 name: 'Standard',
                 strings: [],
                 strings_ids: []

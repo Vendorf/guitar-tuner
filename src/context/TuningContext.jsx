@@ -21,8 +21,8 @@ const TuningProvider = ({ children }) => {
     const swappedTargetNotesRef = useRef(false)
 
     const [notes, setNotes] = useState(/** @type {Note[]} */([]))
-    const [instrConfig, setInstrConfig] = useState({ instrument: 'guitar', tuning: 'standard' })
-    // const [instrument, setInstrument] = useState('guitar')
+    // const [instrConfig, setInstrConfig] = useState({ instrument: 'guitar', tuning: 'standard' })
+    const [instrConfig, setInstrConfig] = useState({ instrument: 'generic', tuning: 'standard' })
     // const [tuningMode, setTuningMode] = useState("standard")
     const [notesTuned, setNotesTuned] = useState(new Set())
 
@@ -80,7 +80,7 @@ const TuningProvider = ({ children }) => {
             // TODO: is there a less shitty way to write this cause I feel it's ass to hardcode instruments here
             if (INSTRUMENTS.getInstrument(instrConfig)[0].type === 'generic') {
                 // We want to reset which notes are tuned every time for a generic instrument
-                setNotesTuned([])
+                setNotesTuned(new Set())
             }
         }
     })
