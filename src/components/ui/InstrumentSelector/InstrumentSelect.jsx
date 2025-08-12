@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import { INSTRUMENTS } from '../../../constants/tuningConstants'
-import { getInstrument } from '../../../utilities/tuningUtils';
-import { CheckIcon, ChevronIcon } from '../../icons/Bootstrap/BootstrapIcons';
-import useClickAway from '../../../hooks/useClickAway';
+import { getInstrument } from '../../../utilities/tuningUtils'
+import { CheckIcon, ChevronIcon } from '../../icons/Bootstrap/BootstrapIcons'
+import useClickAway from '../../../hooks/useClickAway'
 import './InstrumentSelect.css'
 
 //TODO: direct focus on selected item
@@ -101,7 +101,7 @@ const InstrumentSelect = ({ instrConfig, onSelect }) => {
 
     const handleClickOutside = () => {
         // Always close it; if already closed that's fine
-        setDropdownOpen(false);
+        setDropdownOpen(false)
     }
 
     useClickAway(selectRef, handleClickOutside)

@@ -76,17 +76,17 @@ const PitchDisplay = () => {
 
         const handleMediaQueryChange = (e) => {
             setIsSingleColumn(e.matches)
-        };
+        }
 
         // Initial check
-        setIsSingleColumn(mediaQuery.matches);
+        setIsSingleColumn(mediaQuery.matches)
 
         // Listen for changes
         mediaQuery.addEventListener('change', handleMediaQueryChange)
 
         // Cleanup
         return () => {
-            mediaQuery.removeEventListener('change', handleMediaQueryChange);
+            mediaQuery.removeEventListener('change', handleMediaQueryChange)
         }
     }, [])
 

@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import './App.css'
+import { useEffect, useState } from 'react'
 import { AudioProvider } from './context/AudioContext'
 import { TuningProvider } from './context/TuningContext'
 import PitchDisplay from './components/ui/PitchDisplay/PitchDisplay'
@@ -8,9 +7,10 @@ import StartButton from './components/ui/StartButton/StartButton'
 import DarkmodeToggle from './components/ui/DarkmodeToggle/DarkmodeToggle'
 import CampingScene from './components/ui/CampingScene/CampingScene'
 import { SynthProvider } from './context/SynthContext'
+import './App.css'
 
-const LIGHT_MODE_BACKGROUND_COLOR = 'hsl(0, 0%, 91%)';
-const DARK_MODE_BACKGROUND_COLOR = 'hsl(0, 0%, 12%)';
+const LIGHT_MODE_BACKGROUND_COLOR = 'hsl(0, 0%, 91%)'
+const DARK_MODE_BACKGROUND_COLOR = 'hsl(0, 0%, 12%)'
 
 function App() {
   const isSystemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches

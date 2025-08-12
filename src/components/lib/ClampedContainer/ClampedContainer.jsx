@@ -69,7 +69,7 @@ const ClampedContainer = ({ children, boundingElementRef, boundingRect, style, .
         const constrainDimensions = () => {
             if (!selfRef.current) {
                 // Ref not yet attached, abort
-                console.error("SELFREF UNATTACHED")
+                // console.error("SELFREF UNATTACHED")
                 return
             }
 
