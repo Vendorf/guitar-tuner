@@ -1,9 +1,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import './GenericTunerDisplay.css'
-import { useTuning } from '../../context/TuningContext'
-import { useSynth } from '../../context/SynthContext'
-import { getInstrument } from '../../utilities/tuningUtils'
+import { useTuning } from '../../../context/TuningContext'
+import { useSynth } from '../../../context/SynthContext'
+import { getInstrument } from '../../../utilities/tuningUtils'
 
 /**
  * Hook to manage a scrolling container and get the `scrollLeft` property

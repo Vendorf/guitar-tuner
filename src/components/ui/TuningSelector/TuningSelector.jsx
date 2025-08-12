@@ -1,9 +1,9 @@
 import { useRef, useState } from "react"
-import { INSTRUMENTS } from "../../constants/tuningConstants"
-import { useTuning } from "../../context/TuningContext"
-import { useSynth } from "../../context/SynthContext"
+import { INSTRUMENTS } from "../../../constants/tuningConstants"
+import { useTuning } from "../../../context/TuningContext"
+import { useSynth } from "../../../context/SynthContext"
 import './TuningSelector.css'
-import { getInstrument } from "../../utilities/tuningUtils"
+import { getInstrument } from "../../../utilities/tuningUtils"
 
 //TODO: store and remember order of tunings so they move to the front when selected and stay as most-recently-used order
 //TODO: add scroll arrows left/right

@@ -1,11 +1,11 @@
 
-import { useTuning } from '../../context/TuningContext'
-import { INSTRUMENTS } from '../../constants/tuningConstants'
+import { useTuning } from '../../../context/TuningContext'
+import { INSTRUMENTS } from '../../../constants/tuningConstants'
 import TuningSelector from '../TuningSelector/TuningSelector'
-import { useSynth } from '../../context/SynthContext'
+import { useSynth } from '../../../context/SynthContext'
 import './TunerDisplay.css'
 import InstrumentSelect from '../InstrumentSelector/InstrumentSelect'
-import { getInstrument } from '../../utilities/tuningUtils'
+import { getInstrument } from '../../../utilities/tuningUtils'
 import GenericTunerDisplay from '../GenericTunerDisplay/GenericTunerDisplay'
 
 const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick }) => {

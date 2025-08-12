@@ -1,5 +1,5 @@
-import { useAudioState } from "../../context/AudioContext"
-import { useTuning } from "../../context/TuningContext"
+import { useAudioState } from "../../../context/AudioContext"
+import { useTuning } from "../../../context/TuningContext"
 import WaveformCanvas from "../WaveformCanvas/WaveformCanvas"
 import './PitchDisplay.css'
 

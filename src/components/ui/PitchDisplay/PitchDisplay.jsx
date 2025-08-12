@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
-import { useAudioState } from "../../context/AudioContext"
-import { useTuning } from "../../context/TuningContext"
-import { interpolateHsl } from "../../utilities/colorUtils"
+import { useAudioState } from "../../../context/AudioContext"
+import { useTuning } from "../../../context/TuningContext"
+import { interpolateHsl } from "../../../utilities/colorUtils"
 import PitchDetailDisplay from "./PitchDetailDisplay"
 import './PitchDisplay.css'
-import { CENTS_DIST_IN_TUNE } from "../../constants/tuningConstants"
-import ClampedContainer from "../../libcomponents/ClampedContainer/ClampedContainer"
+import { CENTS_DIST_IN_TUNE } from "../../../constants/tuningConstants"
+import ClampedContainer from "../../../libcomponents/ClampedContainer/ClampedContainer"
 
 //TODOS
 // 1. Maybe convert to canvas for performance idk

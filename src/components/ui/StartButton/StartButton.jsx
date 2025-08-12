@@ -1,7 +1,7 @@
 // Broken into its own file for easier memoization/to avoid rerenders with constant pitch change of larger component
 
-import { useAudioControls } from "../../context/AudioContext"
-import { useSynth } from "../../context/SynthContext"
+import { useAudioControls } from "../../../context/AudioContext"
+import { useSynth } from "../../../context/SynthContext"
 
 /**
  * Button to start audio

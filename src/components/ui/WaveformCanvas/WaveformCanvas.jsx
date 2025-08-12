@@ -1,5 +1,5 @@
 import { memo, useRef } from "react"
-import { useAudioState } from "../../context/AudioContext"
+import { useAudioState } from "../../../context/AudioContext"
 
 /**
  * Canvas that draws the waveform of the last FFT audio sample
