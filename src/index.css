@@ -21,6 +21,9 @@
   --color-dark-3_5: hsl(0, 0%, 89.5%);
   --color-dark-4: hsl(0, 0%, 100%);
 
+  --accent-purple: #999eff;
+  --accent-purple-dark: hsl(237, 60%, 60%);
+
   /* BACKGROUND/TEXT COLORS */
   --background-color: var(--color-light-0);
   --text-color: var(--color-light-3_5);
@@ -48,14 +51,16 @@
 
   /* INSTRUMENT SELECT */
   --instr-select-background: var(--color-light-0);
-  --instr-select-dropdown-background: #1a1a1a;
-  --instr-select-hover: var(--color-light-0_5);
+  --instr-select-dropdown-background: #e5e5e5;
+  /* --instr-select-hover: var(--color-light-0_5); */
+  --instr-select-hover: var(--color-light-1);
   --instr-select-selected: var(--color-light-1);
   --instr-select-alt-text-color: var(--text-color);
+  --instr-select-accent: var(--accent-purple-dark);
 
   /* MISC */
-  --accent-purple: #999eff;
   --detail-background: var(--color-light-0_5);
+  --generic-tuner-held-accent: var(--accent-purple-dark);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -99,15 +104,17 @@
 
   /* INSTRUMENT SELECT */
   --instr-select-background: var(--color-dark-0);
-  --instr-select-dropdown-background: #ffffff;
-  --instr-select-hover: var(--color-dark-0_5);
+  --instr-select-dropdown-background: #1a1a1a;
+  /* --instr-select-hover: var(--color-dark-0_5); */
+  --instr-select-hover: var(--color-dark-1);
   --instr-select-selected: var(--color-dark-1);
   --instr-select-alt-text-color: var(--text-color);
   /* --instr-select-alt-text-color: hsla(0, 0%, 0%, 0.87); */
+  --instr-select-accent: var(--accent-purple);
   
-
   /* MISC */
   --detail-background: var(--color-dark-0_5);
+  --generic-tuner-held-accent: var(--accent-purple);
 }
 
 /* 

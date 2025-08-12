@@ -6,6 +6,7 @@ import { useSynth } from '../../context/SynthContext'
 import './TunerDisplay.css'
 import InstrumentSelect from '../InstrumentSelector/InstrumentSelect'
 import { getInstrument } from '../../utilities/tuningUtils'
+import GenericTunerDisplay from '../GenericTunerDisplay/GenericTunerDisplay'
 
 const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick }) => {
     return (
@@ -47,14 +48,15 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, ha
  */
 const TunerDisplay = () => {
     const { notes, instrConfig, setInstrConfig, noteInfo: { targetMidiNote }, notesTuned } = useTuning()
-    const { holdFreq, heldFreq } = useSynth()
+    const { holdFreq, heldFreq, stopHeldFreq } = useSynth()
     // const strings = TUNINGS[tuningMode].strings
 
     // const targetIdx = TUNINGS[tuningMode].strings_ids.indexOf(targetMidiNote)
     const [instr, tuning] = getInstrument(instrConfig)
+    const isGenericInstrument = (instr.type === 'generic')
     const targetIdx = tuning?.strings_ids?.indexOf(targetMidiNote) ?? -1
 
-    const strings = instr.type === 'generic' ? [targetMidiNote] : tuning.strings_ids
+    const strings = isGenericInstrument ? [targetMidiNote] : tuning.strings_ids
 
     const numPegs = strings.length
     const VIEW_WIDTH = 60
@@ -64,20 +66,22 @@ const TunerDisplay = () => {
     const widthPerPeg = VIEW_WIDTH / numPegs
 
     const playNote = (noteFreq) => {
-        if (instr.type === 'generic') return
+        if (isGenericInstrument) return
         holdFreq(noteFreq)
     }
 
     const changeInstrument = (newInstrConfig) => {
-        console.log('selecting', newInstrConfig)
+        // console.log('selecting', newInstrConfig)
+        stopHeldFreq()
         setInstrConfig({ ...newInstrConfig })
     }
 
     return (
         <div className='tuner-display-container card'>
             <InstrumentSelect instrConfig={instrConfig} onSelect={changeInstrument}></InstrumentSelect>
-            <TuningSelector></TuningSelector>
-            <svg className="tuner-peg-container-svg unhighlightable" viewBox='0 0 60 10'>
+            {isGenericInstrument && <GenericTunerDisplay />}
+            {!isGenericInstrument && <TuningSelector></TuningSelector>}
+            {!isGenericInstrument && <svg className="tuner-peg-container-svg unhighlightable" viewBox='0 0 60 10'>
                 {strings.map((midiNote, i) => {
                     // const note = TUNINGS[tuningMode].strings_ids[i]
                     // const midiNote = tuning.strings[i]
@@ -91,9 +95,9 @@ const TunerDisplay = () => {
                     const cy = VIEW_HEIGHT / 2
                     const r = pegRadius
 
-                    return TunerPegSVG({ key: i, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick: () => playNote(noteFreq) })
+                    return TunerPegSVG({ key: `${midiNote}${i}`, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick: () => playNote(noteFreq) })
                 })}
-            </svg>
+            </svg>}
 
         </div>
     )

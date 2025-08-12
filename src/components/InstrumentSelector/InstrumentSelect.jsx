@@ -14,7 +14,7 @@ const StringIcons = ({ tuning }) => {
     return (
         <div className='string-box-container'>
             {strings.map((s, i) => {
-                return <div className='string-box'>{s}</div>
+                return <div key={i} className='string-box'>{s}</div>
             })}
         </div>
     )
@@ -86,8 +86,12 @@ const InstrumentSelect = ({ instrConfig, onSelect }) => {
     }
 
     const handleSelect = (newInstrConfig) => {
-        toggleDropdown()
+        // Select new config
         onSelect(newInstrConfig)
+
+        // Wait a little while, then close
+        // setTimeout(toggleDropdown, 200)
+        toggleDropdown()
     }
 
     return (
