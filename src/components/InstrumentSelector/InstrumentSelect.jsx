@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { INSTRUMENTS } from '../../constants/tuningConstants'
 import { getInstrument } from '../../utilities/tuningUtils';
-import './InstrumentSelect.css'
 import { CheckIcon, ChevronIcon } from '../icons/Bootstrap/BootstrapIcons';
+import './InstrumentSelect.css'
+import useClickAway from '../../hooks/useClickAway';
 
 //TODO: direct focus on selected item
 
@@ -68,6 +69,9 @@ const InstrumentListItem = ({ instrConfig, instrKey, instrument, onSelect }) => 
 }
 
 const InstrumentDropdown = ({ instrConfig, onSelect, show }) => {
+    // const dropdownRef = useRef(undefined)
+    // useClickAway(dropdownRef, handleClickOutside)
+
     return (
         <div className='instrument-dropdown' style={{ display: show ? '' : 'none' }}>
             {Object.entries(INSTRUMENTS).map(([instrKey, instr]) => {
@@ -78,9 +82,10 @@ const InstrumentDropdown = ({ instrConfig, onSelect, show }) => {
 }
 
 const InstrumentSelect = ({ instrConfig, onSelect }) => {
+    const selectRef = useRef(undefined)
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [instr, tuning] = getInstrument(instrConfig)
-
+    
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen)
     }
@@ -94,8 +99,15 @@ const InstrumentSelect = ({ instrConfig, onSelect }) => {
         toggleDropdown()
     }
 
+    const handleClickOutside = () => {
+        // Always close it; if already closed that's fine
+        setDropdownOpen(false);
+    }
+
+    useClickAway(selectRef, handleClickOutside)
+
     return (
-        <div className={`instrument-selector ${dropdownOpen ? 'instrument-selector-open' : ''}`}>
+        <div ref={selectRef} className={`instrument-selector ${dropdownOpen ? 'instrument-selector-open' : ''}`}>
             <div className='instrument-selector-selected' onClick={toggleDropdown}>
                 {instr.name}
                 <ChevronIcon className={`chevron-icon ${dropdownOpen ? 'icon-flipped' : ''}`} />

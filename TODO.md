@@ -1,5 +1,21 @@
 # TODO
 
+August 12 2025
+
+Sweet it's looking pretty good :D
+
+So now mainly:
+
+1. Pull out shadowscrollcontainer into own component for reuse
+2. Close dropdown when click out with hook
+3. A4 configurer?
+4. Pitch detail display restyle
+5. Document shit
+
+Don't think I'll even bother with typescript really honestly
+
+And then we call it that's a wrap :)
+
 August 11 2025
 
 Okay sweet the generic tuner is okayish and instrument selection exists now
