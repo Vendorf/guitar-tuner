@@ -2,8 +2,8 @@ import { useRef, useState } from 'react'
 import { INSTRUMENTS } from '../../../constants/tuningConstants'
 import { getInstrument } from '../../../utilities/tuningUtils';
 import { CheckIcon, ChevronIcon } from '../../icons/Bootstrap/BootstrapIcons';
-import './InstrumentSelect.css'
 import useClickAway from '../../../hooks/useClickAway';
+import './InstrumentSelect.css'
 
 //TODO: direct focus on selected item
 

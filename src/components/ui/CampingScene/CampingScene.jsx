@@ -15,9 +15,9 @@ import guitar9 from '../../../assets/guitars/Guitar 9.mp3'
 import guitar10 from '../../../assets/guitars/Guitar 10.mp3'
 import guitar11 from '../../../assets/guitars/Guitar 11.mp3'
 
-import './CampingScene.css'
 import { useMemo, useState } from 'react'
 import { shuffleArray } from '../../../utilities/arrayUtils'
+import './CampingScene.css'
 
 //TODO: refactor so not so tightly coupled
 

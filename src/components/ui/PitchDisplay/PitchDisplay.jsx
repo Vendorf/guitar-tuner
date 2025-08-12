@@ -3,9 +3,8 @@ import { useAudioState } from "../../../context/AudioContext"
 import { useTuning } from "../../../context/TuningContext"
 import { interpolateHsl } from "../../../utilities/colorUtils"
 import PitchDetailDisplay from "./PitchDetailDisplay"
-import './PitchDisplay.css'
-import { CENTS_DIST_IN_TUNE } from "../../../constants/tuningConstants"
 import ClampedContainer from "../../lib/ClampedContainer/ClampedContainer"
+import './PitchDisplay.css'
 
 //TODOS
 // 1. Maybe convert to canvas for performance idk
