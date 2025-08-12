@@ -66,7 +66,7 @@
 }
 
 .note-tuned {
-    color: hsl(120, 61%, 70%);
+    color: var(--generic-tuner-note-tuned);
 }
 
 .note-held {

@@ -61,6 +61,7 @@
   /* MISC */
   --detail-background: var(--color-light-0_5);
   --generic-tuner-held-accent: var(--accent-purple-dark);
+  --generic-tuner-note-tuned: hsl(120, 61%, 50%);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -115,6 +116,7 @@
   /* MISC */
   --detail-background: var(--color-dark-0_5);
   --generic-tuner-held-accent: var(--accent-purple);
+  --generic-tuner-note-tuned: hsl(120, 61%, 70%);
 }
 
 /* 
