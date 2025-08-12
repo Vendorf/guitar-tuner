@@ -1,0 +1,45 @@
+.shadow-scroll-wrapper {
+    /* for shadows */
+    position: relative;
+    /* min-width will overwrite flexbox causing this to be auto and expand as much as possible */
+    /* with column not actually necessary but leaving this here */
+    /* min-width: 0; */
+    /* idk what changed but 0 is wrong but 100% seems fine now */
+    min-width: 100%;
+    /* max-width will ensure that stays constrained and won't overflow */
+    max-width: 100%;
+    /* min-height: 0; */
+}
+
+.shadow-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+/* from https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ (https://codepen.io/shadeed/pen/jWBjVd)*/
+/* Requires position: relative on NON-SCROLLING WRAPPER of container */
+.shadow {
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    width: 50px;
+    height: 100%;
+    background: red;
+    /* allow scrolling/clicking thru this div */
+    pointer-events: none;
+}
+
+.shadow--left {
+    left: 0;
+    background: -webkit-linear-gradient(90deg, var(--background-color), transparent);
+    background: linear-gradient(90deg, var(--background-color), transparent);
+    opacity: 0;
+}
+
+.shadow--right {
+    right: 0;
+    background: -webkit-linear-gradient(270deg, var(--background-color), transparent);
+    background: linear-gradient(270deg, var(--background-color), transparent);
+}
