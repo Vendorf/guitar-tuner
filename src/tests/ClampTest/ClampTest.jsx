@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import ClampedContainer from '../../libcomponents/ClampedContainer/ClampedContainer'
+import ClampedContainer from '../../components/lib/ClampedContainer/ClampedContainer'
 import './ClampTest.css'
 
 export default function ClampTest() {
