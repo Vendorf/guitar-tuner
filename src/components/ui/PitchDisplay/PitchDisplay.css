@@ -4,7 +4,8 @@
 
 .pitch-wrapper {
     display: flex;
-    align-items: baseline; /* Aligns text on baseline */
+    align-items: baseline;
+    /* Aligns text on baseline */
     justify-content: space-evenly;
     padding: 0 2em 0 2em;
 }
@@ -92,4 +93,54 @@ svg {
     .card-remove-edges {
         border-radius: 40px;
     }
+}
+
+
+.tuning-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tuning-table th {
+    text-align: center;
+    padding: 6px 10px;
+    background: var(--table-header);
+    border-bottom: 2px solid var(--table-divider);
+}
+
+.tuning-table td {
+    /* text-align: left; */
+    padding: 6px 10px;
+    vertical-align: top;
+}
+
+.tuning-table tr:nth-child(even) {
+    background: var(--table-alt-color);
+}
+
+.row-title {
+    text-align: right;
+    font-weight: bold;
+    border-right: 2px solid var(--table-divider);
+}
+
+.row {
+    font-weight: bold;
+}
+
+.row-detected {
+    color: #2b6cb0;
+}
+
+.row-target {
+    color: #b83280;
+}
+
+.table-spacer {
+    height: 1em;
 }

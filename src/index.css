@@ -62,6 +62,9 @@
   --detail-background: var(--color-light-0_5);
   --generic-tuner-held-accent: var(--accent-purple-dark);
   --generic-tuner-note-tuned: hsl(120, 61%, 50%);
+  --table-alt-color: var(--color-light-0);
+  --table-header: var(--color-light-1);
+  --table-divider: var(--color-light-2);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -117,6 +120,9 @@
   --detail-background: var(--color-dark-0_5);
   --generic-tuner-held-accent: var(--accent-purple);
   --generic-tuner-note-tuned: hsl(120, 61%, 70%);
+  --table-alt-color: var(--color-dark-0);
+  --table-header: var(--color-dark-1);
+  --table-divider: var(--color-dark-2);
 }
 
 /* 

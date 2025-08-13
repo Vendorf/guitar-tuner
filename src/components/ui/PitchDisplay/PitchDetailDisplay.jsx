@@ -32,48 +32,57 @@ const PitchDetailDisplay = ({ display }) => {
                 <WaveformCanvas drawTime={false}></WaveformCanvas>
             </div>
             <div className="card">
-                {/* <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button> */}
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Pitch:</div> <div className="pitch-value">{Math.round(pitch * 100) / 100}</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Clarity:</div> <div className="pitch-value">{Math.round(clarity * 100)}%</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Note id:</div> <div className="pitch-value">{nearestMidiNote}</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Note:</div> <div className="pitch-value">{nearestNoteName}</div>
-                </div>
-            </div>
-        
-            <div className="card">
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Target id:</div> <div className="pitch-value">{targetMidiNote}</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Target:</div> <div className="pitch-value">{targetNoteName}</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Freq:</div> <div className="pitch-value">{Math.round(targetFreq * 100) / 100}</div>
-                </div>
-            </div>
-            <div className="card">
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Exact:</div> <div className="pitch-value">{Math.round(midiNote * 100) / 100}</div>
-                </div>
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Cents:</div> <div className="pitch-value">{Math.round(centsDist * 100) / 100}</div>
-                </div>
-            </div>
+                <div className="waveform-label">Tuning Info</div>
+                <table className="tuning-table">
+                    <thead>
+                        <tr>
+                            <th colSpan={2}>Detected</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {/* <td className="row"><span style={{fontWeight: 'bold'}}>Pitch:</span> {Math.round(pitch * 100) / 100}</td>
+                            <td className="row"><span style={{fontWeight: 'bold'}}>Clarity:</span> {Math.round(clarity * 100)}%</td> */}
+                            <td className="row">Pitch: <span className="row-detected">{Math.round(pitch * 100) / 100}</span></td>
+                            <td className="row">Clarity: <span className="row-detected">{Math.round(clarity * 100)}%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <div className="card">
-                <div className="pitch-wrapper">
-                    <div className="pitch-label">Update:</div> <div className="pitch-value">{updates}</div>
-                </div>
-                <pre style={{ textAlign: 'left' }}>{history.length} {JSON.stringify(history, null, 2)}</pre>
-            </div>
+                <div className="table-spacer"></div>
 
+                <table className="tuning-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Detected</th>
+                            <th>Target</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td className="row-title">Frequency</td>
+                            <td className="row row-detected">{(Math.round(pitch * 100) / 100).toFixed(2)}</td>
+                            <td className="row row-target">{(Math.round(targetFreq * 100) / 100).toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td className="row-title">MIDI</td>
+                            <td className="row row-detected">{nearestMidiNote} ({(Math.round(midiNote * 100) / 100).toFixed(2)})</td>
+                            <td className="row row-target">{targetMidiNote} (Δ={centsDist > 0 && "+"}{(Math.round(centsDist * 100) / 100).toFixed(2)})</td>
+                        </tr>
+                        <tr>
+                            <td className="row-title">Note</td>
+                            <td className="row row-detected">{nearestNoteName}</td>
+                            <td className="row row-target">{targetNoteName}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style={{ marginTop: "1em", textAlign: "left" }}>
+                    <strong>Update:</strong> {updates}
+                    <pre>{history.length} {JSON.stringify(history, null, 2)}</pre>
+                </div>
+            </div>
         </div>
 
     )
