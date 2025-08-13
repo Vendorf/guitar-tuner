@@ -1,20 +1,5 @@
 import { createContext, use, useEffect, useState } from "react"
-import { getExactNoteFromFrequency } from "../utilities/tuningUtils"
 import useAudioEngine from "../hooks/engines/useAudioEngine"
-
-//// TYPEDEFS /////////////////////////////////////////////////////////////////
-/**
- * @typedef {Object} HistoryEntry
- * @property {number} pitch pitch detected by PitchDetector
- * @property {number} clarity clarity (confidence) in pitch detected by PitchDetector
- * @property {number} exactNote midi note with cents (ex: 69.03) for 3 cents above A4
- * @property {Date} time time of history entry
- */
-///////////////////////////////////////////////////////////////////////////////
-
-//// CONSTANTS ////////////////////////////////////////////////////////////////
-const HISTORY_SIZE = 1000
-///////////////////////////////////////////////////////////////////////////////
 
 const AudioStateContext = createContext(undefined)
 const AudioControlContext = createContext(undefined)
@@ -36,32 +21,12 @@ const AudioProvider = ({ children }) => {
     const [clarity, setClarity] = useState(0)
     const [updates, setUpdates] = useState(0) // number of updates
 
-    const [history, setHistory] = useState(/** @type {HistoryEntry[]} */([]))
-    const resetHistory = () => {
-        setHistory([])
-    }
-
     const handlePitchData = ({ pitch: detPitch, clarity: detClarity, inputTime, inputFreq }) => {
         setPitch(detPitch)
         setClarity(detClarity)
 
         setAudioTimeData(inputTime) // NOTE: this will on it's own not trigger updates bc same object!
         setAudioFrequencyData(inputFreq)
-
-        setHistory((oldHist) => {
-            const newHistory = [...oldHist, {
-                pitch: detPitch,
-                clarity: detClarity,
-                exactNote: getExactNoteFromFrequency(detPitch),
-                time: (new Date()),
-                timeDataRange: [Math.min(...inputTime), Math.max(...inputTime)],
-                freqDataRange: [Math.min(...inputFreq), Math.max(...inputFreq)],
-            }]
-            if (newHistory.length > HISTORY_SIZE) {
-                newHistory.shift()
-            }
-            return newHistory
-        })
 
         setUpdates((u) => u + 1)
     }
@@ -76,8 +41,8 @@ const AudioProvider = ({ children }) => {
     }, [])
 
     return (
-        <AudioStateContext value={{ pitch, clarity, history, updates, audioTimeData, audioFrequencyData }}>
-            <AudioControlContext value={{ started, startAudio, stopAudio, killAudio, resetHistory }}>
+        <AudioStateContext value={{ pitch, clarity, updates, audioTimeData, audioFrequencyData }}>
+            <AudioControlContext value={{ started, startAudio, stopAudio, killAudio }}>
                 {children}
             </AudioControlContext>
         </AudioStateContext>

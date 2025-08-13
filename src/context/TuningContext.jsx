@@ -1,9 +1,22 @@
 import { createContext, use, useEffect, useRef, useState } from "react"
-import { useAudioControls, useAudioState } from "./AudioContext"
-import { INSTRUMENTS } from "../constants/tuningConstants"
+import { useAudioState } from "./AudioContext"
 import usePitchAnalysis from "../hooks/usePitchAnalysis"
-import { generateNotes, getInstrument } from "../utilities/tuningUtils"
+import { generateNotes, getExactNoteFromFrequency, getInstrument, recomputeFrequencies } from "../utilities/tuningUtils"
 /** @import { Note } from '../utilities/tuningUtils' */
+
+//// TYPEDEFS /////////////////////////////////////////////////////////////////
+/**
+ * @typedef {Object} HistoryEntry
+ * @property {number} pitch pitch detected by PitchDetector
+ * @property {number} clarity clarity (confidence) in pitch detected by PitchDetector
+ * @property {number} exactNote midi note with cents (ex: 69.03) for 3 cents above A4
+ * @property {Date} time time of history entry
+ */
+///////////////////////////////////////////////////////////////////////////////
+
+//// CONSTANTS ////////////////////////////////////////////////////////////////
+const HISTORY_SIZE = 1000
+///////////////////////////////////////////////////////////////////////////////
 
 const TuningContext = createContext(undefined)
 
@@ -14,19 +27,54 @@ const TuningContext = createContext(undefined)
  * @returns 
  */
 const TuningProvider = ({ children }) => {
-    const { pitch } = useAudioState()
-    const { resetHistory } = useAudioControls()
+    const { pitch, clarity } = useAudioState()
 
     const swappedTargetNotesRef = useRef(false)
 
+    const [a4Freq, setA4Freq] = useState(440)
     const [notes, setNotes] = useState(/** @type {Note[]} */([]))
     const [instrConfig, setInstrConfig] = useState({ instrument: 'guitar', tuning: 'standard' })
     const [notesTuned, setNotesTuned] = useState(new Set())
 
+    const [history, setHistory] = useState(/** @type {HistoryEntry[]} */([]))
+    const resetHistory = () => {
+        setHistory([])
+    }
+
     useEffect(() => {
-        const n = generateNotes()
-        setNotes(n)
-    }, [])
+        setHistory((oldHist) => {
+            const newHistory = [...oldHist, {
+                pitch: pitch,
+                clarity: clarity,
+                exactNote: getExactNoteFromFrequency(pitch, a4Freq),
+                time: (new Date()),
+                // timeDataRange: [Math.min(...audioTimeData), Math.max(...audioTimeData)],
+                // freqDataRange: [Math.min(...audioFrequencyData), Math.max(...audioFrequencyData)],
+            }]
+            if (newHistory.length > HISTORY_SIZE) {
+                newHistory.shift()
+            }
+            return newHistory
+        })
+    }, [pitch, clarity])
+
+    // useEffect(() => {
+    //     const n = generateNotes(a4Freq)
+    //     setNotes(n)
+    //     console.log('set notes', n)
+    // }, [])
+
+    // Recompute frequencies whenever A4 changes
+    useEffect(() => {
+        if (notes.length === 0) {
+            const n = generateNotes(a4Freq)
+            setNotes(n)
+        } else {
+            recomputeFrequencies(notes, a4Freq)
+            setNotes([...notes])
+        }
+
+    }, [a4Freq])
 
     useEffect(() => {
         // Reset tuning
@@ -56,7 +104,7 @@ const TuningProvider = ({ children }) => {
         swappedTargetNotesRef.current = true
     }
 
-    const noteInfo = usePitchAnalysis({ pitch, instrConfig, onNoteTuned: addTunedNote, onTargetChanged: handleTargetChanged })
+    const noteInfo = usePitchAnalysis({ pitch, a4Freq, instrConfig, onNoteTuned: addTunedNote, onTargetChanged: handleTargetChanged })
 
     // if(noteInfo.targetMidiNote !== lastTargetNoteRef.current) {
     //     // Target note switched, so reset our history'
@@ -83,7 +131,7 @@ const TuningProvider = ({ children }) => {
     })
 
     return (
-        <TuningContext value={{ notes, instrConfig, setInstrConfig, notesTuned, noteInfo }}>
+        <TuningContext value={{ a4Freq, setA4Freq, notes, instrConfig, setInstrConfig, notesTuned, noteInfo, history, resetHistory }}>
             {children}
         </TuningContext>
     )

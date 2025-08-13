@@ -12,14 +12,13 @@ import { CENTS_DIST_IN_TUNE, CENTS_DIST_MAX, COUNT_IN_TUNE } from "../constants/
  * Memoizes analysis so unchanged pitch/tuning does not redo analysis
  * @param {Object} param
  * @param {number} param.pitch current pitch from PitchDetector
+ * @param {number} param.a4Freq frequency for A4
  * @param {Object} param.instrConfig current instrument configuration
  * @param {(number) => void} param.onNoteTuned callback for when a note is considered in tune with the target note
  * @param {(void) => void} param.onTargetChanged callback for when target note that tuning towards changed
  * @returns {Object} note, nearestNote, targetNote, centsDist
  */
-const usePitchAnalysis = ({ pitch, instrConfig, onNoteTuned, onTargetChanged }) => {
-    // const { resetHistory } = useAudioControls()
-
+const usePitchAnalysis = ({ pitch, a4Freq, instrConfig, onNoteTuned, onTargetChanged }) => {
     const atTargetCountRef = useRef(0) // count of updates that pitch is at target
     const lastTargetMidiNoteRef = useRef(-1) // last target note that were at
 
@@ -33,7 +32,7 @@ const usePitchAnalysis = ({ pitch, instrConfig, onNoteTuned, onTargetChanged }) 
             return { midiNote: -1, nearestMidiNote: -1, targetMidiNote: -1, centsDist: 0, inTune: false }
         }
 
-        const midiNote = getExactNoteFromFrequency(pitch)
+        const midiNote = getExactNoteFromFrequency(pitch, a4Freq)
         const nearestMidiNote = toNearestNote(midiNote)
         const targetMidiNote = getTargetMidiNote(instrConfig, midiNote)
 

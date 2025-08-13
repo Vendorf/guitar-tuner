@@ -14,8 +14,8 @@ import './PitchDisplay.css'
  */
 const PitchDetailDisplay = ({ display }) => {
 
-    const { pitch, clarity, history, updates } = useAudioState()
-    const { notes, noteInfo: { midiNote, nearestMidiNote, targetMidiNote, centsDist } } = useTuning()
+    const { pitch, clarity, updates } = useAudioState()
+    const { notes, noteInfo: { midiNote, nearestMidiNote, targetMidiNote, centsDist }, history } = useTuning()
 
     const nearestNoteName = notes[nearestMidiNote]?.fullName ?? ""
     const targetNoteName = notes[targetMidiNote]?.fullName ?? ""

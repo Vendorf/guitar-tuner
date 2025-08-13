@@ -30,7 +30,7 @@ import { A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, INSTRUMENTS } from "../c
  * Generates list of all midi notes from MIN_OCTAVE to MAX_OCTAVE with the current SCALE
  * @returns {Note[]} list of notes containing {id (midi note/index), name, octave, fullName (name + octave)}
  */
-const generateNotes = () => {
+const generateNotes = (a4Freq = 440) => {
     const notes = []
 
     for (let i = 0; i <= (MAX_OCTAVE - MIN_OCTAVE + 1); i++) {
@@ -42,7 +42,7 @@ const generateNotes = () => {
                 name: n,
                 octave: i,
                 fullName: `${n}${MIN_OCTAVE + i}`,
-                frequency: computeNoteFrequency(noteId)
+                frequency: computeNoteFrequency(noteId, a4Freq)
             }
         })
 
@@ -58,14 +58,15 @@ const generateNotes = () => {
 /**
  * Computes note frequency from midi note with cents
  * @param {number} note midi note
+ * @param {number} a4Freq frequency of a4 (default 440Hz)
  * @returns {number} frequency of note
  */
-const computeNoteFrequency = (note) => {
+const computeNoteFrequency = (note, a4Freq = 440) => {
     // F = F_A4 * 2^(n-A4)/12
     // therefore    note>A4 will be mult (higher freq)
     //              note<A4 will be div (lower freq)
     //              note=A4 will be *1 --> A4
-    return A4_FREQ * Math.pow(2, (note - A4_ID) / 12)
+    return a4Freq * Math.pow(2, (note - A4_ID) / 12)
 }
 
 /**
@@ -77,9 +78,10 @@ const computeNoteFrequency = (note) => {
  * 
  * Therefore standard logarithm note --> frequency conversion the fractional part is the cents
  * @param {number} freq 
+ * @param {number} a4Freq frequency of A4 (default 440 Hz)
  */
-const getExactNoteFromFrequency = (freq) => {
-    return 12 * Math.log2(freq / A4_FREQ) + A4_ID
+const getExactNoteFromFrequency = (freq, a4Freq = 440) => {
+    return 12 * Math.log2(freq / a4Freq) + A4_ID
 }
 
 /**
@@ -94,21 +96,23 @@ const toNearestNote = (note) => {
 /**
  * Gets closest exact midi note from raw frequency
  * @param {number} freq frequency
+ * @param {number} a4Freq frequency of A4 (default 440 Hz)
  * @returns closest exact midi note to frequency
  */
-const getNearestNoteFromFrequency = (freq) => {
+const getNearestNoteFromFrequency = (freq, a4Freq = 440) => {
     // n = 12 * log_2(F/F_A4) + A4
     // return 12 * Math.log2(freq / A4_FREQ) + A4_ID
-    return toNearestNote(getExactNoteFromFrequency(freq))
+    return toNearestNote(getExactNoteFromFrequency(freq, a4Freq))
 }
 
 /**
  * Recomputes note frequencies from midi note values
  * @param {Note[]} notes list of notes
+ * @param {number} a4Freq frequency of A4 (default 440 Hz)
  */
-const recomputeFrequencies = (notes) => {
+const recomputeFrequencies = (notes, a4Freq = 440) => {
     notes.forEach((n) => {
-        n.frequency = computeNoteFrequency(n.id)
+        n.frequency = computeNoteFrequency(n.id, a4Freq)
     })
 }
 

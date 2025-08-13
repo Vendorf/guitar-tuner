@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useAudioState } from "../../../context/AudioContext"
 import { useTuning } from "../../../context/TuningContext"
 import { interpolateHsl } from "../../../utilities/colorUtils"
 import PitchDetailDisplay from "./PitchDetailDisplay"
@@ -41,8 +40,7 @@ const LOW_CENTS = 0 // when fully low color
  * @returns 
  */
 const PitchDisplay = () => {
-    const { history } = useAudioState()
-    const { notes, noteInfo: { targetMidiNote, inTune } } = useTuning()
+    const { notes, noteInfo: { targetMidiNote, inTune }, history } = useTuning()
     const targetNoteName = notes[targetMidiNote]?.fullName ?? ""
 
     //TODO: replace with when in tune / when enough iterations or smthng
