@@ -2,6 +2,12 @@
 
 August 13 2025
 
+Okay nvm got subscript styling and it looks okay; could do more but honestly I think it's fine
+
+So just some more instruments, document, and cleanup
+
+August 13 2025
+
 Sweet have the A4 configurer, so all that's left is document and cleanup
 
 But would be nice to get the sub/supercript thing working for the generic tuner
