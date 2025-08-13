@@ -2,6 +2,17 @@
 
 August 12 2025
 
+Okay rad :D
+
+Got some refactors, scroll container, close dropdown, and pitch display restyled
+
+Just need the A4 configurer and documentation now
+
+1. Configurer A4
+2. Document/cleanup
+
+August 12 2025
+
 Sweet it's looking pretty good :D
 
 So now mainly:
