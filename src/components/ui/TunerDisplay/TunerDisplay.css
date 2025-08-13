@@ -76,6 +76,7 @@
 }
 
 .tuner-peg-held-svg {
+    /* stroke: var(--tuner-peg-held); */
     stroke: var(--accent-purple);
     stroke-width: 0.75px;
 }

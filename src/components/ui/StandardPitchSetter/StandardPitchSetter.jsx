@@ -62,7 +62,7 @@ const StandardPitchSetter = () => {
 
     return (
         <div ref={setterRef} className='standard-pitch-setter' onClick={toggleEditing}>
-            A<sub>4</sub> =
+            A<sub>4</sub> =&nbsp;
             {!editing && <span className='standard-pitch'>{inputVal}</span>}
             {editing && <div className='input-wrapper'><input autoFocus type='number' min={1} max={20000} className='standard-pitch-input' value={inputVal} onClick={(e) => e.stopPropagation()} onChange={handleChange} onKeyDown={handleKeyDown} /> <CheckSquareIcon className='commit-icon' onClick={commitChange} /><XSquareIcon className='cancel-icon' onClick={cancelChange} /></div>} Hz
         </div>

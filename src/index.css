@@ -48,6 +48,7 @@
   --tuner-text-color: hsla(0, 0%, 100%, 0.87);
   --tuner-peg-background-color: var(--color-light-0_5);
   --tuner-peg-active: var(--color-light-2_5);
+  --tuner-peg-held: var(--accent-purple-dark);
 
   /* INSTRUMENT SELECT */
   --instr-select-background: var(--color-light-0);
@@ -65,6 +66,7 @@
   --table-alt-color: var(--color-light-0);
   --table-header: var(--color-light-1);
   --table-divider: var(--color-light-2);
+  --pitch-setter-accent: var(--accent-purple-dark);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -105,6 +107,7 @@
   --tuner-text-color: hsla(0, 0%, 0%, 0.87);
   --tuner-peg-background-color: var(--color-dark-0_5);
   --tuner-peg-active: var(--color-dark-2_5);
+  --tuner-peg-held: var(--accent-purple);
 
   /* INSTRUMENT SELECT */
   --instr-select-background: var(--color-dark-0);
@@ -115,7 +118,7 @@
   --instr-select-alt-text-color: var(--text-color);
   /* --instr-select-alt-text-color: hsla(0, 0%, 0%, 0.87); */
   --instr-select-accent: var(--accent-purple);
-  
+
   /* MISC */
   --detail-background: var(--color-dark-0_5);
   --generic-tuner-held-accent: var(--accent-purple);
@@ -123,6 +126,7 @@
   --table-alt-color: var(--color-dark-0);
   --table-header: var(--color-dark-1);
   --table-divider: var(--color-dark-2);
+  --pitch-setter-accent: var(--accent-purple);
 }
 
 /* 

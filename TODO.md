@@ -1,5 +1,13 @@
 # TODO
 
+August 13 2025
+
+Sweet have the A4 configurer, so all that's left is document and cleanup
+
+But would be nice to get the sub/supercript thing working for the generic tuner
+
+And get a few more instruments in
+
 August 12 2025
 
 Okay rad :D

@@ -30,6 +30,8 @@
     margin-right: 1em;
     cursor: pointer;
 
+    font-weight: bold;
+
     /* unhighlightable */
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -38,7 +40,7 @@
 }
 
 .standard-pitch {
-    color: var(--accent-purple);
+    color: var(--pitch-setter-accent);
     font-weight: bold;
 }
 
@@ -48,14 +50,19 @@
 }
 
 .standard-pitch-input {
-    color: var(--accent-purple);
+    color: var(--pitch-setter-accent);
+    background-color: var(--detail-background);
     font-weight: bold;
     width: 3em;
     /* padding-right: 2.4em; */
     border: none;
     border-radius: 5px;
     padding-left: 0.3em;
-    margin-left: 0.3em;
+    /* margin-left: 0.3em; */
+}
+
+.standard-pitch-input:focus {
+    outline: none;
 }
 
 .commit-icon {
@@ -65,16 +72,18 @@
 
     width: 1em;
     vertical-align: middle;
-    fill: green;
+    fill: var(--pitch-setter-accent);
+    stroke-width: 1px;
+    stroke: var(--pitch-setter-accent);
 
     cursor: pointer;
 
-    margin-right: 0.3em;
+    margin-right: 0.2em;
 }
 
 .commit-icon:hover {
     /* background-color: lightgreen; */
-    filter: drop-shadow(0 0 0.1em lightgreen);
+    filter: drop-shadow(0 0 0.1em var(--pitch-setter-accent));
 }
 
 .cancel-icon {
@@ -85,11 +94,13 @@
 
     width: 1em;
     vertical-align: middle;
-    fill: red;
+    fill: var(--text-color);
+    stroke-width: 1px;
+    stroke: var(--text-color);
 
     cursor: pointer;
 }
 
 .cancel-icon:hover {
-    filter: drop-shadow(0 0 0.1em pink);
+    filter: drop-shadow(0 0 0.1em var(--text-color));
 }
