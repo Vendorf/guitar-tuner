@@ -1,5 +1,5 @@
 // See https://en.wikipedia.org/wiki/Scientific_pitch_notation
-import { A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, INSTRUMENTS } from "../constants/tuningConstants"
+import { A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, INSTRUMENTS } from "../constants/tuningConstants"
 
 // Unused
 // const initTunings = () => {
@@ -33,7 +33,7 @@ import { A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, INSTRUMENTS } from "../c
 const generateNotes = (a4Freq = 440) => {
     const notes = []
 
-    for (let i = 0; i <= (MAX_OCTAVE - MIN_OCTAVE + 1); i++) {
+    for (let i = 0; i <= (MAX_OCTAVE - MIN_OCTAVE); i++) {
         const octaveNotes = SCALE.map((n, j) => {
             //TODO: redo this so it's actually always MIDI index regardless of scale size
             const noteId = (i * SCALE.length) + j

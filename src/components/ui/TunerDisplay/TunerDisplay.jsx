@@ -95,7 +95,7 @@ const TunerDisplay = () => {
                     const cy = VIEW_HEIGHT / 2
                     const r = pegRadius
 
-                    return TunerPegSVG({ key: `${midiNote}${i}`, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick: () => playNote(noteFreq) })
+                    return TunerPegSVG({ key: `${midiNote}${i}${instr.name}`, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick: () => playNote(noteFreq) })
                 })}
             </svg>}
             <StandardPitchSetter />
