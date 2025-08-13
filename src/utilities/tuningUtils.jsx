@@ -40,7 +40,7 @@ const generateNotes = (a4Freq = 440) => {
             return {
                 id: noteId, // midi index
                 name: n,
-                octave: i,
+                octave: MIN_OCTAVE + i,
                 fullName: `${n}${MIN_OCTAVE + i}`,
                 frequency: computeNoteFrequency(noteId, a4Freq)
             }
