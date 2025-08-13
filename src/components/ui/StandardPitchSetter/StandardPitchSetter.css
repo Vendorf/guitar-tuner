@@ -1,0 +1,95 @@
+/* .container {
+    border: .2em solid black;
+    display: flex;
+}
+
+.element {
+    text-align: center;
+    margin-top: 1.5em;
+    position: relative;
+    font-size: 2em;
+}
+
+.edge span {
+    font-size: 0.5em;
+    position: absolute;
+}
+
+.right-bottom {
+    bottom: 0.3em;
+    left: 1.2em;
+}
+
+.right-top {
+    top: 0.3em;
+    left: 1.2em;
+} */
+
+.standard-pitch-setter {
+    margin-left: auto;
+    margin-right: 1em;
+    cursor: pointer;
+
+    /* unhighlightable */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.standard-pitch {
+    color: var(--accent-purple);
+    font-weight: bold;
+}
+
+.input-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.standard-pitch-input {
+    color: var(--accent-purple);
+    font-weight: bold;
+    width: 3em;
+    /* padding-right: 2.4em; */
+    border: none;
+    border-radius: 5px;
+    padding-left: 0.3em;
+    margin-left: 0.3em;
+}
+
+.commit-icon {
+    /* position: absolute;
+    top: 0.3333em;
+    right: 1.4em; */
+
+    width: 1em;
+    vertical-align: middle;
+    fill: green;
+
+    cursor: pointer;
+
+    margin-right: 0.3em;
+}
+
+.commit-icon:hover {
+    /* background-color: lightgreen; */
+    filter: drop-shadow(0 0 0.1em lightgreen);
+}
+
+.cancel-icon {
+    /* position: absolute;
+    top: 0.3333em;
+    right: 0.2em; */
+
+
+    width: 1em;
+    vertical-align: middle;
+    fill: red;
+
+    cursor: pointer;
+}
+
+.cancel-icon:hover {
+    filter: drop-shadow(0 0 0.1em pink);
+}

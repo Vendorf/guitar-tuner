@@ -5,6 +5,7 @@ import { useSynth } from '../../../context/SynthContext'
 import InstrumentSelect from '../InstrumentSelector/InstrumentSelect'
 import { getInstrument } from '../../../utilities/tuningUtils'
 import GenericTunerDisplay from '../GenericTunerDisplay/GenericTunerDisplay'
+import StandardPitchSetter from '../StandardPitchSetter/StandardPitchSetter'
 import './TunerDisplay.css'
 
 const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick }) => {
@@ -97,7 +98,7 @@ const TunerDisplay = () => {
                     return TunerPegSVG({ key: `${midiNote}${i}`, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick: () => playNote(noteFreq) })
                 })}
             </svg>}
-
+            <StandardPitchSetter />
         </div>
     )
 
