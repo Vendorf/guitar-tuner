@@ -1,12 +1,14 @@
 import { useRef, useState } from 'react'
 import { CheckSquareIcon, XSquareIcon } from '../../icons/Bootstrap/BootstrapIcons'
-import './StandardPitchSetter.css'
-import useClickAway from '../../../hooks/useClickAway'
 import { useTuning } from '../../../context/TuningContext'
+import { useSynth } from '../../../context/SynthContext'
+import useClickAway from '../../../hooks/useClickAway'
+import './StandardPitchSetter.css'
 
 const StandardPitchSetter = () => {
 
     const { a4Freq, setA4Freq } = useTuning()
+    const { stopHeldFreq } = useSynth()
 
     const [editing, setEditing] = useState(false)
     const [inputVal, setInputVal] = useState(a4Freq)
@@ -19,24 +21,26 @@ const StandardPitchSetter = () => {
     }
 
     const toggleEditing = () => {
-        if(editing) {
+        if (editing) {
             resetEdit()
         } else {
             setEditing(true)
         }
     }
 
-    const handleChange = (e) => {
-        setInputVal(e.target.value)
-    }
-
     const commitChange = (e) => {
-        e.stopPropagation()
+        e?.stopPropagation()
         setEditing(false)
         // If the input value is invalid, use current frequency
         const sendVal = inputVal <= 0 ? a4Freq : inputVal
-        setA4Freq(sendVal)
         setInputVal(sendVal)
+
+        if (sendVal !== a4Freq) {
+            setA4Freq(sendVal)
+            // Stop any held frequencies
+            stopHeldFreq()
+        }
+
     }
 
     const cancelChange = (e) => {
@@ -44,21 +48,23 @@ const StandardPitchSetter = () => {
         resetEdit()
     }
 
-    // just make this commitchange actually
-    const stopEditing = () => {
-        // setEditing(false)
-        // console.log(inputVal)
-        //TODO commit val
+    const handleChange = (e) => {
+        setInputVal(e.target.value)
     }
 
-    //TODO: we need to fix how this works so callback is using updated state values :P
-    useClickAway(setterRef, stopEditing)
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            commitChange(e)
+        }
+    }
+
+    useClickAway(setterRef, () => commitChange(undefined))
 
     return (
         <div ref={setterRef} className='standard-pitch-setter' onClick={toggleEditing}>
             A<sub>4</sub> =
             {!editing && <span className='standard-pitch'>{inputVal}</span>}
-            {editing && <div className='input-wrapper'><input autoFocus type='number' min={1} max={20000} className='standard-pitch-input' value={inputVal} onClick={(e) => e.stopPropagation()} onChange={handleChange} /> <CheckSquareIcon className='commit-icon' onClick={commitChange} /><XSquareIcon className='cancel-icon' onClick={cancelChange} /></div>} Hz
+            {editing && <div className='input-wrapper'><input autoFocus type='number' min={1} max={20000} className='standard-pitch-input' value={inputVal} onClick={(e) => e.stopPropagation()} onChange={handleChange} onKeyDown={handleKeyDown} /> <CheckSquareIcon className='commit-icon' onClick={commitChange} /><XSquareIcon className='cancel-icon' onClick={cancelChange} /></div>} Hz
         </div>
 
         // <div class="container">
