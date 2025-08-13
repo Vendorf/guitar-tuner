@@ -112,14 +112,13 @@
     color: var(--instr-select-alt-text-color);
 }
 
-.item-selected {
+.item-selected-underline {
     /* background-color: var(--instr-select-selected); */
-    color: var(--instr-select-alt-text-color);
+    border-bottom: 2px solid var(--instr-select-accent);
 }
 
-.item-selected-underline {
+.item-selected-highlight {
     background-color: var(--instr-select-selected);
-    border-bottom: 2px solid var(--instr-select-accent);
 }
 
 .check-icon {
@@ -160,6 +159,11 @@
     background-color: var(--tuner-peg-background-color);
     margin: 0 5px 0 0;
     padding: 0 2px 0 2px;
+}
+
+.string-box-selected {
+    background-color: var(--instr-select-accent);
+    color: var(--chip-text-color);
 }
 
 .to-right {

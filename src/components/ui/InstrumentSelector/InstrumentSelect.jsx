@@ -8,14 +8,14 @@ import './InstrumentSelect.css'
 //TODO: direct focus on selected item
 
 //TODO: make this wrap
-const StringIcons = ({ tuning }) => {
+const StringIcons = ({ tuning, selected = false }) => {
     // Shows a little preview of the strings in the selection
     const strings = tuning?.strings ?? []
 
     return (
         <div className='string-box-container'>
             {strings.map((s, i) => {
-                return <div key={i} className='string-box'>{s}</div>
+                return <div key={i} className={`string-box ${selected ? 'string-box-selected' : ''}`}>{s}</div>
             })}
         </div>
     )
@@ -29,9 +29,9 @@ const TuningListItem = ({ instrConfig, instrKey, tuningKey, tuning, onSelect }) 
     }
 
     return (
-        <div className={`tuning-list-item ${isSelected ? 'item-selected item-selected-underline' : ''}`} onClick={handleSelect}>
+        <div className={`tuning-list-item ${isSelected ? 'item-selected-underline item-selected-highlight' : ''}`} onClick={handleSelect}>
             <div className='tuning-list-item-label'>{tuning.name}</div>
-            <StringIcons tuning={tuning} />
+            <StringIcons tuning={tuning} selected={isSelected} />
             {isSelected && <CheckIcon className="check-icon" />}
         </div>
     )
@@ -56,9 +56,10 @@ const InstrumentListItem = ({ instrConfig, instrKey, instrument, onSelect }) => 
 
     return (
         <div className='instrument-list-item'>
-            <div className={`instrument-list-item-label-wrapper ${isSelected ? 'item-selected' : ''} ${isOnlySelected ? 'item-selected-underline' : ''}`} onClick={handleSelect}>
+            <div className={`instrument-list-item-label-wrapper ${(isSelected && !dropdownOpen) ? 'item-selected-underline' : ''} ${isOnlySelected ? 'item-selected-underline item-selected-highlight' : ''}`} onClick={handleSelect}>
                 <div className={`instrument-list-item-label`}>{instrument.name}</div>
-                {(isSelected || !multTunings) && <StringIcons tuning={instrTuning} />}
+                {(isSelected || !multTunings) && <StringIcons tuning={instrTuning} selected={isSelected} />}
+                {/* {!multTunings && <StringIcons tuning={instrTuning} />} */}
                 {multTunings && <ChevronIcon className={`chevron-icon ${dropdownOpen ? 'icon-flipped' : ''}`} />} {isOnlySelected && <CheckIcon className='check-icon' />}
             </div>
             {multTunings && dropdownOpen && Object.entries(instrument.tunings).map(([tuningKey, tuning]) => {
@@ -85,7 +86,7 @@ const InstrumentSelect = ({ instrConfig, onSelect }) => {
     const selectRef = useRef(undefined)
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [instr, tuning] = getInstrument(instrConfig)
-    
+
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen)
     }
