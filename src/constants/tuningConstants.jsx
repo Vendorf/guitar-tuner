@@ -11,12 +11,11 @@
 // that to call conversion funcs etc
 // NOTE CONSTANTS
 const A4_ID = 69
-const A4_FREQ = 440 // set by user
 const SCALE = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', "A♯/B♭", 'B']
 
 // PITCH CONSTANTS
 const MIN_OCTAVE = -1 // This aligns with MIDI which has note 0 as C-1
-const MAX_OCTAVE = 9
+const MAX_OCTAVE = 10
 
 /**
  * @typedef {Object} InstrumentConfig
@@ -74,6 +73,90 @@ const INSTRUMENTS = {
                 name: 'Goofy',
                 strings: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
                 strings_ids: [64, 59, 55, 50, 45, 40]
+            },
+        }
+    },
+    // 'bass': {
+    //     type: 'stringed',
+    //     name: 'Bass Guitar',
+    //     tunings: {
+    //         '4-string': {
+    //             name: '4 String',
+    //             strings: ['E1', 'A1', 'D2', 'G2'],
+    //             strings_ids: [28, 33, 38, 43]
+    //         },
+    //         '4-string-tenor': {
+    //             name: '4 String Tenor',
+    //             strings: ['A1', 'D2', 'G2', 'C3'],
+    //             strings_ids: [33, 38, 43, 48]
+    //         },
+    //         '5-string': {
+    //             name: '5 String',
+    //             strings: ['B0', 'E1', 'A1', 'D2', 'G2'],
+    //             strings_ids: [23, 28, 33, 38, 43]
+    //         },
+    //         '5-string-tenor': {
+    //             name: '5 String Tenor',
+    //             strings: ['E1', 'A1', 'D2', 'G2', 'C3'],
+    //             strings_ids: [28, 33, 38, 43, 48]
+    //         },
+    //         '6-string': {
+    //             name: '6 String',
+    //             strings: ['B0', 'E1', 'A1', 'D2', 'G2', 'C3'],
+    //             strings_ids: [23, 28, 33, 38, 43, 48]
+    //         },
+    //     }
+    // },
+    'bass': {
+        type: 'stringed',
+        name: '4 String Bass Guitar',
+        tunings: {
+            'standard': {
+                name: 'Standard',
+                strings: ['E1', 'A1', 'D2', 'G2'],
+                strings_ids: [28, 33, 38, 43]
+            },
+            'tenor': {
+                name: 'Tenor',
+                strings: ['A1', 'D2', 'G2', 'C3'],
+                strings_ids: [33, 38, 43, 48]
+            },
+            'drop-d': {
+                name: 'Drop D',
+                strings: ['D1', 'A1', 'D2', 'G2'],
+                strings_ids: [26, 33, 38, 43]
+            },
+            'bead': {
+                name: 'BEAD',
+                strings: ['B0', 'E1', 'A1', 'D2'],
+                strings_ids: [23, 28, 33, 38]
+            },
+        }
+    },
+    '5-string-bass': {
+        type: 'stringed',
+        name: '5 String Bass Guitar',
+        tunings: {
+            'standard': {
+                name: 'Standard',
+                strings: ['B0', 'E1', 'A1', 'D2', 'G2'],
+                strings_ids: [23, 28, 33, 38, 43]
+            },
+            'tenor': {
+                name: 'Tenor',
+                strings: ['E1', 'A1', 'D2', 'G2', 'C3'],
+                strings_ids: [28, 33, 38, 43, 48]
+            },
+        }
+    },
+    '6-string-bass': {
+        type: 'stringed',
+        name: '6 String Bass Guitar',
+        tunings: {
+            'standard': {
+                name: 'Standard',
+                strings: ['B0', 'E1', 'A1', 'D2', 'G2', 'C3'],
+                strings_ids: [23, 28, 33, 38, 43, 48]
             },
         }
     },
@@ -135,4 +218,4 @@ const CENTS_DIST_MAX = Infinity // Max cents distance from target to select it
 const CENTS_DIST_IN_TUNE = 0.05
 const COUNT_IN_TUNE = 50
 
-export { INSTRUMENTS, A4_FREQ, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, CENTS_DIST_MAX, CENTS_DIST_IN_TUNE, COUNT_IN_TUNE }
+export { INSTRUMENTS, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, CENTS_DIST_MAX, CENTS_DIST_IN_TUNE, COUNT_IN_TUNE }
