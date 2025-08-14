@@ -354,7 +354,7 @@ const PitchDisplay = () => {
                     </g>
                 </svg>
                 <div className="detail-toggle" onClick={toggleDetails}>{showDetails ? "Hide" : "Show"} Details</div>
-                {!isSingleColumn && <ClampedContainer className="detail-container" style={{ display: showDetails ? '' : 'none' }}>
+                {!isSingleColumn && <ClampedContainer className={`detail-container ${isWindows ? 'is-windows-pitchdisplay' : ''}`} style={{ display: showDetails ? '' : 'none' }}>
                     <PitchDetailDisplay display={showDetails}></PitchDetailDisplay>
                 </ClampedContainer>}
                 {isSingleColumn && <div className={`detail-container ${isWindows ? 'is-windows-pitchdisplay' : ''}`} style={{ display: showDetails ? '' : 'none' }}>
