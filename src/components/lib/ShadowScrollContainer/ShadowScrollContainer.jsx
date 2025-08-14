@@ -1,6 +1,7 @@
 
 
 import { useState } from "react"
+import useIsWindows from "../../../hooks/useIsWindows"
 import './ShadowScrollContainer.css'
 
 // from https://codesandbox.io/s/dawn-sunset-uhbtu?fontsize=14
@@ -16,6 +17,7 @@ function useScrollLeft() {
 
 const ShadowScrollContainer = ({ children, wrapperRef, containerRef, propsInner, ...props }) => {    
     const [scrollLeft, scrollProps] = useScrollLeft()
+    const isWindows = useIsWindows()
 
     const totalScrollWidth = containerRef.current?.scrollWidth - wrapperRef.current?.scrollWidth
     const atStart = (scrollLeft === 0)
@@ -27,7 +29,7 @@ const ShadowScrollContainer = ({ children, wrapperRef, containerRef, propsInner,
     const wrapperClassName = `shadow-scroll-wrapper ${wrapperProps.className ? wrapperProps.className : ''}`
     delete wrapperProps.className
     
-    const containerClassName = `shadow-scroll-container ${containerProps.className ? containerProps.className : ''}`
+    const containerClassName = `shadow-scroll-container ${containerProps.className ? containerProps.className : ''} ${isWindows ? 'is-windows' : ''}`
     delete containerProps.className
 
     return (

@@ -61,7 +61,9 @@
     /* overflow: scroll; */
     overflow-x: hidden;
     overflow-y: auto;
+}
 
+.is-windows {
     scrollbar-width: thin;
     scrollbar-color: var(--chip-regular) var(--instr-select-dropdown-background);
 }

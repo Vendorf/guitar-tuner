@@ -4,6 +4,7 @@ import { getInstrument } from '../../../utilities/tuningUtils'
 import { CheckIcon, ChevronIcon } from '../../icons/Bootstrap/BootstrapIcons'
 import useClickAway from '../../../hooks/useClickAway'
 import { useTuning } from '../../../context/TuningContext'
+import useIsWindows from '../../../hooks/useIsWindows'
 import './InstrumentSelect.css'
 
 //TODO: direct focus on selected item
@@ -81,11 +82,10 @@ const InstrumentListItem = ({ instrConfig, instrKey, instrument, onSelect }) => 
 }
 
 const InstrumentDropdown = ({ instrConfig, onSelect, show }) => {
-    // const dropdownRef = useRef(undefined)
-    // useClickAway(dropdownRef, handleClickOutside)
+    const isWindows = useIsWindows()
 
     return (
-        <div className='instrument-dropdown' style={{ display: show ? '' : 'none' }}>
+        <div className={`instrument-dropdown ${isWindows ? 'is-windows' : ''}`} style={{ display: show ? '' : 'none' }}>
             {Object.entries(INSTRUMENTS).map(([instrKey, instr]) => {
                 return <InstrumentListItem key={instrKey} instrConfig={instrConfig} instrKey={instrKey} instrument={instr} onSelect={onSelect} />
             })}

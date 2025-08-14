@@ -16,7 +16,9 @@
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
+}
 
+.is-windows {
     scrollbar-width: thin;
     scrollbar-color: var(--chip-regular) var(--background-color);
 }
