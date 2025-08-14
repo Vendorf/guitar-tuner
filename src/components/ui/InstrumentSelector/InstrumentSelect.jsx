@@ -24,7 +24,7 @@ const StringIcons = ({ tuning, selected = false }) => {
                         className={`string-box ${selected ? 'string-box-selected' : ''}`}
                     >
                         {!(note?.isAccidental) && <>{note?.name}<sub>{note?.octave}</sub></>}
-                        {note?.isAccidental && <>{note?.sharpName}<sup>♯</sup>/{note?.flatName}<sup className='flat-accidental'>♭</sup><sub>{note?.octave}</sub></>}
+                        {note?.isAccidental && <>{note?.sharpName}<sup className='accidental-super'>♯</sup>/{note?.flatName}<sup className='accidental-super flat-accidental'>♭</sup><sub>{note?.octave}</sub></>}
                     </div>
                 )
             })}

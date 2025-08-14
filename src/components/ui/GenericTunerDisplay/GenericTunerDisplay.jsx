@@ -45,7 +45,7 @@ const GenericTunerDisplay = () => {
                     onClick={() => playNote(note.frequency)}
                 >
                     {!note.isAccidental && <>{note.name}<sub>{note.octave}</sub></>}
-                    {note.isAccidental && <>{note.sharpName}<sup>♯</sup>/{note.flatName}<sup className='flat-accidental'>♭</sup><sub>{note.octave}</sub></>}
+                    {note.isAccidental && <>{note.sharpName}<sup className='accidental-super'>♯</sup>/{note.flatName}<sup className='accidental-super flat-accidental'>♭</sup><sub>{note.octave}</sub></>}
                 </div>
             })}
         </ShadowScrollContainer>

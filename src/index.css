@@ -179,7 +179,11 @@ button:focus-visible {
 
 .flat-accidental {
   margin-left: -0.3em;
-  letter-spacing: -0.5em;
+  letter-spacing: -0.3em;
+}
+
+.accidental-super {
+    vertical-align: top;
 }
 
 /* 
