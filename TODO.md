@@ -2,6 +2,16 @@
 
 August 14 2025
 
+Okay well rip baseline shift didn't fix anything
+
+Maybe go back to dx and dy honestly.....
+
+Need to figure out how to make it work for the tuner pegs now
+
+Tried now to set dominantBaseline on the tspans themselves, maybe that will work...?
+
+August 14 2025
+
 Problem rn is swapped fonts b/c system-ui not available everywhere/inconsistency on devices, but now kerning on flat/sharp is trash
 
 So prolly need to convert every place where display to some position absolute with offset to get it properly done
