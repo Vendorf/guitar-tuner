@@ -64,11 +64,16 @@ svg {
     border-radius: 0 40px 40px 0;
     /* margin-right: 1rem; */
     box-sizing: border-box;
-    overflow: scroll;
+    overflow: auto;
     /* transition: width 0.2s ease, height 0.2s ease; */
 
     background-color: var(--detail-background);
     box-shadow: 0 4px 35px var(--card-shadow);
+}
+
+.is-windows-pitchdisplay {
+    scrollbar-width: auto;
+    scrollbar-color: var(--chip-regular) transparent;
 }
 
 /* .card-transition {

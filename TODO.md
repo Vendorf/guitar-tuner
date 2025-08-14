@@ -2,6 +2,14 @@
 
 August 14 2025
 
+Okay sweet now have windows-only scrollbar styles
+
+I think finally actually fr just on docs and cleanup lol
+
+Prolly issues renderign on firefox and linux but oh well
+
+August 14 2025
+
 Okay I think it's finally fixed lmao
 
 So maybe finally it's just docs and cleanup

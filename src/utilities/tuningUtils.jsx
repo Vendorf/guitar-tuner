@@ -53,7 +53,7 @@ const generateNotes = (a4Freq = 440) => {
         notes.push(...octaveNotes)
     }
 
-    console.log(notes)
+    console.log('Notes', notes)
 
     return notes
 }

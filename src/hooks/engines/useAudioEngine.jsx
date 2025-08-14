@@ -68,7 +68,7 @@ const useAudioEngine = ({ onPitchData }) => {
         signalChainRef.current.analyserNode.fftSize = FFT_SIZE
 
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-        console.log(audioContextRef, signalChainRef.current)
+        // console.log(audioContextRef, signalChainRef.current)
         if (USE_FAKE_INPUT) {
             FAKE_INPUT_DATA.loop = true
             FAKE_INPUT_DATA.play()

@@ -3,6 +3,7 @@ import { useTuning } from "../../../context/TuningContext"
 import { interpolateHsl } from "../../../utilities/colorUtils"
 import PitchDetailDisplay from "./PitchDetailDisplay"
 import ClampedContainer from "../../lib/ClampedContainer/ClampedContainer"
+import useIsWindows from "../../../hooks/useIsWindows"
 import './PitchDisplay.css'
 
 //TODOS
@@ -48,6 +49,8 @@ const PitchDisplay = () => {
     const targetOctave = notes[targetMidiNote]?.octave ?? ''
     const targetIsAccidental = notes[targetMidiNote]?.isAccidental ?? false
     const targetNote = notes[targetMidiNote] ?? {}
+
+    const isWindows = useIsWindows()
 
     //TODO: replace with when in tune / when enough iterations or smthng
     // or like 2 glows: one when near, then turns green when in tune fully
@@ -354,7 +357,7 @@ const PitchDisplay = () => {
                 {!isSingleColumn && <ClampedContainer className="detail-container" style={{ display: showDetails ? '' : 'none' }}>
                     <PitchDetailDisplay display={showDetails}></PitchDetailDisplay>
                 </ClampedContainer>}
-                {isSingleColumn && <div className="detail-container" style={{ display: showDetails ? '' : 'none' }}>
+                {isSingleColumn && <div className={`detail-container ${isWindows ? 'is-windows-pitchdisplay' : ''}`} style={{ display: showDetails ? '' : 'none' }}>
                     <PitchDetailDisplay display={showDetails}></PitchDetailDisplay>
                 </div>}
             </div>

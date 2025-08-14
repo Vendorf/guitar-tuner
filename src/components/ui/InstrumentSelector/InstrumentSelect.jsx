@@ -85,7 +85,7 @@ const InstrumentDropdown = ({ instrConfig, onSelect, show }) => {
     const isWindows = useIsWindows()
 
     return (
-        <div className={`instrument-dropdown ${isWindows ? 'is-windows' : ''}`} style={{ display: show ? '' : 'none' }}>
+        <div className={`instrument-dropdown ${isWindows ? 'is-windows-dropdown' : ''}`} style={{ display: show ? '' : 'none' }}>
             {Object.entries(INSTRUMENTS).map(([instrKey, instr]) => {
                 return <InstrumentListItem key={instrKey} instrConfig={instrConfig} instrKey={instrKey} instrument={instr} onSelect={onSelect} />
             })}
