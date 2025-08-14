@@ -22,7 +22,7 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, oc
                 className={`tuner-peg-svg-text ${isActived ? 'tuner-peg-activated-svg-text' : ''} ${isTuned ? 'tuner-peg-tuned-svg-text' : ''}`}
                 x={cx}
                 y={cy}
-                fontFamily="system-ui, Avenir, Helvetica, Arial, sans-serif"
+                fontFamily="Avenir, Helvetica, Arial, sans-serif"
                 textRendering="optimizeLegibility"
                 fontSize="3.1"
                 letterSpacing="-0.2"
@@ -33,7 +33,7 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, oc
                 transformOrigin={`${cx}px ${cy}px`}
             >
                 {name}
-                <tspan dy='0.25em' fontSize='0.75em'>{octave}</tspan>
+                <tspan dy='0.3em' dx='0.05em' fontSize='0.75em'>{octave}</tspan>
             </text>
         </g>
     )

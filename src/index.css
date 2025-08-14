@@ -68,7 +68,7 @@
   --table-divider: var(--color-light-2);
   --pitch-setter-accent: var(--accent-purple-dark);
 
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 

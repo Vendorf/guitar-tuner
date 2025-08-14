@@ -41,7 +41,9 @@ const LOW_CENTS = 0 // when fully low color
  */
 const PitchDisplay = () => {
     const { notes, noteInfo: { targetMidiNote, inTune }, history } = useTuning()
-    const targetNoteName = notes[targetMidiNote]?.fullName ?? ""
+    // const targetNoteName = notes[targetMidiNote]?.fullName ?? ""
+    const targetNoteName = notes[targetMidiNote]?.name ?? ''
+    const targetOctave = notes[targetMidiNote]?.octave ?? ''
 
     //TODO: replace with when in tune / when enough iterations or smthng
     // or like 2 glows: one when near, then turns green when in tune fully
@@ -190,6 +192,7 @@ const PitchDisplay = () => {
                     <g>
                         {ticks.map((cents) => {
                             const x = 50 + (cents / 100) * boxWidthPerCent
+                            const textX = Math.max(3, Math.min(x, VIEW_WIDTH-4))
                             return (
                                 <g key={cents}>
                                     <line
@@ -201,7 +204,7 @@ const PitchDisplay = () => {
                                         strokeWidth="0.4"
                                     />
                                     <text
-                                        x={x}
+                                        x={textX}
                                         y={VIEW_HEIGHT + 3}
                                         fontSize="2.5"
                                         textAnchor="middle"
@@ -299,10 +302,11 @@ const PitchDisplay = () => {
                             textAnchor="middle"
                             fill={inTune ? "limegreen" : "var(--text-color)"}
                             stroke={inTune ? "limegreen" : "var(--text-color)"}
-                            strokeWidth="0.4"
+                            strokeWidth="0.3"
                             paintOrder="stroke"
                         >
                             {targetNoteName}
+                            <tspan dy='0.3em' dx='0.05em' fontSize='0.75em'>{targetOctave}</tspan>
                         </text>
                         {/* Direction Label */}
                         {lastBox && !inTune && (
