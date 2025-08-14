@@ -34,10 +34,10 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, is
             >
                 {name}
                 {isAccidental && <>
-                    <tspan dy='-0.3em' dx='0.07em' fontSize='0.75em'>♯</tspan>
-                    <tspan dy='0.6em' dx='0.05em' fontSize='0.75em'>{octave}</tspan>
+                    <tspan baselineShift='30%' dx='0.2px' fontSize='2.3'>♯</tspan>
+                    <tspan baselineShift='-30%' fontSize='2.3'>{octave}</tspan>
                 </>}
-                {!isAccidental && <tspan dy='0.3em' dx='0.05em' fontSize='0.75em'>{octave}</tspan>}
+                {!isAccidental && <tspan baselineShift='-30%' dx='0.2px' fontSize='2.3'>{octave}</tspan>}
             </text>
         </g>
     )

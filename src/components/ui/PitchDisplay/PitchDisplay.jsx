@@ -41,7 +41,9 @@ const LOW_CENTS = 0 // when fully low color
  */
 const PitchDisplay = () => {
     const { notes, noteInfo: { targetMidiNote, inTune }, history } = useTuning()
+    // const { notes, noteInfo: { inTune }, history } = useTuning()
     // const targetNoteName = notes[targetMidiNote]?.fullName ?? ""
+    // const targetMidiNote = 68
     const targetNoteName = notes[targetMidiNote]?.name ?? ''
     const targetOctave = notes[targetMidiNote]?.octave ?? ''
     const targetIsAccidental = notes[targetMidiNote]?.isAccidental ?? false
@@ -309,14 +311,14 @@ const PitchDisplay = () => {
                         >
                             {!targetIsAccidental && <>
                                 {targetNoteName}
-                                <tspan dy='0.3em' dx='0.05em' fontSize='0.75em'>{targetOctave}</tspan>
+                                <tspan baselineShift='-30%' dx='0.07em' fontSize='4.5'>{targetOctave}</tspan>
                             </>}
                             {targetIsAccidental && <>
                                 {targetNote.sharpName}
-                                <tspan dy='-0.3em' dx='0.07em' fontSize='0.75em'>♯</tspan>
-                                <tspan dy='0.3em'>/{targetNote.flatName}</tspan>
-                                <tspan dy='-0.3em' dx='-0.2em' fontSize='0.75em'>♭</tspan>
-                                <tspan dy='0.6em' dx='-0.3em' fontSize='0.75em'>{targetOctave}</tspan>
+                                <tspan baselineShift='30%' dx='0.07em' fontSize='4.5'>♯</tspan>
+                                <tspan>/{targetNote.flatName}</tspan>
+                                <tspan baselineShift='30%' dx='-0.2em' fontSize='4.5'>♭</tspan>
+                                <tspan baselineShift='-30%' dx='-0.3em' fontSize='4.5'>{targetOctave}</tspan>
                             </>}
 
                         </text>
