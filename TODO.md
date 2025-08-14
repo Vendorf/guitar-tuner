@@ -2,6 +2,15 @@
 
 August 14 2025
 
+Okay I think it's finally fixed lmao
+
+So maybe finally it's just docs and cleanup
+
+Actually ig the one thing would be getting some decent scrollbar styling to look like the Mac one so it is okay on windows
+- Maybe don't bother w the styling changes, but just make it show on hover and remove the buttons idk
+
+August 14 2025
+
 Okay well rip baseline shift didn't fix anything
 
 Maybe go back to dx and dy honestly.....
