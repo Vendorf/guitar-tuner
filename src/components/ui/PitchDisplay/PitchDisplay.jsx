@@ -332,7 +332,7 @@ const PitchDisplay = () => {
                                 fill="var(--tune-label-color)"
                                 fontStyle="italic"
                             >
-                                {lastBox.cents > 0 ? "↓ Tune Down" : "↑ Tune Up"}
+                                {lastBox.cents > 0 ? <><tspan fontStyle='normal'>↓</tspan> Tune Down</> : <><tspan fontStyle='normal'>↑</tspan> Tune Up</>}
                             </text>
                         )}
                         {/* Direction label (left/right side) */}
