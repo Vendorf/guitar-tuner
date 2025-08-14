@@ -22,7 +22,7 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, is
                 className={`tuner-peg-svg-text ${isActived ? 'tuner-peg-activated-svg-text' : ''} ${isTuned ? 'tuner-peg-tuned-svg-text' : ''}`}
                 x={cx}
                 y={cy}
-                fontFamily="Avenir, Helvetica, Arial, sans-serif"
+                fontFamily="Avenir, Helvetica, sans-serif"
                 textRendering="optimizeLegibility"
                 fontSize="3.1"
                 letterSpacing="-0.2"
@@ -34,10 +34,10 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, is
             >
                 {name}
                 {isAccidental && <>
-                    <tspan dominantBaseline='middle' dy='-0.3em' dx='0.2px' fontSize='2.3'>♯</tspan>
-                    <tspan dominantBaseline='middle' dy='0.6em' fontSize='2.3'>{octave}</tspan>
+                    <tspan dominantBaseline='middle' dy='-0.7px' dx='0.2px' fontSize='2.3'>♯</tspan>
+                    <tspan dominantBaseline='middle' dy='1.4px' fontSize='2.3'>{octave}</tspan>
                 </>}
-                {!isAccidental && <tspan dominantBaseline='middle' dy='0.3em' dx='0.1em' fontSize='2.3'>{octave}</tspan>}
+                {!isAccidental && <tspan dominantBaseline='middle' dy='0.7px' dx='0.3px' fontSize='2.3'>{octave}</tspan>}
             </text>
         </g>
     )
