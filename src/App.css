@@ -35,7 +35,7 @@
   /* TODO: adjust to something more reasonable */
 
   text-align: center;
-  padding: 1rem 0;
+  /* padding: 1rem 0; */
 
   /* On small screens we use display: block, so sidebars actually are after content; use order to reorder for the flex view on large screens */
   order: 2;
@@ -101,6 +101,11 @@
 @media (max-width: 475px) {
   .card {
     margin: 0.75rem;
+  }
+
+  .all-container {
+    /* Less claustrophobic this way */
+    /* padding-top: 1rem; */
   }
 
   html {

@@ -8,7 +8,7 @@ import GenericTunerDisplay from '../GenericTunerDisplay/GenericTunerDisplay'
 import StandardPitchSetter from '../StandardPitchSetter/StandardPitchSetter'
 import './TunerDisplay.css'
 
-const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick }) => {
+const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, octave, handleClick }) => {
     return (
         <g key={key} className='tuner-peg-svg-g' onClick={handleClick}>
             <circle
@@ -33,6 +33,7 @@ const TunerPegSVG = ({ key, cx, cy, r, isTuned, isActived, isSynthHeld, name, ha
                 transformOrigin={`${cx}px ${cy}px`}
             >
                 {name}
+                <tspan dy='0.25em' fontSize='0.75em'>{octave}</tspan>
             </text>
         </g>
     )
@@ -83,9 +84,10 @@ const TunerDisplay = () => {
             {!isGenericInstrument && <TuningSelector></TuningSelector>}
             {!isGenericInstrument && <svg className="tuner-peg-container-svg unhighlightable" viewBox='0 0 60 10'>
                 {strings.map((midiNote, i) => {
-                    // const note = TUNINGS[tuningMode].strings_ids[i]
-                    // const midiNote = tuning.strings[i]
-                    const name = tuning.strings[i] ?? notes[midiNote]?.fullName
+                    // const name = tuning.strings[i] ?? notes[midiNote]?.fullName
+                    // const name = notes[midiNote]?.name ?? tuning.strings[i]
+                    const name = notes[midiNote]?.sharpName ?? tuning.strings[i]
+                    const octave = notes[midiNote]?.octave ?? ''
                     const noteFreq = notes[midiNote]?.frequency
                     const isTuned = notesTuned.has(midiNote)
                     const isActived = (i === targetIdx)
@@ -95,7 +97,7 @@ const TunerDisplay = () => {
                     const cy = VIEW_HEIGHT / 2
                     const r = pegRadius
 
-                    return TunerPegSVG({ key: `${midiNote}${i}${instr.name}`, cx, cy, r, isTuned, isActived, isSynthHeld, name, handleClick: () => playNote(noteFreq) })
+                    return TunerPegSVG({ key: `${midiNote}${i}${instr.name}`, cx, cy, r, isTuned, isActived, isSynthHeld, name, octave, handleClick: () => playNote(noteFreq) })
                 })}
             </svg>}
             <StandardPitchSetter />

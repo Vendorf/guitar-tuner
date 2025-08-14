@@ -2,6 +2,10 @@
 
 August 13 2025
 
+Think I've got enough instruments and all now, so just document and cleanup!
+
+August 13 2025
+
 Okay nvm got subscript styling and it looks okay; could do more but honestly I think it's fine
 
 So just some more instruments, document, and cleanup

@@ -19,7 +19,8 @@ const StartButton = () => {
         // <button onClick={() => started ? stopAudio() : startAudio()}>{started ? "Stop" : "Start"} Audio</button>
         !started && <button onClick={() => {startAudio(); startSynth()}} style={{
             width: '100%',
-            padding: '1em'
+            padding: '1em',
+            marginTop: '1em'
         }}>Start Audio</button>
     )
 }

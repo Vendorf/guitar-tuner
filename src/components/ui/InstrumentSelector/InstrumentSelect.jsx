@@ -3,19 +3,22 @@ import { INSTRUMENTS } from '../../../constants/tuningConstants'
 import { getInstrument } from '../../../utilities/tuningUtils'
 import { CheckIcon, ChevronIcon } from '../../icons/Bootstrap/BootstrapIcons'
 import useClickAway from '../../../hooks/useClickAway'
+import { useTuning } from '../../../context/TuningContext'
 import './InstrumentSelect.css'
 
 //TODO: direct focus on selected item
 
 //TODO: make this wrap
 const StringIcons = ({ tuning, selected = false }) => {
+    const { notes } = useTuning()
     // Shows a little preview of the strings in the selection
-    const strings = tuning?.strings ?? []
+    // const strings = tuning?.strings ?? []
+    const strings = tuning?.strings_ids.map(sid => notes[sid])
 
     return (
         <div className='string-box-container'>
-            {strings.map((s, i) => {
-                return <div key={i} className={`string-box ${selected ? 'string-box-selected' : ''}`}>{s}</div>
+            {strings.map((note, i) => {
+                return <div key={i} className={`string-box ${selected ? 'string-box-selected' : ''}`}>{note?.name}<sub>{note?.octave}</sub></div>
             })}
         </div>
     )
