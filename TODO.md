@@ -1,5 +1,24 @@
 # TODO
 
+August 14 2025
+
+Problem rn is swapped fonts b/c system-ui not available everywhere/inconsistency on devices, but now kerning on flat/sharp is trash
+
+So prolly need to convert every place where display to some position absolute with offset to get it properly done
+
+Or really: see screenshot, but sup seems okay with some adjustments
+
+G
+<sup>♯</sup>
+/A
+<sup style="
+    margin-left: -0.3em;
+    letter-spacing: -0.3em;
+">♭</sup>
+<sub>4</sub>
+
+Honestly these adjustments seem pretty good for most fonts
+
 August 13 2025
 
 Think I've got enough instruments and all now, so just document and cleanup!

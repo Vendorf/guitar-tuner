@@ -35,8 +35,18 @@ const GenericTunerDisplay = () => {
                 const isSynthNote = (note.frequency === heldFreq)
                 const isTuned = notesTuned.has(note.id)
 
+                
+
                 // return <div key={note.id} className={`note ${isTarget ? 'note-selected' : ''} ${isTuned ? 'note-tuned' : ''} ${isSynthNote ? 'note-held' : ''}`} onClick={() => playNote(note.frequency)}>{note.fullName}</div>
-                return <div key={note.id} className={`note ${isTarget ? 'note-selected' : ''} ${isTuned ? 'note-tuned' : ''} ${isSynthNote ? 'note-held' : ''}`} onClick={() => playNote(note.frequency)}>{note.name}<sub>{note.octave}</sub></div>
+                // return <div key={note.id} className={`note ${isTarget ? 'note-selected' : ''} ${isTuned ? 'note-tuned' : ''} ${isSynthNote ? 'note-held' : ''}`} onClick={() => playNote(note.frequency)}>{note.name}<sub>{note.octave}</sub></div>
+                return <div
+                    key={note.id}
+                    className={`note ${isTarget ? 'note-selected' : ''} ${isTuned ? 'note-tuned' : ''} ${isSynthNote ? 'note-held' : ''}`}
+                    onClick={() => playNote(note.frequency)}
+                >
+                    {!note.isAccidental && <>{note.name}<sub>{note.octave}</sub></>}
+                    {note.isAccidental && <>{note.sharpName}<sup>♯</sup>/{note.flatName}<sup className='flat-accidental'>♭</sup><sub>{note.octave}</sub></>}
+                </div>
             })}
         </ShadowScrollContainer>
     )

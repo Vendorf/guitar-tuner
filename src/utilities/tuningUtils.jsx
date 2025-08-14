@@ -1,5 +1,5 @@
 // See https://en.wikipedia.org/wiki/Scientific_pitch_notation
-import { A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, INSTRUMENTS, SHARPS_SCALE, FLATS_SCALE } from "../constants/tuningConstants"
+import { A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, INSTRUMENTS, SHARPS_SCALE, FLATS_SCALE, ACCIDENTALS } from "../constants/tuningConstants"
 
 // Unused
 // const initTunings = () => {
@@ -43,6 +43,7 @@ const generateNotes = (a4Freq = 440) => {
                 octave: MIN_OCTAVE + i,
                 sharpName: SHARPS_SCALE[j],
                 flatName: FLATS_SCALE[j],
+                isAccidental: ACCIDENTALS[j],
                 fullName: `${n}${MIN_OCTAVE + i}`,
                 frequency: computeNoteFrequency(noteId, a4Freq)
             }

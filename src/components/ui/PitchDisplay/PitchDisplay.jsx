@@ -44,6 +44,8 @@ const PitchDisplay = () => {
     // const targetNoteName = notes[targetMidiNote]?.fullName ?? ""
     const targetNoteName = notes[targetMidiNote]?.name ?? ''
     const targetOctave = notes[targetMidiNote]?.octave ?? ''
+    const targetIsAccidental = notes[targetMidiNote]?.isAccidental ?? false
+    const targetNote = notes[targetMidiNote] ?? {}
 
     //TODO: replace with when in tune / when enough iterations or smthng
     // or like 2 glows: one when near, then turns green when in tune fully
@@ -192,7 +194,7 @@ const PitchDisplay = () => {
                     <g>
                         {ticks.map((cents) => {
                             const x = 50 + (cents / 100) * boxWidthPerCent
-                            const textX = Math.max(3, Math.min(x, VIEW_WIDTH-4))
+                            const textX = Math.max(3, Math.min(x, VIEW_WIDTH - 4))
                             return (
                                 <g key={cents}>
                                     <line
@@ -305,8 +307,18 @@ const PitchDisplay = () => {
                             strokeWidth="0.3"
                             paintOrder="stroke"
                         >
-                            {targetNoteName}
-                            <tspan dy='0.3em' dx='0.05em' fontSize='0.75em'>{targetOctave}</tspan>
+                            {!targetIsAccidental && <>
+                                {targetNoteName}
+                                <tspan dy='0.3em' dx='0.05em' fontSize='0.75em'>{targetOctave}</tspan>
+                            </>}
+                            {targetIsAccidental && <>
+                                {targetNote.sharpName}
+                                <tspan dy='-0.3em' dx='0.07em' fontSize='0.75em'>♯</tspan>
+                                <tspan dy='0.3em'>/{targetNote.flatName}</tspan>
+                                <tspan dy='-0.3em' dx='-0.2em' fontSize='0.75em'>♭</tspan>
+                                <tspan dy='0.6em' dx='-0.3em' fontSize='0.75em'>{targetOctave}</tspan>
+                            </>}
+
                         </text>
                         {/* Direction Label */}
                         {lastBox && !inTune && (

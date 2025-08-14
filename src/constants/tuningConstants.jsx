@@ -12,8 +12,11 @@
 // NOTE CONSTANTS
 const A4_ID = 69
 const SCALE = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', "A♯/B♭", 'B']
-const SHARPS_SCALE = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', "A♯", 'B']
-const FLATS_SCALE = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', "B♭", 'B']
+const SHARPS_SCALE = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', "A", 'B']
+const FLATS_SCALE = ['C', 'D', 'D', 'E', 'E', 'F', 'G', 'G', 'A', 'A', "B", 'B']
+// const SHARPS_SCALE = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', "A♯", 'B']
+// const FLATS_SCALE = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', "B♭", 'B']
+const ACCIDENTALS = [false, true, false, true, false, false, true, false, true, false, true, false]
 
 // PITCH CONSTANTS
 const MIN_OCTAVE = -1 // This aligns with MIDI which has note 0 as C-1
@@ -220,4 +223,4 @@ const CENTS_DIST_MAX = Infinity // Max cents distance from target to select it
 const CENTS_DIST_IN_TUNE = 0.05
 const COUNT_IN_TUNE = 50
 
-export { INSTRUMENTS, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, SHARPS_SCALE, FLATS_SCALE, CENTS_DIST_MAX, CENTS_DIST_IN_TUNE, COUNT_IN_TUNE }
+export { INSTRUMENTS, A4_ID, MIN_OCTAVE, MAX_OCTAVE, SCALE, SHARPS_SCALE, FLATS_SCALE, ACCIDENTALS, CENTS_DIST_MAX, CENTS_DIST_IN_TUNE, COUNT_IN_TUNE }

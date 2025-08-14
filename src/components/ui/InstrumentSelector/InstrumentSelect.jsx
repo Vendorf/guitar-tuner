@@ -18,7 +18,15 @@ const StringIcons = ({ tuning, selected = false }) => {
     return (
         <div className='string-box-container'>
             {strings.map((note, i) => {
-                return <div key={i} className={`string-box ${selected ? 'string-box-selected' : ''}`}>{note?.name}<sub>{note?.octave}</sub></div>
+                return (
+                    <div
+                        key={i}
+                        className={`string-box ${selected ? 'string-box-selected' : ''}`}
+                    >
+                        {!(note?.isAccidental) && <>{note?.name}<sub>{note?.octave}</sub></>}
+                        {note?.isAccidental && <>{note?.sharpName}<sup>♯</sup>/{note?.flatName}<sup className='flat-accidental'>♭</sup><sub>{note?.octave}</sub></>}
+                    </div>
+                )
             })}
         </div>
     )
