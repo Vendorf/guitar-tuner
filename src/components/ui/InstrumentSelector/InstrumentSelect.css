@@ -62,11 +62,8 @@
     overflow-x: hidden;
     overflow-y: auto;
 
-    scrollbar-width: none;
-}
-
-.instrument-dropdown:hover {
-    scrollbar-width: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--chip-regular) var(--instr-select-dropdown-background);
 }
 
 .instrument-list-item {

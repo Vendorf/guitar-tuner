@@ -17,11 +17,8 @@
     overflow-y: hidden;
     width: 100%;
 
-    scrollbar-width: none;
-}
-
-.shadow-scroll-container:hover {
-    scrollbar-width: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--chip-regular) var(--background-color);
 }
 
 /* from https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ (https://codepen.io/shadeed/pen/jWBjVd)*/
